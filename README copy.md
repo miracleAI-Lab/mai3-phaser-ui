@@ -20,33 +20,23 @@ npm install mai3-phaser-ui
 yarn add mai3-phaser-ui
 ```
 
-## Basic Usage
-
-Here's a demonstration of how to create various types of buttons using the **mai3-phaser-ui** library:
-
 ```typescript
 import BaseScene from "mai3-phaser-ui/dist/scene";
-import { Mai3Plugin } from 'mai3-phaser-ui/dist/ui/Mai3Plugin';
+import { Mai3Plugin } from '../../src/ui/Mai3Plugin';
 
 export class ButtonDemo extends BaseScene {
 
   constructor() {
     super('ButtonDemo');
   }
+
   
   preload() {
     super.preload();
   }
 
   create() {
-    this.createButtons();
-  }
-
-  private createButtons() {
     this.createTextButton();
-    this.createDraggableButton();
-    this.createRoundedButton();
-    this.createImageButton();
   }
 
   private createTextButton() {
@@ -58,7 +48,7 @@ export class ButtonDemo extends BaseScene {
       borderColor: 0x900C3F,
       borderWidth: 3,
       backgroundColor: 0xC70039,
-      text: "Close Window",
+      text: "关闭窗口",
       radius: 20,
       textStyle: {
         fontFamily: 'Arial',
@@ -73,86 +63,6 @@ export class ButtonDemo extends BaseScene {
       },
       handleUp: {
         handleFn: () => {
-          // Add action for handleUp if needed
-        }
-      }
-    });
-  }
-
-  private createDraggableButton() {
-    const btn = this.mai3.add.textButton({
-      x: 220,
-      y: 70,
-      borderColor: 0xFF5733,
-      borderWidth: 3,
-      backgroundColor: 0xFFC300,
-      text: "Mai3 (Draggable)",
-      radius: 20,
-      textStyle: {
-        fontFamily: 'Arial',
-        fontSize: '24px',
-        color: '#000000',
-      },
-      handleHover: {
-        audio: "sfx-hover",
-      },
-      handleDown: {
-        audio: "sfx-press",
-        handleFn: () => {
-          btn.text = "Hello There";
-        }
-      },
-      enableDrag: true
-    });
-  }
-
-  private createRoundedButton() {
-    this.mai3.add.roundedButton({
-      x: 430,
-      y: 70,
-      radius: 100,
-      texture: "cangshu",
-      borderWidth: 6,
-      borderColor: 0xFFD700,
-      backgroundColor: 0x32CD32,
-      handleHover: {
-        audio: "sfx-hover"
-      },
-      handleDown: {
-        audio: "sfx-press",
-        handleFn: () => {
-          // Add action for handleDown if needed
-        }
-      }
-    });
-  }
-
-  private createImageButton() {
-    this.mai3.add.imageButton({
-      x: 10,
-      y: 160,
-      width: 160,
-      height: 60,
-      texture: "StartGameButton",
-      borderWidth: 3,
-      handleHover: {
-        audio: "sfx-hover",
-        texture: "StartGameButtonHover",
-      },
-      handleOut: {
-        texture: "StartGameButton",
-      },
-      handleDown: {
-        audio: "sfx-press",
-        texture: "StartGameButtonDown",
-        handleFn: () => {
-          console.log("Button pressed");
-        }
-      },
-      handleUp: {
-        texture: "StartGameButton",
-        handleFn: () => {
-          console.log("Button released");
         }
       }
     });
@@ -165,8 +75,8 @@ const game = new Phaser.Game({
   height: 800,
   backgroundColor: '#111111',
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH
   },
   plugins: {
     scene: [
@@ -174,36 +84,26 @@ const game = new Phaser.Game({
     ],
   },
   scene: [ ButtonDemo ]
-});
+})
+
 ```
 
-In this example, you'll see how to create different types of buttons including text buttons, draggable buttons, rounded buttons, and image buttons. Each button type demonstrates different properties and functionalities, allowing you to customize them according to your needs.
+运行项目示例：
 
+```bash
+git clone https://github.com/miracleAI-Lab/mai3-phaser-ui
+cd mai3-phaser-ui/examples
+yarn 
+yarn dev
+```
+
+## Usage
+
+To learn how to use **mai3-phaser-ui** in your Phaser projects, visit the [examples repository](https://github.com/miracleAI-Lab/mai3-phaser-ui-examples). It contains detailed demo scenes that showcase how to implement and configure various UI components in different contexts.
 
 ## Example Demos
 
-The following steps will guide you through running the UI component examples:
-
-```bash
-# Clone the repository
-git clone https://github.com/miracleAI-Lab/mai3-phaser-ui
-
-# Navigate to the examples directory
-cd mai3-phaser-ui/examples
-
-# Install dependencies
-yarn install
-
-# Start the development server
-yarn start
-```
-
-By following these steps, you'll be able to view and interact with various UI component examples.
-
-
-## Example Demos Links:
-
-The following list includes links to specific example files in the **mai3-phaser-ui** repository, demonstrating the usage of various UI components:
+The following list includes links to specific example files in the **mai3-phaser-ui-examples** repository, demonstrating the usage of various UI components:
 
 - [Button](https://github.com/miracleAI-Lab/mai3-phaser-ui/blob/main/examples/src/scenes/ButtonDemo.ts)
 - [Checkbox](https://github.com/miracleAI-Lab/mai3-phaser-ui/blob/main/examples/src/scenes/CheckboxDemo.ts)
