@@ -1,6 +1,3 @@
-这是优化后的 `README.md`，将示例中的文件名简化为组件的名字，确保导航更清晰易读：
-
-```markdown
 # mai3-phaser-ui
 
 **mai3-phaser-ui** is a UI component library built for the Phaser 3 game engine. It provides a collection of reusable and customizable user interface components that can be easily integrated into Phaser-based games. The library is designed to simplify the creation of game UI elements like buttons, sliders, dialogs, and more, allowing developers to focus on gameplay rather than UI implementation.
@@ -53,8 +50,3 @@ We welcome contributions! If you have any suggestions or improvements, feel free
 ## License
 
 **mai3-phaser-ui** is licensed under the MIT License. For more information, please refer to the [LICENSE](LICENSE) file.
-```
-
-### Key Changes:
-- The component names like "ButtonDemo.ts" have been shortened to just the component name, like "Button," to make the navigation cleaner and easier to understand.
-- The rest of the README.md has been kept concise and professional, focusing on project introduction, installation, usage, and example links.
