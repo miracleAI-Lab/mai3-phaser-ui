@@ -18,7 +18,7 @@ export class Checkbox extends Container {
         this.Type = 'Checkbox';
         this._isChecked = this.config.isChecked ?? false;
 
-        this.reDrawCheckbox(config);
+        this.reDraw(config);
         this.on('pointerdown', this.handleDown, this);
     }
 
@@ -31,7 +31,7 @@ export class Checkbox extends Container {
         this.blendMode = 'add';
     }
 
-    reDrawCheckbox(config: CheckboxConfig) {
+    reDraw(config: CheckboxConfig) {
         this.config = config;
         this.layoutCheckbox();
         this.layoutLabel();

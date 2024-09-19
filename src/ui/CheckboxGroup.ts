@@ -13,11 +13,10 @@ export class CheckboxGroup extends Container {
         super(scene, config);
         this.config = config;
         this.Type = 'CheckboxGroup';
-
-        this.reDrawCheckboxGroup(config);
+        this.reDraw(config);
     }
 
-    reDrawCheckboxGroup(config: CheckboxGroupConfig) {
+    reDraw(config: CheckboxGroupConfig) {
         config.orientation = config.orientation ?? 'x';
         config.itemWidth = config.itemWidth ?? 200;
         config.itemHeight = config.itemHeight ?? 40;
