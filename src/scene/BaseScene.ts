@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { Mai3Plugin } from '../ui/Mai3Plugin';
+import { Mai3Plugin } from '../plugins/Mai3Plugin';
 import ResizableComponentManager from '../utils/ResizableComponentManager';
 import { Container } from '../ui/Container';
 class BaseScene extends Phaser.Scene {

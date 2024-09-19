@@ -19,34 +19,12 @@ import { TextBox } from "./ui/TextBox";
 import { TextButton } from "./ui/TextButton";
 import { Toast } from "./ui/Toast";
 import { VolumeSlider } from "./ui/VolumeSlider";
+import { Mai3Plugin } from "./plugins/Mai3Plugin";
 import Utils from "./utils";
-import { Mai3Plugin } from "./ui/Mai3Plugin";
 
-
-var Mai3 = {
-  Mai3Plugin: Mai3Plugin,
-  BaseScene: BaseScene,
-  Container: Container,
-  Layout: Layout,
-  Grid: Grid,
-  GridLayout: GridLayout,
-  Checkbox: Checkbox,
-  CheckboxGroup: CheckboxGroup,
-  Dialog: Dialog,
-  Image: Image,
-  ImageButton: ImageButton,
-  RoundedButton: RoundedButton,
-  TextButton: TextButton,
-  Label: Label,
-  ProgressBar: ProgressBar,
-  VolumeSlider: VolumeSlider,
-  Slider: Slider,
-  Tabs: Tabs,
-  Text: Text,
-  TextBox: TextBox,
-  Toast: Toast,
-  Utils: Utils,
-  Types: types,
-};
+export { BaseScene, Checkbox, CheckboxGroup, Container, Dialog, Grid, GridLayout, Image, ImageButton, Label, Layout, ProgressBar, RoundedButton, Slider, Tabs, Text, TextBox, TextButton, Toast, VolumeSlider, Mai3Plugin, Utils, types };
+declare namespace Mai3 {
+  export { BaseScene, Checkbox, CheckboxGroup, Container, Dialog, Grid, GridLayout, Image, ImageButton, Label, Layout, ProgressBar, RoundedButton, Slider, Tabs, Text, TextBox, TextButton, Toast, VolumeSlider, Mai3Plugin, Utils, types };
+}
 
 export default Mai3;

@@ -12,7 +12,6 @@ import { Container } from "./Container";
 import { RoundedButton } from "./RoundedButton";
 import { TextButton } from "./TextButton";
 import { ImageButton } from "./ImageButton";
-import { Mai3Plugin } from "./Mai3Plugin";
 
 export const mai3 = {
   ProgressBar,
@@ -29,5 +28,4 @@ export const mai3 = {
   RoundedButton,
   TextButton,
   ImageButton,
-  Mai3Plugin
 }

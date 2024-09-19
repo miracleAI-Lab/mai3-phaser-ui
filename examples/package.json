@@ -19,7 +19,6 @@
   "dependencies": {
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
-    "mai3-phaser-ui": "^1.0.1",
     "pathfinding": "^0.4.18",
     "phaser": "^3.80.1",
     "short-uuid": "4.2.0",
