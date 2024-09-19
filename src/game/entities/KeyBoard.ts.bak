@@ -1,0 +1,123 @@
+// import Movement from "./Movement";
+// import HealthBar from "./HealthBar";
+// import Skill from "./Skill";
+// import { SkillConifg } from "./interface";
+// import { DirectionEnum } from "./enum";
+// import Computer from './Computer';
+// const KeyBoard = {
+//     keyArry: null as Phaser.Input.Keyboard.Key[] | null,
+//     direction: DirectionEnum.Down,
+//     gameobj: null as Phaser.Types.Physics.Arcade.SpriteWithDynamicBody | null,
+//     NewKeyBoard(scene: Phaser.Scene, gameobj: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody, healthbar?: HealthBar, ComputerList?: Computer[]): void {
+//         this.gameobj = gameobj
+//         const cursors = scene.input.keyboard?.createCursorKeys();
+//         // const spaceBar = scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+//         const keyObjects = scene.input.keyboard?.addKeys('W,S,A,D');
+//         // const keyNumObject= scene.input.keyboard?.addKeys('ONE,TWO,THREE,FOUR,FIVE',true,false)
+//         // console.log("keyNumObject:",keyNumObject)
+//         this.keyArry = [];
+//         const keyOne = scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.ONE, true, false);
+//         this.keyArry?.push(keyOne!)
+
+        
+//         //scene.input.keyboard?.on('keydown',this.handleKeyDownOnce,this);
+//         scene.input.keyboard?.on('keydown', this.handleKeyDownOnce.bind(this, scene, ComputerList!), this);
+
+//         scene.events.on("update", () => {
+//             if (cursors?.up.isDown || Object(keyObjects).W.isDown) {
+//                 Movement.up(scene, gameobj)
+//                 gameobj.body?.setVelocity(0, -200);
+//                 this.direction = DirectionEnum.Up
+//             } else if (cursors?.down.isDown || Object(keyObjects).S.isDown) {
+//                 Movement.down(scene, gameobj)
+//                 gameobj.body?.setVelocity(0, 200);
+//                 this.direction = DirectionEnum.Down
+//             } else if (cursors?.left.isDown || Object(keyObjects).A.isDown) {
+//                 Movement.left(scene, gameobj)
+//                 gameobj.body?.setVelocity(-200, 0);
+//                 this.direction = DirectionEnum.Left
+//             } else if (cursors?.right.isDown || Object(keyObjects).D.isDown) {
+//                 Movement.right(scene, gameobj)
+//                 gameobj.body?.setVelocity(200, 0);
+//                 this.direction = DirectionEnum.Right
+//             } else if (cursors?.shift.isDown) {
+//                 // 处理按下空格键的逻辑
+//             } else {
+//                 gameobj.body?.setVelocity(0);
+//                 Movement.stop(scene, gameobj)
+//             }
+//             // if (Object(keyNumObject).ONE.isDown) { }
+//             // if (Object(keyNumObject).TWO.isDown) { }
+//             healthbar?.SetPosition(gameobj.x, gameobj.y - 20)
+
+//         });
+//     },
+//     handleKeyDownOnce(scene: Phaser.Scene, ComputerList: Computer[], key: Phaser.Input.Keyboard.Key) {
+//         for (let i = 0; i < this.keyArry!.length; i++) {
+//             if (key.keyCode === this.keyArry![i].keyCode) {
+//                 const skillConifg: SkillConifg = {
+//                     key: "blast",
+//                     name: "blast",
+//                     x: 100,
+//                     y: 100,
+//                     width: 100,
+//                     height: 100,
+//                     count: 6,
+//                     distance: 100
+//                 }
+
+//                 const position = this.SkillPosition(skillConifg.distance!)
+//                 skillConifg.x = position.x
+//                 skillConifg.y = position.y
+//                 const skillsprites = Skill.NewSkill(scene, skillConifg)
+//                 let hasDecreasedHp = false
+//                 ComputerList.forEach(computer => {
+//                     scene.physics.add.overlap(computer.computerSprites, skillsprites, (cl: any, sk: any) => {
+//                         // <Phaser.Physics.Arcade.Body>
+//                         const rect1 = cl.getBounds();
+//                         const rect2 = sk.getBounds();
+//                         const xOverlap = Math.max(0, Math.min(rect1.right, rect2.right) - Math.max(rect1.left, rect2.left));
+//                         const yOverlap = Math.max(0, Math.min(rect1.bottom, rect2.bottom) - Math.max(rect1.top, rect2.top));
+
+//                         if (xOverlap * yOverlap > cl.width * cl.height * 0.9 && hasDecreasedHp === false) {
+//                             // console.log("xOverlap * yOverlap", xOverlap, yOverlap, xOverlap * yOverlap)
+//                             computer.hp.Decrease(10)
+//                             hasDecreasedHp = true
+//                             computer.moveType = 2
+//                         }
+//                     })
+//                 })
+
+//             } else {
+//                 // console.log('key is pressed？？？');
+//             }
+//         }
+//     },
+//     SkillPosition(distance: number): { x: number, y: number } {
+
+//         let x: number = 0, y: number = 0
+//         switch (this.direction) {
+//             case DirectionEnum.Up:
+//                 x = this.gameobj!.x + this.gameobj!.width * this.gameobj!.scaleX / 2
+//                 y = this.gameobj!.y - distance
+//                 break;
+//             case DirectionEnum.Down:
+//                 x = this.gameobj!.x + this.gameobj!.width * this.gameobj!.scaleX / 2
+//                 y = this.gameobj!.y + this.gameobj!.height * this.gameobj!.scaleY + distance
+//                 break;
+//             case DirectionEnum.Left:
+//                 x = this.gameobj!.x - distance
+//                 y = this.gameobj!.y + this.gameobj!.height * this.gameobj!.scaleY / 2
+//                 break;
+//             case DirectionEnum.Right:
+//                 x = this.gameobj!.x + this.gameobj!.width * this.gameobj!.scaleX + distance
+//                 y = this.gameobj!.y + this.gameobj!.height * this.gameobj!.scaleY / 2
+//                 break;
+//         }
+//         return { x: x, y: y }
+
+//     }
+
+// }
+
+// export default KeyBoard
