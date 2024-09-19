@@ -1,51 +1,25 @@
 {
-  "name": "type-fighters",
-  "private": true,
-  "version": "0.0.0",
+  "name": "mai3-phaser-ui",
+  "version": "1.0.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",    
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "rimraf dist && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "dist"                                
+  ],
+  "keywords": ["phaser", "phaser-ui", "Mai3"],
+  "author": "William",
+  "license": "MIT",
+  "description": "",
   "devDependencies": {
-    "@babel/plugin-proposal-decorators": "^7.24.7",
-    "@babel/plugin-transform-class-properties": "^7.25.4",
-    "@babel/plugin-transform-private-methods": "^7.25.4",
-    "@types/pathfinding": "^0.0.9",
-    "@vitejs/plugin-react": "^4.3.1",
-    "typescript": "^5.6.2",
-    "vite": "^5.4.4"
+    "@types/node": "^22.5.5",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
-    "@types/react": "^17.0.20",
-    "@types/react-dom": "^17.0.9",
-    "pathfinding": "^0.4.18",
-    "phaser": "^3.80.1",
-    "react": "^18.3.1",
-    "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
-    "short-uuid": "4.2.0",
-    "typed-signals": "^3.0.0",
-    "vite-plugin-require": "^1.2.14"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "phaser": "^3.85.2"
   }
 }

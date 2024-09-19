@@ -1,23 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
-    "strict": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "target": "ES6",                      // 编译目标版本
+    "module": "CommonJS",                  // 模块系统
+    "declaration": true,                   // 生成类型声明文件 (.d.ts)
+    "outDir": "./dist",                    // 输出目录
+    "strict": true,                        // 启用严格类型检查
+    "esModuleInterop": true                // 兼容 CommonJS 和 ES 模块
   },
-  "include": ["src"]
+  "include": ["src/**/*"],                 // 包含 src 文件夹下所有文件
+  "exclude": ["node_modules", "dist"]      // 排除的文件夹
 }
