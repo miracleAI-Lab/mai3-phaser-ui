@@ -86,7 +86,6 @@ This will generate optimized files in the `dist/` folder that are ready to be de
 - Pre-built components such as buttons, sliders, and text boxes.
 - Easily customizable for your Phaser projects.
 - Modern development workflow using Vite.
-
 ---
 
 Enjoy building your game UI with **mai3-phaser-ui**! If you encounter any issues, feel free to contribute or raise an issue on GitHub.
