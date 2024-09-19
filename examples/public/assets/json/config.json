@@ -1,0 +1,274 @@
+{
+    "gamebgmusic": "bgm-game",
+    "proloaderscene": {
+        "name": "scenes10",
+        "nextscene": "scenes11",
+        "items": [
+            {
+                "type": "background",
+                "backgroundimage": "mainMenuBg",
+                "backgroundcolor": "#1b1f24"
+            },
+            {
+                "x": 71.984375,
+                "y": 151,
+                "scale": 0.1,
+                "texture": "logo2",
+                "elementId": "Image_FggTGF8644",
+                "type": "Image",
+                "name": "123"
+            },
+            {
+                "x": 343.984375,
+                "y": 403,
+                "elementId": "Progress_PMsGXeHfXk",
+                "width": 300,
+                "height": 15,
+                "borderWidth": 0,
+                "borderColor": 255,
+                "radius": 7,
+                "bg": 2105376,
+                "fill": 65280,
+                "bgTexture": "strokeImage",
+                "fillTexture": "progressImage",
+                "type": "Progress"
+            }
+        ]
+    },
+    "scenes": [
+        {
+            "name": "scenes11",
+            "ui": [
+                {
+                    "type": "number",
+                    "id": "score",
+                    "value": "0"
+                },
+                {
+                    "type": "number",
+                    "id": "scope",
+                    "value": "2500"
+                },
+                {
+                    "type": "background",
+                    "backgroundimage": "main-bg",
+                    "backgroundcolor": "#1b1f24",
+                    "backgroundmusic": ""
+                },
+                {
+                    "texture": "avatar",
+                    "frame": 0,
+                    "id": "ImageButtonComp_1",
+                    "x": 28.305647840531506,
+                    "y": 21.971207087486135,
+                    "width": 80,
+                    "height": 80,
+                    "radius": 10,
+                    "borderWidth": 0,
+                    "eventType": "Update",
+                    "type": "imagebutton"
+                },
+                {
+                    "id": "Text_1",
+                    "x": 124.69545957918052,
+                    "y": 44.6511627906976,
+                    "width": 0,
+                    "height": 0,
+                    "radius": 5,
+                    "borderWidth": 5,
+                    "text": "CEO",
+                    "textAlign": "left",
+                    "isWordWrap": false,
+                    "autoWidth": true,
+                    "autoHeight": true,
+                    "geomType": "Text",
+                    "textStyle": {
+                        "fontFamily": "Arial",
+                        "fontSize": "35px",
+                        "color": "#fff",
+                        "wordWrap": {}
+                    },
+                    "eventType": "Update",
+                    "type": "text"
+                },
+                {
+                    "texture": "money",
+                    "frame": 0,
+                    "id": "ImageButtonComp_2",
+                    "x": 121.86046511627902,
+                    "y": 197.74086378737542,
+                    "width": 146,
+                    "height": 146,
+                    "radius": 10,
+                    "borderWidth": 0,
+                    "eventType": "Update",
+                    "type": "imagebutton"
+                },
+                {
+                    "type": "timer",
+                    "id": "timer1",
+                    "in": 1000,
+                    "loop": -1,
+                    "executes": [
+                        {
+                            "type": "number",
+                            "id": "scope",
+                            "action": "addvalue",
+                            "value": "3",
+                            "threshold": 2500
+                        }
+                    ]
+                },
+                {
+                    "id": "Text_2",
+                    "x": 325.98006644518273,
+                    "y": 220.42081949058687,
+                    "width": 0,
+                    "height": 0,
+                    "radius": 5,
+                    "borderWidth": 5,
+                    "text": "{{score}}",
+                    "textAlign": "left",
+                    "isWordWrap": false,
+                    "autoWidth": true,
+                    "autoHeight": true,
+                    "geomType": "Text",
+                    "textStyle": {
+                        "fontFamily": "Arial",
+                        "fontSize": "100px",
+                        "color": "#f7eaea",
+                        "wordWrap": {}
+                    },
+                    "eventType": "Update",
+                    "type": "text"
+                },
+                {
+                    "texture": "main-btn",
+                    "frame": 0,
+                    "id": "ImageButtonComp_3",
+                    "x": 107.72978959025477,
+                    "y": 430.21040974529353,
+                    "width": 500,
+                    "height": 500,
+                    "radius": 10,
+                    "borderWidth": 0,
+                    "eventType": "Update",
+                    "type": "imagebutton"
+                },
+                {
+                    "texture": "energy",
+                    "frame": 0,
+                    "id": "ImageButtonComp_4",
+                    "x": 67.99557032115169,
+                    "y": 1144.9789590254707,
+                    "width": 106,
+                    "height": 106,
+                    "radius": 10,
+                    "borderWidth": 0,
+                    "eventType": "Update",
+                    "type": "imagebutton"
+                },
+                {
+                    "id": "Text_3",
+                    "x": 163.04540420819487,
+                    "y": 1178.6489479512736,
+                    "width": 0,
+                    "height": 0,
+                    "radius": 5,
+                    "borderWidth": 5,
+                    "text": "{{scope}}/2500",
+                    "textAlign": "left",
+                    "isWordWrap": false,
+                    "autoWidth": true,
+                    "autoHeight": true,
+                    "geomType": "Text",
+                    "textStyle": {
+                        "fontFamily": "Arial",
+                        "fontSize": "45px",
+                        "color": "#fff",
+                        "wordWrap": {}
+                    },
+                    "eventType": "Update",
+                    "type": "text"
+                },
+                {
+                    "id": "Text_4",
+                    "x": 400,
+                    "y": 1178.6489479512736,
+                    "width": 0,
+                    "height": 0,
+                    "radius": 5,
+                    "borderWidth": 5,
+                    "text": "{{scope}}/sss",
+                    "textAlign": "left",
+                    "isWordWrap": false,
+                    "autoWidth": true,
+                    "autoHeight": true,
+                    "geomType": "Text",
+                    "textStyle": {
+                        "fontFamily": "Arial",
+                        "fontSize": "45px",
+                        "color": "#fff",
+                        "wordWrap": {}
+                    },
+                    "eventType": "Update",
+                    "type": "text"
+                },
+                {
+                    "id": "text1",
+                    "type": "text",
+                    "text": "+10",
+                    "autoWidth": true,
+                    "autoHeight": true,
+                    "isWordWrap": true,
+                    "textStyle": {
+                        "fontFamily": "Arial",
+                        "fontSize": "24px",
+                        "color": "#fff"
+                    },
+                    "padding": {
+                        "x": 5,
+                        "y": 5
+                    },
+                    "mode": "add",
+                    "isshow": false
+                },
+                {
+                    "type": "Event",
+                    "id": "event1",
+                    "conditions": [
+                        {
+                            "id": "ImageButtonComp_3",
+                            "condition": "pointerdown"
+                        },
+                        {
+                            "id": "scope",
+                            "condition": "greater",
+                            "value": 0
+                        }
+                    ],
+                    "executes": [
+                        {
+                            "type": "number",
+                            "id": "score",
+                            "action": "addvalue",
+                            "value": "10"
+                        },
+                        {
+                            "type": "number",
+                            "id": "scope",
+                            "action": "subvalue",
+                            "value": "3",
+                            "threshold": 0
+                        },
+                        {
+                            "type": "tween",
+                            "position": "pointer",
+                            "target": "text1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

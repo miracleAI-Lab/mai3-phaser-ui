@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "type": "image",
+      "key": "bg-00",
+      "url": "assets/images/bg-00.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "background",
+      "url": "assets/images/background.png",
+      "overwrite": false
+    },
+    {
+      "type": "image",
+      "key": "bg01",
+      "url": "assets/images/bg01.png",
+      "overwrite": false
+    }
+  ]
+}

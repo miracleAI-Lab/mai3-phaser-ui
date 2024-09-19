@@ -1,0 +1,22 @@
+{
+    "files": [
+        {
+            "type": "spritesheet",
+            "key": "fight96",
+            "url": "assets/sprites/fight96.png",
+            "frameConfig": {
+                "frameWidth": 32,
+                "frameHeight": 50
+            }
+        },
+        {
+            "type": "spritesheet",
+            "key": "fight-e96",
+            "url": "assets/sprites/fight-e96.png",
+            "frameConfig": {
+                "frameWidth": 32,
+                "frameHeight": 50
+            }
+        }
+    ]
+}
