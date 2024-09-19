@@ -2,20 +2,26 @@
   "name": "mai3-phaser-ui",
   "version": "1.0.3",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",    
+  "type": "module",
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc && cpx 'src/**/*.d.ts' dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
-    "dist"                                
+    "dist"
   ],
-  "keywords": ["phaser", "phaser-ui", "Mai3"],
+  "keywords": [
+    "phaser",
+    "phaser-ui",
+    "Mai3"
+  ],
   "author": "William",
   "license": "MIT",
   "description": "",
   "devDependencies": {
     "@types/node": "^22.5.5",
+    "copyfiles": "^2.4.1",
+    "cpx": "^1.5.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.6.2"
   },

@@ -1,7 +1,5 @@
-import BaseScene from "../../../src/scene";
-import { ProgressConfig } from "../../../src/types";
-import { ProgressBar } from "../../../src/ui/ProgressBar";
-
+import { BaseScene, ProgressBar } from "../../../dist";
+import { ProgressConfig } from "../../../dist/types";
 export class ProgressBarDemo extends BaseScene {
     config?: ProgressConfig;
     progressBar1?: ProgressBar;

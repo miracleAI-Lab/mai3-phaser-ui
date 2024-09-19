@@ -1,5 +1,4 @@
-import BaseScene from "../../../src/scene";
-
+import { BaseScene } from "../../../dist";
 export class ImageDemo extends BaseScene {
     constructor() {
         super('ImageDemo');

@@ -1,12 +1,23 @@
 {
   "compilerOptions": {
-    "target": "ES6",                      // 编译目标版本
-    "module": "CommonJS",                  // 模块系统
-    "declaration": true,                   // 生成类型声明文件 (.d.ts)
-    "outDir": "./dist",                    // 输出目录
-    "strict": true,                        // 启用严格类型检查
-    "esModuleInterop": true                // 兼容 CommonJS 和 ES 模块
+    "outDir": "./dist",  // 输出目录
+    "rootDir": "./src",  // 源代码目录
+    "declaration": true,  // 生成 .d.ts 文件
+    "declarationMap": true,  // 生成 .d.ts.map 文件（可选）
+    "emitDeclarationOnly": false,  // 既生成 .d.ts 文件，又生成 .js 文件
+    "module": "ESNext",  // 模块规范
+    "moduleResolution": "node",  // 模块解析策略
+    "target": "ES5",  // 编译目标版本
+    "esModuleInterop": true,  // 兼容 CommonJS 和 ES 模块
+    "strict": true,  // 启用严格模式
+    "skipLibCheck": true  // 忽略库的类型检查
   },
-  "include": ["src/**/*"],                 // 包含 src 文件夹下所有文件
-  "exclude": ["node_modules", "dist"]      // 排除的文件夹
+  "include": [
+    "src/**/*.ts",  // 包含 src 目录中的 TypeScript 文件
+    "src/**/*.d.ts"  // 包含 src 目录中的类型声明文件
+  ],
+  "exclude": [
+    "node_modules",  // 排除 node_modules
+    "dist"  // 排除 dist 文件夹，以免影响编译结果
+  ]
 }

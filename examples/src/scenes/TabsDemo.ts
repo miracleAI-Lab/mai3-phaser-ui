@@ -1,6 +1,4 @@
-import BaseScene from "../../../src/scene";
-import { Tabs } from "../../../src/ui/Tabs";
-
+import { BaseScene, Tabs } from "../../../dist";
 export class TabsDemo extends BaseScene {
     private tabs!: Tabs;
 

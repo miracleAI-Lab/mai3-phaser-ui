@@ -1,5 +1,5 @@
-import BaseScene from '../../../src/scene/BaseScene';
-
+import Mai3 from "../../../dist";
+import { BaseScene } from "../../../dist";
 export class ButtonDemo extends BaseScene {
 
   constructor() {

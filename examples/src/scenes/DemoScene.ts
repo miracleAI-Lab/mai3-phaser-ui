@@ -1,6 +1,4 @@
-import BaseScene from '../../../src/scene/BaseScene'
-import { GridLayout } from "../../../src/ui/GridLayout";
-
+import { BaseScene, GridLayout } from '../../../dist';
 export class DemoScene extends BaseScene {
     private gridLayout!: GridLayout;
 

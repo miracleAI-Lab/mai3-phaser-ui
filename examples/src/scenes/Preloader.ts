@@ -1,8 +1,8 @@
-import BaseScene from "../../../src/scene";
-import { ProgressConfig } from "../../../src/types";
-import { ProgressBar } from "../../../src/ui/ProgressBar";
+import { BaseScene, ProgressBar } from "../../../dist";
+import { ProgressConfig } from "../../../dist/types";
+import Mai3 from '../../../dist';
 
-export class Preloader extends BaseScene {
+export class Preloader extends Mai3.BaseScene {
 
     config?: ProgressConfig;
     progressBar1?: ProgressBar;

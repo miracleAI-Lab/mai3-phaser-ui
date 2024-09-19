@@ -1,4 +1,4 @@
-import BaseScene from '../../../src/scene/BaseScene';
+import { BaseScene } from '../../../dist';
 
 export class Boot extends BaseScene {
     constructor() {

@@ -1,6 +1,5 @@
-import BaseScene from '../../../src/scene/BaseScene'
-import { DialogBody, DialogFooter, DialogHeader, Mai3Component } from "../../../src/types";
-import { Dialog } from "../../../src/ui/Dialog";
+import { BaseScene, Dialog } from '../../../dist'
+import { DialogBody, DialogFooter, DialogHeader, Mai3Component } from "../../../dist/types";
 
 export class DialogDemo extends BaseScene {
     private dialog!: Dialog;

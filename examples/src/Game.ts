@@ -1,4 +1,4 @@
-import { Mai3Plugin } from '../../src/plugins/Mai3Plugin';
+import { Mai3Plugin } from '../../dist';
 import * as scenes from './scenes';
 
 export default class Game {
