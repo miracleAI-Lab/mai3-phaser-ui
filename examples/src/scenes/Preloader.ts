@@ -1,12 +1,8 @@
 import { BaseScene, ProgressBar } from "../../../dist";
 import { ProgressConfig } from "../../../dist/types";
-import Mai3 from '../../../dist';
-
-export class Preloader extends Mai3.BaseScene {
-
+export class Preloader extends BaseScene {
     config?: ProgressConfig;
     progressBar1?: ProgressBar;
-
 
     nextScene?: string
     constructor() {

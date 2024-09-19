@@ -1,4 +1,3 @@
-import Mai3 from "../../../dist";
 import { BaseScene } from "../../../dist";
 export class ButtonDemo extends BaseScene {
 
