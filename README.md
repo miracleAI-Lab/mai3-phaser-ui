@@ -25,8 +25,8 @@ yarn add mai3-phaser-ui
 Here's a demonstration of how to create various types of buttons using the **mai3-phaser-ui** library:
 
 ```typescript
-import BaseScene from "mai3-phaser-ui/dist/scene";
-import { Mai3Plugin } from 'mai3-phaser-ui/dist/ui/Mai3Plugin';
+import { BaseScene } from "mai3-phaser-ui";
+import { Mai3Plugin } from 'mai3-phaser-ui';
 
 export class ButtonDemo extends BaseScene {
 
