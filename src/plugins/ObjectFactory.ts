@@ -20,6 +20,7 @@ import { TextArea } from "../ui/TextArea";
 import { Toast } from "../ui/Toast";
 // import { FlexLayout } from "../ui/FlexLayout";
 import { LinearLayout } from "../ui/LinearLayout";
+import { ListView, ListViewConfig } from "../ui/ListView";
 
 type Constructor<T extends Phaser.GameObjects.GameObject> = new (...args: any[]) => T;
 
@@ -125,6 +126,10 @@ class ObjectFactory {
 
   linearLayout(config: LinearLayoutConfig): LinearLayout {
     return this.createGameObject(LinearLayout, this.scene, config);
+  }
+
+  listView(config: ListViewConfig): ListView {
+    return this.createGameObject(ListView, this.scene, config);
   }
 };
 export default ObjectFactory;

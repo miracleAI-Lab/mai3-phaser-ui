@@ -2,111 +2,133 @@ import BaseScene from '../scene';
 import { Checkbox } from './Checkbox';
 import { Container } from './Container';
 import { CheckboxGroupConfig } from '../types';
-export class CheckboxGroup extends Container {
 
-    config: CheckboxGroupConfig;
-    checkboxes: Checkbox[] = [];
-    selectedValues: string[] = [];
-    selectedIndexs: number[] = [];
+export class CheckboxGroup extends Container {
+    private _config: CheckboxGroupConfig;
+    private _checkboxes: Checkbox[] = [];
+    private _selectedValues: string[] = [];
+    private _selectedIndexes: number[] = [];
 
     constructor(scene: BaseScene, config: CheckboxGroupConfig) {
         super(scene, config);
-        this.config = config;
+        this._config = config;
         this.Type = 'CheckboxGroup';
-
-        this.reDraw(config);
+        this._initCheckboxGroup();
     }
 
-    reDraw(config: CheckboxGroupConfig) {
-        config.orientation = config.orientation ?? 'horizontal';
-        config.itemWidth = config.itemWidth ?? 200;
-        config.itemHeight = config.itemHeight ?? 40;
-        config.checkColor = config.checkColor ?? 0xFFD700;
-        config.uncheckColor = config.uncheckColor ?? 0xff8221;
-        config.borderWidth = config.borderWidth ?? 4;
-        config.defaultSelectedIndex = config.defaultSelectedIndex ?? -1;
-        config.space = config.space ?? 20;
-        this.config = config;
-
-        for (let i = 0; i < this.checkboxes.length; i++) { 
-            this.checkboxes[i].destroy();
-        }
-
-        let nextX = 0;
-        let nextY = 0;
-        this.checkboxes = [];
-        const items = config.items ?? [];
-        for (let i = 0; i < items.length; i++) {
-            const isChecked = config.defaultSelectedIndex === i;
-            const checkbox = new Checkbox(this.scene, {
-                x: nextX, y: nextY,
-                width: config.itemWidth,
-                height: config.itemHeight,
-                checkColor: config.checkColor,
-                uncheckColor: config.uncheckColor,
-                text: items[i].text,
-                value: items[i].value,
-                isChecked: isChecked,
-                borderWidth: config.borderWidth,
-                textStyle: {
-                    fontFamily: 'Arial',
-                    fontSize: '24px',
-                    color: '#fff',
-                },
-                handleSelect: this.handleCheckClick.bind(this)
-            });
-
-            this.add(checkbox);
-            this.checkboxes.push(checkbox);
-
-            nextX = config.orientation === 'horizontal' ? (checkbox.Right + config.space) : checkbox.x;
-            nextY = config.orientation === 'horizontal' ? checkbox.y : (checkbox.Bottom + config.space);
-
-            config.width = config.orientation === 'horizontal' ? checkbox.Right : checkbox.RealWidth;
-            config.height = config.orientation === 'horizontal' ? checkbox.y : checkbox.Bottom;
-        }
-
+    private _initCheckboxGroup(): void {
+        this._setDefaultConfig();
+        this._createCheckboxes();
         this.RefreshBounds();
     }
 
-    handleCheckClick(ckb: Checkbox): void {
-        this.selectedValues = [];
-        this.selectedIndexs = [];
-        const multiSelect = this.config.multiSelect ?? false;
-        if (ckb.checked && !multiSelect) {
-            for (let i = 0; i < this.checkboxes.length; i++) {
-                const checkbox = this.checkboxes[i];
-                if (checkbox.checked && checkbox.value !== ckb.value) {
-                    checkbox.checked = false;
-                    continue;
-                }
-
-                if (checkbox.checked && checkbox.value === ckb.value) {
-                    this.selectedIndexs.push(i);
-                    this.selectedValues.push(ckb.value);
-                }
-            }
-        } else if (multiSelect) {
-            for (let i = 0; i < this.checkboxes.length; i++) {
-                const checkbox = this.checkboxes[i];
-                if (checkbox.checked) {
-                    this.selectedIndexs.push(i);
-                    this.selectedValues.push(checkbox.value);
-                }
-            }
-        }
-
-        if (this.config.handleSelect)
-            this.config.handleSelect(this, this.selectedValues, this.selectedIndexs);
+    private _setDefaultConfig(): void {
+        this._config.orientation = this._config.orientation ?? 'horizontal';
+        this._config.itemWidth = this._config.itemWidth ?? 200;
+        this._config.itemHeight = this._config.itemHeight ?? 40;
+        this._config.checkColor = this._config.checkColor ?? 0xFFD700;
+        this._config.uncheckColor = this._config.uncheckColor ?? 0xff8221;
+        this._config.borderWidth = this._config.borderWidth ?? 4;
+        this._config.defaultSelectedIndex = this._config.defaultSelectedIndex ?? -1;
+        this._config.space = this._config.space ?? 20;
     }
 
-    destroy(fromScene?: boolean): void {
-        for (let i = 0; i < this.checkboxes.length; i++) {
-            this.checkboxes[i].destroy();
+    private _createCheckboxes(): void {
+        let nextX = 0;
+        let nextY = 0;
+        const items = this._config.items ?? [];
+
+        items.forEach((item, index) => {
+            const checkbox = this._createCheckbox(item, index, nextX, nextY);
+            this.add(checkbox);
+            this._checkboxes.push(checkbox);
+
+            [nextX, nextY] = this._updateNextPosition(checkbox);
+            this._updateGroupSize(checkbox);
+        });
+    }
+
+    private _createCheckbox(item: any, index: number, x: number, y: number): Checkbox {
+        return new Checkbox(this.scene, {
+            x, y,
+            width: this._config.itemWidth,
+            height: this._config.itemHeight,
+            checkColor: this._config.checkColor,
+            uncheckColor: this._config.uncheckColor,
+            text: item.text,
+            value: item.value,
+            isChecked: this._config.defaultSelectedIndex === index,
+            borderWidth: this._config.borderWidth,
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '24px',
+                color: '#fff',
+            },
+            handleSelect: this._handleCheckClick.bind(this)
+        });
+    }
+
+    private _updateNextPosition(checkbox: Checkbox): [number, number] {
+        return this._config.orientation === 'horizontal'
+            ? [checkbox.Right + this._config.space!, checkbox.y]
+            : [checkbox.x, checkbox.Bottom + this._config.space!];
+    }
+
+    private _updateGroupSize(checkbox: Checkbox): void {
+        this._config.width = this._config.orientation === 'horizontal' ? checkbox.Right : checkbox.RealWidth;
+        this._config.height = this._config.orientation === 'horizontal' ? checkbox.y : checkbox.Bottom;
+    }
+
+    private _handleCheckClick(ckb: Checkbox): void {
+        this._selectedValues = [];
+        this._selectedIndexes = [];
+        const multiSelect = this._config.multiSelect ?? false;
+
+        if (ckb.checked && !multiSelect) {
+            this._handleSingleSelect(ckb);
+        } else if (multiSelect) {
+            this._handleMultiSelect();
         }
-        this.checkboxes = [];
-        this.selectedValues = [];
-        this.selectedIndexs = [];
+
+        if (this._config.handleSelect) {
+            this._config.handleSelect(this, this._selectedValues, this._selectedIndexes);
+        }
+    }
+
+    private _handleSingleSelect(ckb: Checkbox): void {
+        this._checkboxes.forEach((checkbox, index) => {
+            if (checkbox.checked && checkbox.value !== ckb.value) {
+                checkbox.checked = false;
+            } else if (checkbox.checked && checkbox.value === ckb.value) {
+                this._selectedIndexes.push(index);
+                this._selectedValues.push(ckb.value);
+            }
+        });
+    }
+
+    private _handleMultiSelect(): void {
+        this._checkboxes.forEach((checkbox, index) => {
+            if (checkbox.checked) {
+                this._selectedIndexes.push(index);
+                this._selectedValues.push(checkbox.value);
+            }
+        });
+    }
+
+    public reDraw(config: CheckboxGroupConfig): void {
+        this._config = config;
+        this._checkboxes.forEach(checkbox => checkbox.destroy());
+        this._checkboxes = [];
+        this._selectedValues = [];
+        this._selectedIndexes = [];
+        this._initCheckboxGroup();
+    }
+
+    public destroy(fromScene?: boolean): void {
+        this._checkboxes.forEach(checkbox => checkbox.destroy());
+        this._checkboxes = [];
+        this._selectedValues = [];
+        this._selectedIndexes = [];
         super.destroy(fromScene);
     }
 }

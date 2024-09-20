@@ -4,184 +4,139 @@ import Utils from '../utils';
 import { LinearLayout } from './LinearLayout';
 import BaseScene from '../scene';
 
-type DialogConfigs = DialogHeader | DialogBody | DialogFooter | DialogConfig | undefined;
 export class Dialog extends Container {
     private _header?: LinearLayout;
     private _body?: LinearLayout;
     private _footer?: LinearLayout;
-
-    config?: DialogConfig;
-    image?: Phaser.GameObjects.Image;
-    root?: Container;
+    private _config?: DialogConfig;
+    private _root?: Container;
 
     constructor(scene: BaseScene, config: DialogConfig) {
-        let superConf: DialogConfig = {};
-        if (config) {
-            superConf = Object.assign({}, config);
-            superConf.x = 0;
-            superConf.y = 0;
-        }
-        super(scene, superConf);
+        super(scene, { ...config, x: 0, y: 0 });
         this.Type = 'Dialog';
         this.scene = scene;
-        this.draw(config);
+        this._initDialog(config);
     }
 
-    draw(config: DialogConfig) {
-        let lastConf = this.config;
-        this.config = config;
-        const width = config.width ?? 200;
-        const height = config.height ?? 300;
-        const headHeight = config.header?.height ?? 40;
-        const footHeight = config.footer?.height ?? 40;
-        const padding = config.padding ?? 0;
-        const itemWidth = width - padding * 2;
+    private _initDialog(config: DialogConfig): void {
+        this._config = config;
+        this._createBackground();
+        this._createRoot();
+        this._createDialogParts();
+        this._positionDialog();
+    }
 
+    private _createBackground(): void {
         const bg = this.scene.add.rectangle(0, 0, this.scene.scale.width, this.scene.scale.height, 0x696969, 0.8).setName("bg");
-        bg.setOrigin(0, 0);
+        bg.setOrigin(0, 0).setInteractive().on('pointerdown', this._handlePointerDown);
         this.addAt(bg, 0);
+    }
 
-        bg.setInteractive();
-        bg.on('pointerdown', this.handlePointerDown);
-        // Memory.DelEventsBeforeDestory(bg);
+    private _createRoot(): void {
+        this._root = new Container(this.scene).setName("root");
+        this._root.width = this._config?.width ?? 200;
+        this._root.height = this._config?.height ?? 300;
+        this.addAt(this._root, 1);
 
-        this.root = new Container(this.scene).setName("root");
-        this.root.width = width;
-        this.root.height = height;
-        this.addAt(this.root, 1);
+        const dialogBg = this._createDialogBackground();
+        this._root.addAt(dialogBg!, 0);
+    }
 
-        let _dialogBg = this.createBg(0, 0, width, height, config)?.setName("_dialogBg");
-        this.root.addAt(_dialogBg!, 0);
+    private _createDialogParts(): void {
+        const { width, height, padding = 0 } = this._config!;
+        const headHeight = this._config?.header?.height ?? 40;
+        const footHeight = this._config?.footer?.height ?? 40;
+        const itemWidth = width! - padding * 2;
 
-        let headConf: LinearLayoutConfig = {
-            x: padding,
-            y: padding,
-            width: itemWidth,
-            height: headHeight,
-            padding: config.header?.padding,
-            background: config.header?.background,
-            orientation: config.header?.orientation,
-            radius: config.header?.radius,
-            alignment: config.header?.alignment,
-            children: lastConf?.header?.children
+        this._header = this._createPart("header", padding, padding, itemWidth, headHeight);
+        this._body = this._createPart("body", padding, headHeight + padding, itemWidth, height! - headHeight - footHeight);
+        this._footer = this._createPart("footer", padding, height! - footHeight, itemWidth, footHeight);
+    }
+
+    private _createPart(name: "header" | "body" | "footer", x: number, y: number, width: number, height: number): LinearLayout {
+        const conf: LinearLayoutConfig = {
+            x, y, width, height,
+            padding: this._config?.[name]?.padding,
+            background: this._config?.[name]?.background,
+            orientation: this._config?.[name]?.orientation,
+            radius: this._config?.[name]?.radius,
+            alignment: this._config?.[name]?.alignment,
+            children: this._config?.[name]?.children
         };
-        if (!this._header) {
-            this._header = this.scene.mai3.add.linearLayout(headConf).setName("_header");
-        } else {
-            this._header.reDraw(headConf);
-        }
-        this.root.addAt(this._header!, 1);
 
-        const bodyY = (this._header?.y ?? 0) + headHeight;
-        const bodyHeight = height - headHeight - footHeight;
-        let bodyConf: LinearLayoutConfig = {
-            x: padding,
-            y: bodyY,
-            width: itemWidth,
-            height: bodyHeight,
-            padding: config.body?.padding,
-            background: config.body?.background,
-            orientation: config.body?.orientation,
-            radius: config.body?.radius,
-            alignment: config.body?.alignment,
-            children: lastConf?.body?.children
-        };
-        if (!this._body) {
-            this._body = this.scene.mai3.add.linearLayout(bodyConf).setName("_body");
-        } else {
-            this._body.reDraw(bodyConf);
-        }
-        this.root.addAt(this._body!, 1);
+        const part = this.scene.mai3.add.linearLayout(conf).setName(`_${name}`);
+        this._root!.addAt(part, 1);
+        return part;
+    }
 
-        const footerY = height - footHeight;
-        let footerConf: LinearLayoutConfig = {
-            x: padding,
-            y: footerY,
-            width: itemWidth,
-            height: footHeight,
-            padding: config.footer?.padding,
-            background: config.footer?.background,
-            orientation: config.footer?.orientation,
-            radius: config.footer?.radius,
-            alignment: config.footer?.alignment,
-            children: lastConf?.footer?.children
-        }
-        if (!this._footer) {
-            this._footer = this.scene.mai3.add.linearLayout(footerConf).setName("_footer");
-        } else {
-            this._footer.reDraw(footerConf);
-        }
-        this.root.addAt(this._footer!, 1);
-
-        const rootX = (this.scene.scale.width - this.root.width) / 2;
-        const rootY = (this.scene.scale.height - this.root.height) / 2;
-        this.root.setPosition(rootX, rootY);
+    private _positionDialog(): void {
+        const rootX = (this.scene.scale.width - this._root!.width) / 2;
+        const rootY = (this.scene.scale.height - this._root!.height) / 2;
+        this._root!.setPosition(rootX, rootY);
         this.setDepth(99999);
         this.RefreshBounds();
     }
 
-    reDraw(config: DialogConfig) {
+    public reDraw(config: DialogConfig): void {
         this.clear();
-        this.draw(config);
+        this._initDialog(config);
     }
 
-    clear() {
-        this.root?.remove(this._header!);
-        this.root?.remove(this._body!);
-        this.root?.remove(this._footer!);
-        this.getAll().forEach((obj) => {
-            obj.destroy(true);
-        });
+    public clear(): void {
+        [this._header, this._body, this._footer].forEach(part => this._root?.remove(part!));
+        this.getAll().forEach(obj => obj.destroy(true));
     }
 
-    public show() {
+    public show(): void {
         this.setVisible(true);
     }
 
-    public hide() {
+    public hide(): void {
         this.setVisible(false);
     }
 
-    public close() {
+    public close(): void {
         this.destroy();
     }
 
-    handlePointerDown(_: Phaser.Input.Pointer,
-        _localX: number,
-        _localY: number,
-        event: Phaser.Types.Input.EventData) {
+    private _handlePointerDown = (_: Phaser.Input.Pointer, _localX: number, _localY: number, event: Phaser.Types.Input.EventData): void => {
         event.stopPropagation();
     }
 
-    public addBodyItems(children: Container[]) {
-        this["config"]!["body"]!["children"] = children;
+    public addBodyItems(children: Container[]): void {
+        this._config!.body!.children = children;
         this._body?.addChildren(children);
     }
 
-    public addFooterItems(children: Container[]) {
-        this["config"]!["footer"]!["children"] = children;
+    public addFooterItems(children: Container[]): void {
+        this._config!.footer!.children = children;
         this._footer?.addChildren(children);
     }
 
-    private createBg(
-        x: number,
-        y: number,
-        width: number,
-        height: number,
-        config?: DialogConfigs) {
-        if (typeof config?.background === 'string' && !config?.background.startsWith('#')) {
-            const bg = this.scene.make.image({ x: 0, y, key: config.background });
-            bg.setDisplaySize(width, height);
-            bg.setOrigin(0);
-            return bg;
+    private _createDialogBackground(): Phaser.GameObjects.GameObject | undefined {
+        const { width, height } = this._config!;
+        
+        if (typeof this._config?.background === 'string' && !this._config.background.startsWith('#')) {
+            return this._createImageBackground(width!, height!);
         }
 
-        const backgroundColor = config?.background
-            ? ((typeof config?.background === 'string' && config?.background.startsWith('#')
-                ? Utils.hexColorToNumber(config?.background) : config?.background as number)) : 0x000000;
+        return this._createRectBackground(width!, height!);
+    }
 
-        return Utils.drawRoundedRect(this.scene, x, y,
-            width, height, config?.borderWidth,
-            config?.radius, config?.borderColor, backgroundColor);
+    private _createImageBackground(width: number, height: number): Phaser.GameObjects.Image {
+        const bg = this.scene.make.image({ x: 0, y: 0, key: this._config!.background as string });
+        bg.setDisplaySize(width, height);
+        bg.setOrigin(0);
+        return bg;
+    }
+
+    private _createRectBackground(width: number, height: number): Phaser.GameObjects.GameObject {
+        const backgroundColor = this._config?.background
+            ? ((typeof this._config.background === 'string' && this._config.background.startsWith('#')
+                ? Utils.hexColorToNumber(this._config.background) : this._config.background as number)) : 0x000000;
+
+        return Utils.drawRoundedRectRenderTexture(this.scene, 0, 0,
+            width, height, this._config?.borderWidth,
+            this._config?.radius, this._config?.borderColor, backgroundColor);
     }
 }

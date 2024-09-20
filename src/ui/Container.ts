@@ -3,7 +3,7 @@ import { BaseConfig, ButtonHandle } from '../types';
 import Utils from "../utils";
 import BaseScene from "../scene";
 
-const enabledEventTypes = ['ImageButton', 'TextButton', 'RoundedButton', 'Label', 'Text', 'Image', 'Checkbox', 'CheckboxGroup', 'Slider', 'ProgressBar', 'VolumeSlider'];
+const ENABLED_EVENT_TYPES = ['ImageButton', 'TextButton', 'RoundedButton', 'Label', 'Text', 'Image', 'Checkbox', 'CheckboxGroup', 'Slider', 'ProgressBar', 'VolumeSlider'];
 
 export class Container extends Phaser.GameObjects.Container {
   private _id: string;
@@ -20,18 +20,22 @@ export class Container extends Phaser.GameObjects.Container {
     this.Type = type ?? 'Container';
     this._baseConfig = baseConfig;
 
-    this.onEvents();
+    this.initializeEvents();
   }
 
-  protected onEvents() {
+  protected initializeEvents(): void {
     if (this._baseConfig?.enableDrag) {
       this.enableDrag();
       return;
     }
 
-    if (!this.isEnabledEvent()) return;
+    if (!this.isEventEnabled()) return;
 
     this.setEventInteractive();
+    this.setupEventListeners();
+  }
+
+  private setupEventListeners(): void {
     this.on('pointerover', this.handleHover, this);
     this.on('pointerout', this.handleOut, this);
     this.on('pointerdown', this.handleDown, this);
@@ -39,111 +43,121 @@ export class Container extends Phaser.GameObjects.Container {
     this.on('pointerupoutside', this.handleUp, this);
   }
 
-  public updateConfig(config: BaseConfig) {
+  public updateConfig(config: BaseConfig): void {
     this._baseConfig = config;
   }
 
-  protected isEnabledEvent(): boolean {
-    return enabledEventTypes.includes(this.Type);
+  protected isEventEnabled(): boolean {
+    return ENABLED_EVENT_TYPES.includes(this.Type);
   }
 
-  public setAutoArea() {
+  public setAutoArea(): void {
     if (!this._hitArea) {
       this._hitArea = new Phaser.Geom.Rectangle();
     }
 
-    const hitAera = this._hitArea as Phaser.Geom.Rectangle;
-    hitAera.setPosition(0, 0);
-    hitAera.setSize(this.RealWidth, this.RealHeight);
-    this.setInteractive(hitAera, Phaser.Geom.Rectangle.Contains);
+    const hitArea = this._hitArea as Phaser.Geom.Rectangle;
+    hitArea.setPosition(0, 0);
+    hitArea.setSize(this.RealWidth, this.RealHeight);
+    this.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
   }
 
-  public setEventInteractive() {
-    if (!this._hitArea) {
-      this._hitArea =
-        this._baseConfig?.geomType === 'Circle'
-          ? new Phaser.Geom.Circle()
-          : new Phaser.Geom.Rectangle();
-    }
-
-    if (this._hitArea instanceof Phaser.Geom.Circle) {
-      const radius = this._baseConfig?.radius ?? 0;
-      const borderWidth = this._baseConfig?.borderWidth ?? 0;
-      this._hitArea.setPosition(radius + borderWidth, radius + borderWidth);
-      this._hitArea.radius = radius + borderWidth;
-      this.setInteractive(this._hitArea, Phaser.Geom.Circle.Contains);
+  public setEventInteractive(): void {
+    if (this._baseConfig?.geomType === 'Circle') {
+      this.createCircleHitArea();
     } else {
-      this._hitArea.setSize(this.RealWidth, this.RealHeight);
-      this._hitArea.setPosition(0, 0);
-      this.setInteractive(this._hitArea, Phaser.Geom.Rectangle.Contains);
+      this.createRectangleHitArea();
     }
   }
 
-  protected handleHover() {
+  private createCircleHitArea() {
+    if (!this._hitArea) 
+      this._hitArea = new Phaser.Geom.Circle();
+    
+    const hitArea = this._hitArea as Phaser.Geom.Circle;
+    const radius = this._baseConfig?.radius ?? 0;
+    const borderWidth = this._baseConfig?.borderWidth ?? 0;
+    hitArea.setPosition(radius + borderWidth, radius + borderWidth);
+    hitArea.radius = radius + borderWidth;
+    this.setInteractive(hitArea, Phaser.Geom.Circle.Contains);
+  }
+
+  private createRectangleHitArea() {
+    if (!this._hitArea) 
+      this._hitArea = new Phaser.Geom.Rectangle();
+    
+    const hitArea = this._hitArea as Phaser.Geom.Rectangle;
+    hitArea.setSize(this.RealWidth, this.RealHeight);
+    hitArea.setPosition(0, 0);
+    this.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
+  }
+
+  protected handleHover(): void {
     this.handleEvent(this._baseConfig?.handleHover);
-    this.blendMode = 'add';
+    this.blendMode = Phaser.BlendModes.ADD;
   }
 
-  protected handleOut() {
+  protected handleOut(): void {
     this.handleEvent(this._baseConfig?.handleOut);
-    this.blendMode = 'normal';
+    this.blendMode = Phaser.BlendModes.NORMAL;
   }
 
-  protected handleDown() {
+  protected handleDown(): void {
     this.handleEvent(this._baseConfig?.handleDown);
     this.alpha = 0.5;
   }
 
-  protected handleUp() {
+  protected handleUp(): void {
     this.handleEvent(this._baseConfig?.handleUp);
     this.alpha = 1;
   }
 
-  protected handleEvent(handle?: ButtonHandle) {
+  protected handleEvent(handle?: ButtonHandle): void {
     if (handle?.audio) {
-      const sound = this.scene.sound.add(handle?.audio);
-      sound.play();
+      this.scene.sound.play(handle.audio);
     }
 
     if (handle?.handleFn) {
-      handle?.handleFn();
+      handle.handleFn();
     }
 
-    this.blendMode = 'add';
+    this.blendMode = Phaser.BlendModes.ADD;
   }
-
-  public findChild(id: string, gameObject?: Phaser.GameObjects.GameObject) {
+  
+  public findChild(id: string, gameObject?: Phaser.GameObjects.GameObject): Phaser.GameObjects.GameObject | undefined {
     const container = (gameObject ?? this) as Container;
-    const result = container.getAll().find((item) => (item as Container).id === id);
-    return result;
+    return container.getAll().find((item) => (item as Container).id === id);
   }
 
-  public enableDrag() {
+  public enableDrag(): void {
     this.setEventInteractive();
     this.scene.input.setDraggable(this);
     this.on('drag', this.onDrag);
   }
 
-  public onDrag(pointer: Phaser.Input.Pointer, dragX: number, dragY: number) {
+  public onDrag(pointer: Phaser.Input.Pointer, dragX: number, dragY: number): void {
+    const [clampedX, clampedY] = this.getClampedPosition(dragX, dragY);
+    this.setPosition(clampedX, clampedY);
+    this.onDragUpdate(pointer, this.x, this.y);
+  }
+
+  private getClampedPosition(dragX: number, dragY: number): [number, number] {
     if (this.Type === 'RoundedButton') {
       const radius = this._baseConfig?.radius ?? 0;
       const borderWidth = this._baseConfig?.borderWidth ?? 0;
       const radiusBorderWidth = (radius + borderWidth) * 2;
-      this.setPosition(
+      return [
         Utils.clampX(dragX, this.scene.scale.width, radiusBorderWidth),
         Utils.clampY(dragY, this.scene.scale.height, radiusBorderWidth)
-      );
-    } else {
-      this.setPosition(
-        Utils.clampX(dragX, this.scene.scale.width, this.Width),
-        Utils.clampY(dragY, this.scene.scale.height, this.Height)
-      );
+      ];
     }
-
-    this.onDragUpdate(pointer, this.x, this.y);
+    return [
+      Utils.clampX(dragX, this.scene.scale.width, this.Width),
+      Utils.clampY(dragY, this.scene.scale.height, this.Height)
+    ];
   }
 
-  public onDragUpdate(pointer: Phaser.Input.Pointer, dragX: number, dragY: number) {
+  public onDragUpdate(pointer: Phaser.Input.Pointer, dragX: number, dragY: number): void {
     console.log(pointer, dragX, dragY);
   }
 
@@ -155,77 +169,77 @@ export class Container extends Phaser.GameObjects.Container {
     this._id = id;
   }
 
-  public RefreshBounds() {
+  public RefreshBounds(): void {
     this._bounds = this.getBounds();
   }
 
-  private cacheBounds() {
+  private cacheBounds(): void {
     if (!this._bounds) this.RefreshBounds();
   }
 
-  get Width() {
+  get Width(): number {
     return (this._baseConfig?.width ?? 0) + (this._baseConfig?.borderWidth ?? 0);
   }
 
-  get Height() {
+  get Height(): number {
     return (this._baseConfig?.height ?? 0) + (this._baseConfig?.borderWidth ?? 0);
   }
 
-  get RealWidth() {
+  get RealWidth(): number {
     this.cacheBounds();
     return this._bounds?.width ?? 0;
   }
 
-  get RealHeight() {
+  get RealHeight(): number {
     this.cacheBounds();
     return this._bounds?.height ?? 0;
   }
 
-  get RealSize() {
+  get RealSize(): { width: number; height: number } {
     return { width: this.Width, height: this.Height };
   }
 
-  get Top() {
+  get Top(): number {
     this.cacheBounds();
     return this._bounds?.top ?? 0;
   }
 
-  get Left() {
+  get Left(): number {
     this.cacheBounds();
     return this._bounds?.left ?? 0;
   }
 
-  get Right() {
+  get Right(): number {
     this.cacheBounds();
     return this._bounds?.right ?? 0;
   }
 
-  get Bottom() {
+  get Bottom(): number {
     this.cacheBounds();
     return this._bounds?.bottom ?? 0;
   }
 
-  get CenterX() {
+  get CenterX(): number {
     this.cacheBounds();
     return this._bounds?.centerX ?? 0;
   }
 
-  get CenterY() {
+  get CenterY(): number {
     this.cacheBounds();
     return this._bounds?.centerY ?? 0;
   }
 
-  get X() {
+  get X(): number {
     this.cacheBounds();
     return this._bounds?.x ?? 0;
   }
 
-  get Y() {
+  get Y(): number {
     this.cacheBounds();
     return this._bounds?.y ?? 0;
   }
 
-  get Type() {
+  get Type(): string {
     return this._type ?? 'Container';
   }
 
@@ -233,18 +247,21 @@ export class Container extends Phaser.GameObjects.Container {
     this._type = type;
   }
 
-  public addChild(child: Phaser.GameObjects.GameObject) {
-    if (!this.exists(child))
+  public addChild(child: Phaser.GameObjects.GameObject): void {
+    if (!this.exists(child)) {
       this.add(child);
+    }
   }
 
-  public addChildAt(child: Phaser.GameObjects.GameObject, index?: number) {
-    if (!this.exists(child))
+  public addChildAt(child: Phaser.GameObjects.GameObject, index?: number): void {
+    if (!this.exists(child)) {
       this.addAt(child, index);
+    }
   }
 
   drawBorderLine?: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Arc;
-  public debugDrawBorderLine(color?: number) {
+
+  public debugDrawBorderLine(color?: number): void {
     const borderWidth = this._baseConfig?.borderWidth ?? 0;
     const width = this.getBounds().width + borderWidth * 2;
     const height = this.getBounds().height + borderWidth * 2;
@@ -253,25 +270,28 @@ export class Container extends Phaser.GameObjects.Container {
       this.drawBorderLine.destroy(true);
     }
 
-    if (this._baseConfig?.geomType === 'Circle') {
-      this.drawBorderLine = this.scene.add.circle(0, 0, width / 2, 0x000000, 0.1);
-      this.drawBorderLine.setStrokeStyle(4, color ?? 0xa52a2a, 1);
-      this.drawBorderLine.setOrigin(0);
-    } else {
-      this.drawBorderLine = this.scene.add.rectangle(0, 0, width - 4, height - 4, 0x000000, 0.1);
-      this.drawBorderLine.setStrokeStyle(4, color ?? 0xa52a2a, 1);
-      this.drawBorderLine.setOrigin(0);
-    }
-
+    this.drawBorderLine = this.createDebugBorderLine(width, height, color);
     this.add(this.drawBorderLine);
   }
 
-  public debugHitArea() {
+  private createDebugBorderLine(width: number, height: number, color?: number): Phaser.GameObjects.Rectangle | Phaser.GameObjects.Arc {
+    if (this._baseConfig?.geomType === 'Circle') {
+      return this.scene.add.circle(0, 0, width / 2, 0x000000, 0.1)
+        .setStrokeStyle(4, color ?? 0xa52a2a, 1)
+        .setOrigin(0);
+    }
+    return this.scene.add.rectangle(0, 0, width - 4, height - 4, 0x000000, 0.1)
+      .setStrokeStyle(4, color ?? 0xa52a2a, 1)
+      .setOrigin(0);
+  }
+
+  public debugHitArea(): void {
     this.scene.input.enableDebug(this);
   }
 
-  debug(color?: number) {
+  debug(color?: number): void {
     this.debugDrawBorderLine(color);
     this.debugHitArea();
   }
 }
+

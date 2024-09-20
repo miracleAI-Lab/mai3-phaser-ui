@@ -4,49 +4,32 @@ import Utils from '../utils';
 import BaseScene from '../scene';
 
 export class Checkbox extends Container {
-    private _value?: string;
-    private _isChecked?: boolean;
-    private _height?: number;
+    private _value: string = '';
+    private _isChecked: boolean = false;
+    private _height: number = 0;
 
-    config: CheckboxConfig;
-    label?: Phaser.GameObjects.Text;
-    checkbox?: Phaser.GameObjects.RenderTexture;
+    private config: CheckboxConfig;
+    private label?: Phaser.GameObjects.Text;
+    private checkbox?: Phaser.GameObjects.RenderTexture;
     
     constructor(scene: BaseScene, config: CheckboxConfig) {
         super(scene, config);
         this.config = config;
         this.Type = 'Checkbox';
-        this._isChecked = this.config.isChecked ?? false;
+        this._isChecked = config.isChecked ?? false;
 
-        this.reDraw(config);
+        this.initCheckbox();
         this.on('pointerdown', this.handleDown, this);
     }
 
-    protected handleDown() {
-        this.checked = !this.checked;
-        if (this.config.handleSelect) {
-            this.config.handleSelect(this);
-        }
-
-        this.blendMode = 'add';
-    }
-
-    reDraw(config: CheckboxConfig) {
-        this.config = config;
-        this.layoutCheckbox();
-        this.layoutLabel();
-
-        if (!this.config.width) {
-            this.config.width = 0;
-        }
-        if (!this.config.height) {
-            this.config.height = 0;
-        }
-        this.RefreshBounds();
+    private initCheckbox(): void {
+        this.createCheckbox();
+        this.createLabel();
+        this.updateSize();
         this.setEventInteractive();
     }
 
-    private layoutCheckbox() {
+    private createCheckbox(): void {
         this._height = this.config.height ?? 0;
         this._value = this.config.value ?? '0';
 
@@ -54,21 +37,25 @@ export class Checkbox extends Container {
         const checkColor = this.config.checkColor ?? 0xFFD700;
         const uncheckColor = this.config.uncheckColor ?? 0xff8221;
         const borderWidth = this.config.borderWidth ?? 4;
-        const centerPosition = radius;
 
-        if (this._isChecked) {
-            this.checkbox = Utils.reDrawCircleRenderTexture(this.scene, this.checkbox!, centerPosition, centerPosition, radius, borderWidth, uncheckColor, checkColor);
-        } else {
-            this.checkbox = Utils.reDrawCircleRenderTexture(this.scene, this.checkbox!, centerPosition, centerPosition, radius, borderWidth, uncheckColor, uncheckColor);
-        }
+        this.checkbox = Utils.reDrawCircleRenderTexture(
+            this.scene,
+            this.checkbox,
+            radius,
+            radius,
+            radius,
+            borderWidth,
+            uncheckColor,
+            this._isChecked ? checkColor : uncheckColor
+        );
 
         this.addChild(this.checkbox!);
     }
 
-    public layoutLabel() {
-        let fontSize = 16;
+    private createLabel(): void {
         const text = this.config.text ?? 'MiracleAI';
         const style = this.config.textStyle ?? {};
+        
         if (!this.label) {
             this.label = this.scene.make.text({ text, style });
         } else {
@@ -77,17 +64,39 @@ export class Checkbox extends Container {
         }
 
         const labelSpace = this.config.labelSpace ?? 10;
-        if (typeof this.config.textStyle?.fontSize === 'string') {
-            fontSize = Number(this.config.textStyle?.fontSize.replace('px', ''));
-        } else {
-            fontSize = this.config.textStyle?.fontSize ?? 16;
-        }
+        const fontSize = this.getFontSize();
 
-        const radius = this._height! / 2;
+        const radius = this._height / 2;
         this.label.x = radius * 2 + labelSpace;
         this.label.y = (radius * 2 - fontSize) / 2;
 
         this.addChild(this.label);
+    }
+
+    private getFontSize(): number {
+        if (typeof this.config.textStyle?.fontSize === 'string') {
+            return Number(this.config.textStyle.fontSize.replace('px', ''));
+        }
+        return this.config.textStyle?.fontSize ?? 16;
+    }
+
+    private updateSize(): void {
+        this.config.width = this.config.width ?? 0;
+        this.config.height = this.config.height ?? 0;
+        this.RefreshBounds();
+    }
+
+    protected handleDown(): void {
+        this.checked = !this.checked;
+        if (this.config.handleSelect) {
+            this.config.handleSelect(this);
+        }
+        this.blendMode = 'add';
+    }
+
+    public reDraw(config: CheckboxConfig): void {
+        this.config = config;
+        this.initCheckbox();
     }
 
     set value(v: string) {
@@ -95,25 +104,21 @@ export class Checkbox extends Container {
     }
 
     get value(): string {
-        return this._value ?? '';
+        return this._value;
     }
 
     set checked(val: boolean) {
         this._isChecked = val;
-        this.layoutCheckbox();
+        this.createCheckbox();
     }
 
     get checked(): boolean {
-        return this._isChecked ?? false;
+        return this._isChecked;
     }
 
     destroy(fromScene?: boolean): void {
-        if (this.checkbox) {
-            this.checkbox.destroy();
-        }
-        if (this.label) {
-            this.label.destroy();
-        }
+        this.checkbox?.destroy();
+        this.label?.destroy();
         this.removeAllListeners();
         super.destroy(fromScene);
     }

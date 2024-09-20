@@ -1,4 +1,4 @@
-import { BaseScene, GridLayout } from '../../../dist';
+import { BaseScene, GridLayout, ListView } from '../../../dist';
 export class DemoScene extends BaseScene {
     private gridLayout!: GridLayout;
 
@@ -12,6 +12,7 @@ export class DemoScene extends BaseScene {
 
     async create() {
         this.createDemoNavigation();
+        this.createListViewDemo();
     }
 
     private createDemoNavigation() {
@@ -19,7 +20,7 @@ export class DemoScene extends BaseScene {
             x: 100,
             y: 100,
             width: 600,
-            height: 800,
+            height: 400,
             padding: 10,
             rowGap: 10,
             columnGap: 10,
@@ -40,7 +41,6 @@ export class DemoScene extends BaseScene {
             { name: '滑块演示', scene: 'SliderDemo', color: 0x9C27B0 },
             { name: '进度条演示', scene: 'ProgressBarDemo', color: 0x795548 },
             { name: '对话框演示', scene: 'DialogDemo', color: 0x607D8B },
-            // { name: '菜单演示', scene: 'MenuDemo', color: 0xE91E63 },
             { name: '标签演示', scene: 'LabelDemo', color: 0x3F51B5 },
             { name: '图像演示', scene: 'ImageDemo', color: 0x009688 },
             { name: '按钮演示', scene: 'ButtonDemo', color: 0xCDDC39 },
@@ -73,6 +73,44 @@ export class DemoScene extends BaseScene {
                 });
             }
             this.gridLayout.addRow(rowButtons);
+        }
+    }
+
+    private createListViewDemo() {
+        const listView = new ListView(this, {
+            x: 750,
+            y: 500,
+            width: 300,
+            height: 400,
+            background: 0x444444,
+            borderWidth: 2,
+            borderColor: 0x000000,
+            radius: 10,
+            padding: 10,
+            itemHeight: 50,
+            itemSpacing: 5
+        });
+
+        this.add.existing(listView);
+
+        for (let i = 1; i <= 20; i++) {
+            const item = this.mai3.add.container({
+                width: 280,
+                height: 50
+            });
+
+            const itemBg = this.add.rectangle(0, 0, 280, 50, 0x666666, 1);
+            itemBg.setOrigin(0);
+            item.add(itemBg);
+
+            const text = this.add.text(10, 15, `列表项 ${i}`, {
+                fontFamily: 'Arial',
+                fontSize: '18px',
+                color: '#FFFFFF'
+            });
+
+            item.add(text);
+            listView.addItem(item);
         }
     }
         
