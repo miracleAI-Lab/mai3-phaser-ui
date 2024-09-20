@@ -13,11 +13,12 @@ export class CheckboxGroup extends Container {
         super(scene, config);
         this.config = config;
         this.Type = 'CheckboxGroup';
+
         this.reDraw(config);
     }
 
     reDraw(config: CheckboxGroupConfig) {
-        config.orientation = config.orientation ?? 'x';
+        config.orientation = config.orientation ?? 'horizontal';
         config.itemWidth = config.itemWidth ?? 200;
         config.itemHeight = config.itemHeight ?? 40;
         config.checkColor = config.checkColor ?? 0xFFD700;
@@ -58,11 +59,11 @@ export class CheckboxGroup extends Container {
             this.add(checkbox);
             this.checkboxes.push(checkbox);
 
-            nextX = config.orientation === 'x' ? (checkbox.Right + config.space) : checkbox.x;
-            nextY = config.orientation === 'x' ? checkbox.y : (checkbox.Bottom + config.space);
+            nextX = config.orientation === 'horizontal' ? (checkbox.Right + config.space) : checkbox.x;
+            nextY = config.orientation === 'horizontal' ? checkbox.y : (checkbox.Bottom + config.space);
 
-            config.width = config.orientation === 'x' ? checkbox.Right : checkbox.RealWidth;
-            config.height = config.orientation === 'x' ? checkbox.y : checkbox.Bottom;
+            config.width = config.orientation === 'horizontal' ? checkbox.Right : checkbox.RealWidth;
+            config.height = config.orientation === 'horizontal' ? checkbox.y : checkbox.Bottom;
         }
 
         this.RefreshBounds();

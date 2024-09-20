@@ -1,14 +1,14 @@
 import { Container } from './Container';
-import { LayoutConfig } from '../types';
+import { Alignment, LinearLayoutConfig } from '../types';
 import Utils from '../utils';
 import BaseScene from '../scene';
 
-export class Layout extends Container {
+export class LinearLayout extends Container {
     private _content: Container;
-    private _config: LayoutConfig;
+    private _config: LinearLayoutConfig;
     private _bg?: Phaser.GameObjects.Image | Phaser.GameObjects.RenderTexture;
 
-    constructor(scene: BaseScene, config: LayoutConfig) {
+    constructor(scene: BaseScene, config: LinearLayoutConfig) {
         super(scene, config);
         this.scene = scene;
         this.Type = 'Layout';
@@ -50,7 +50,7 @@ export class Layout extends Container {
         );
     }
 
-    public reDraw(config: LayoutConfig): void {
+    public reDraw(config: LinearLayoutConfig): void {
         this.clear();
         this._config = config;
         this.initLayout();
@@ -62,14 +62,15 @@ export class Layout extends Container {
     }
 
     public addChildren(children: Container[]): void {
-        const { width = 0, height = 0, padding = 0, space = 0, horizontalAlign = 'center', verticalAlign = 'top', orientation = 'x' } = this._config;
-        const isHorizontal = Utils.isHorizontal(orientation);
-
         this._config.children = children;
-
+        const { width = 0, height = 0, padding = 0, space = 0,
+            alignment = { horizontal: 'center', vertical: 'top' },
+            orientation = 'x'
+        } = this._config;
+        
         let nextX = 0;
         let nextY = 0;
-
+        const isHorizontal = Utils.isHorizontal(orientation);
         children.forEach(child => {
             child.setPosition(nextX, nextY);
             this._content.addChild(child);
@@ -80,16 +81,16 @@ export class Layout extends Container {
             nextY = isHorizontal ? nextY : RealHeight + space;
         });
 
-        this.alignContent(width, height, padding, horizontalAlign, verticalAlign, isHorizontal);
+        this.alignContent(width, height, padding, alignment, isHorizontal);
         this.updateBackground();
     }
 
-    private alignContent(width: number, height: number, padding: number, horizontalAlign: string, verticalAlign: string, isHorizontal: boolean): void {
+    private alignContent(width: number, height: number, padding: number, alignment: Alignment, isHorizontal: boolean): void {
         const { RealWidth = 0, RealHeight = 0 } = this._content;
         const contentHeight = height - padding * 2;
 
-        let contentX = this.calculateContentX(horizontalAlign, RealWidth, width, padding);
-        let contentY = this.calculateContentY(verticalAlign, contentHeight, RealHeight, padding);
+        let contentX = this.calculateContentX(alignment.horizontal, RealWidth, width, padding);
+        let contentY = this.calculateContentY(alignment.vertical, contentHeight, RealHeight, padding);
 
         this.repositionChildren(isHorizontal, RealHeight);
 
@@ -116,10 +117,10 @@ export class Layout extends Container {
     private repositionChildren(isHorizontal: boolean, contentHeight: number): void {
         let nextX = 0;
         let nextY = 0;
-        const { space = 0, verticalAlign } = this._config;
+        const { space = 0, alignment } = this._config;
 
         this._config.children?.forEach(child => {
-            if (verticalAlign === 'middle' && isHorizontal) {
+            if (alignment?.vertical === 'middle' && isHorizontal) {
                 nextY = (contentHeight - (child as Container).RealHeight) / 2;
             }
             

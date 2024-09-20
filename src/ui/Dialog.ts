@@ -1,14 +1,14 @@
 import { Container } from './Container';
-import { DialogBody, DialogConfig, DialogFooter, DialogHeader, LayoutConfig } from '../types';
+import { DialogBody, DialogConfig, DialogFooter, DialogHeader, LinearLayoutConfig } from '../types';
 import Utils from '../utils';
-import { Layout } from './Layout';
+import { LinearLayout } from './LinearLayout';
 import BaseScene from '../scene';
 
 type DialogConfigs = DialogHeader | DialogBody | DialogFooter | DialogConfig | undefined;
 export class Dialog extends Container {
-    private _header?: Layout;
-    private _body?: Layout;
-    private _footer?: Layout;
+    private _header?: LinearLayout;
+    private _body?: LinearLayout;
+    private _footer?: LinearLayout;
 
     config?: DialogConfig;
     image?: Phaser.GameObjects.Image;
@@ -53,7 +53,7 @@ export class Dialog extends Container {
         let _dialogBg = this.createBg(0, 0, width, height, config)?.setName("_dialogBg");
         this.root.addAt(_dialogBg!, 0);
 
-        let headConf: LayoutConfig = {
+        let headConf: LinearLayoutConfig = {
             x: padding,
             y: padding,
             width: itemWidth,
@@ -62,20 +62,19 @@ export class Dialog extends Container {
             background: config.header?.background,
             orientation: config.header?.orientation,
             radius: config.header?.radius,
-            horizontalAlign: config.header?.horizontalAlign,
-            verticalAlign: config.header?.verticalAlign,
+            alignment: config.header?.alignment,
             children: lastConf?.header?.children
         };
         if (!this._header) {
-            this._header = this.scene.mai3.add.layout(headConf).setName("_header");
+            this._header = this.scene.mai3.add.linearLayout(headConf).setName("_header");
         } else {
             this._header.reDraw(headConf);
         }
         this.root.addAt(this._header!, 1);
 
-        const bodyY = this._header.y + headHeight;
+        const bodyY = (this._header?.y ?? 0) + headHeight;
         const bodyHeight = height - headHeight - footHeight;
-        let bodyConf: LayoutConfig = {
+        let bodyConf: LinearLayoutConfig = {
             x: padding,
             y: bodyY,
             width: itemWidth,
@@ -84,19 +83,18 @@ export class Dialog extends Container {
             background: config.body?.background,
             orientation: config.body?.orientation,
             radius: config.body?.radius,
-            horizontalAlign: config.body?.horizontalAlign,
-            verticalAlign: config.body?.verticalAlign,
+            alignment: config.body?.alignment,
             children: lastConf?.body?.children
         };
         if (!this._body) {
-            this._body = this.scene.mai3.add.layout(bodyConf).setName("_body");
+            this._body = this.scene.mai3.add.linearLayout(bodyConf).setName("_body");
         } else {
             this._body.reDraw(bodyConf);
         }
-        this.root.addAt(this._body, 1);
+        this.root.addAt(this._body!, 1);
 
         const footerY = height - footHeight;
-        let footerConf: LayoutConfig = {
+        let footerConf: LinearLayoutConfig = {
             x: padding,
             y: footerY,
             width: itemWidth,
@@ -105,15 +103,15 @@ export class Dialog extends Container {
             background: config.footer?.background,
             orientation: config.footer?.orientation,
             radius: config.footer?.radius,
-            horizontalAlign: config.footer?.horizontalAlign,
+            alignment: config.footer?.alignment,
             children: lastConf?.footer?.children
         }
         if (!this._footer) {
-            this._footer = this.scene.mai3.add.layout(footerConf).setName("_footer");
+            this._footer = this.scene.mai3.add.linearLayout(footerConf).setName("_footer");
         } else {
             this._footer.reDraw(footerConf);
         }
-        this.root.addAt(this._footer, 1);
+        this.root.addAt(this._footer!, 1);
 
         const rootX = (this.scene.scale.width - this.root.width) / 2;
         const rootY = (this.scene.scale.height - this.root.height) / 2;

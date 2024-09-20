@@ -10,7 +10,7 @@ import { TextBox } from "../ui/TextBox";
 import { TextButton } from "../ui/TextButton";
 import { VolumeSlider } from "../ui/VolumeSlider";
 
-export type OrientationTypes = 0 | 1 | 'x' | 'y' | 'h' | 'v' | 'horizontal' | 'vertical' | 'left-to-right' | 'top-to-bottom';
+export type OrientationTypes = 'horizontal' | 'vertical';
 export type Mai3Component = TextButton | ImageButton | RoundedButton
   | Checkbox | CheckboxGroup | Label | ProgressBar | Slider | VolumeSlider
   | TextBox;
@@ -58,6 +58,11 @@ export const FontWeight = {
   bold: 'bold',
 };
 
+export interface Alignment {
+  horizontal: 'left' | 'center' | 'right';
+  vertical: 'top' | 'middle' | 'bottom';
+}
+
 export interface BaseConfig {
   id?: string;
   x?: number;
@@ -76,6 +81,12 @@ export interface BaseConfig {
   handleOut?: ButtonHandle;
   handleDown?: ButtonHandle;
   handleUp?: ButtonHandle;
+}
+
+export interface FlexLayoutConfig extends BaseConfig {
+  padding?: number;
+  alignment?: Alignment;
+  contents?: Container[];
 }
 
 export interface ProgressConfig extends BaseConfig {
@@ -180,7 +191,6 @@ export interface CheckboxGroupConfig extends BaseConfig {
   borderColorAlpha?: number;
   multiSelect?: boolean;
   defaultSelectedIndex?: number;
-  orientation?: OrientationTypes;
   textStyle?: TextStyle;
   items?: CheckboxGroupItem[];
   handleSelect?: Function
@@ -225,8 +235,7 @@ export interface LabelConfig extends BaseConfig {
 }
 
 export interface ToastConfig extends LabelConfig {
-  horizontalAlign?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  alignment?: Alignment;
   type?: 'success' | 'warn' | 'error' | 'info';
   animationType?: 'fade' | 'slide' | 'slideDown' | 'slideUp' | 'scale' | 'bounce';
   duration?: number;
@@ -280,8 +289,7 @@ export type DialogHeader = {
   borderColor?: number;
   orientation: OrientationTypes;
   radius?: number;
-  horizontalAlign?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  alignment?: Alignment;
   children?: Container[],
   padding?: number
 }
@@ -293,8 +301,7 @@ export type DialogBody = {
   borderColor?: number;
   orientation: OrientationTypes;
   radius?: number;
-  horizontalAlign?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  alignment?: Alignment;
   children?: Container[],
   padding?: number
 }
@@ -306,8 +313,7 @@ export type DialogFooter = {
   borderColor?: number;
   orientation: OrientationTypes;
   radius?: number;
-  horizontalAlign?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  alignment?: Alignment;
   children?: Container[],
   padding?: number
 }
@@ -324,14 +330,13 @@ export interface DialogConfig extends BaseConfig {
   padding?: number;
 }
 
-export interface LayoutConfig extends BaseConfig {
+export interface LinearLayoutConfig extends BaseConfig {
   borderWidth?: number;
   borderColor?: number;
   radius?: number;
   background?: string | number;
   children?: Container[];
-  horizontalAlign?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  alignment?: Alignment;
   itemSpace?: number;
   padding?: number;
 }
@@ -360,8 +365,7 @@ export interface GridLayoutConfig  extends BaseConfig {
   radius?: number;
   borderColor?: number;
   showGrid?: boolean;
-  horizontalAlign?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  alignment?: Alignment;
   children?: GridItem[];
 }
 
@@ -375,8 +379,7 @@ export interface TabsConfig extends BaseConfig {
   radius?: number;
   background?: number;
   items?: TabItem[];
-  horizontalAlign?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  alignment?: Alignment;
   itemSpace?: number;
   padding?: number;
   onTabClick?: (index: number) => void;
@@ -395,8 +398,7 @@ export interface GridConfig extends BaseConfig {
   radius?: number;
   background?: string | number;
   children?: Mai3Component[];
-  horizontalAlign?: 'left' | 'center' | 'right';
-  verticalAlign?: 'top' | 'middle' | 'bottom';
+  alignment?: Alignment;
   itemSpace?: number;
   padding?: number;
 }

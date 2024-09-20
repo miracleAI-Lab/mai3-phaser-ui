@@ -7,7 +7,7 @@ import { GridLayout } from "./ui/GridLayout";
 import { Image } from "./ui/Image";
 import { ImageButton } from "./ui/ImageButton";
 import { Label } from "./ui/Label";
-import { Layout } from "./ui/Layout";
+import { LinearLayout } from "./ui/LinearLayout";
 import { ProgressBar } from "./ui/ProgressBar";
 import { RoundedButton } from "./ui/RoundedButton";
 import { Slider } from "./ui/Slider";
@@ -29,10 +29,10 @@ export {
   Dialog,
   Grid,
   GridLayout,
+  LinearLayout,
   Image,
   ImageButton,
   Label,
-  Layout,
   ProgressBar,
   RoundedButton,
   Slider,
@@ -54,10 +54,10 @@ const Mai3 = {
   Dialog: Dialog,
   Grid: Grid,
   GridLayout: GridLayout,
+  LinearLayout: LinearLayout,
   Image: Image,
   ImageButton: ImageButton,
   Label: Label,
-  Layout: Layout,
   ProgressBar: ProgressBar,
   RoundedButton: RoundedButton,
   Slider: Slider,

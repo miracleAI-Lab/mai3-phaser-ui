@@ -5,7 +5,7 @@ import { Slider } from "./Slider";
 import { VolumeSlider } from "./VolumeSlider";
 import { CheckboxGroup } from "./CheckboxGroup";
 import { Dialog } from "./Dialog";
-import { Layout } from "./Layout";
+import { LinearLayout } from "./LinearLayout";
 import { Image } from "./Image";
 import { Text } from "./Text";
 import { Container } from "./Container";
@@ -21,7 +21,7 @@ export const mai3 = {
   VolumeSlider,
   CheckboxGroup,
   Dialog,
-  Layout,
+  LinearLayout,
   Image,
   Text,
   Container,

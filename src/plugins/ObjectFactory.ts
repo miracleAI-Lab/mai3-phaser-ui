@@ -6,19 +6,20 @@ import { Slider } from "../ui/Slider";
 import { VolumeSlider } from "../ui/VolumeSlider";
 import { CheckboxGroup } from "../ui/CheckboxGroup";
 import { Dialog } from "../ui/Dialog";
-import { Layout } from "../ui/Layout";
 import { Image } from "../ui/Image";
 import { Text } from "../ui/Text";
 import { Container } from "../ui/Container";
 import { RoundedButton } from "../ui/RoundedButton";
 import { TextButton } from "../ui/TextButton";
 import { ImageButton } from "../ui/ImageButton";
-import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, VolumeSliderConfig } from '../types';
+import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, VolumeSliderConfig } from '../types';
 import BaseScene from "../scene";
 import { TextBox } from "../ui/TextBox";
 import { Tabs } from "../ui/Tabs";
 import { TextArea } from "../ui/TextArea";
 import { Toast } from "../ui/Toast";
+// import { FlexLayout } from "../ui/FlexLayout";
+import { LinearLayout } from "../ui/LinearLayout";
 
 type Constructor<T extends Phaser.GameObjects.GameObject> = new (...args: any[]) => T;
 
@@ -102,10 +103,6 @@ class ObjectFactory {
     return this.createGameObject(Dialog, this.scene, config);
   }
 
-  layout(config: LayoutConfig): Layout {
-    return this.createGameObject(Layout, this.scene, config);
-  }
-
   tabs(config: TabsConfig): Tabs {
     return this.createGameObject(Tabs, this.scene, config);
   }
@@ -120,6 +117,14 @@ class ObjectFactory {
 
   toast(config: ToastConfig): Toast {
     return this.createGameObject(Toast, this.scene, config);
+  }
+
+  // flexLayout(config: FlexLayoutConfig): FlexLayout {
+  //   return this.createGameObject(FlexLayout, this.scene, config);
+  // }
+
+  linearLayout(config: LinearLayoutConfig): LinearLayout {
+    return this.createGameObject(LinearLayout, this.scene, config);
   }
 };
 export default ObjectFactory;

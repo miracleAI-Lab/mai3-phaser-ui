@@ -26,8 +26,7 @@ export class DemoScene extends BaseScene {
             background: 0x333333,
             borderWidth: 2,
             borderColor: 0x000000,
-            horizontalAlign: 'center',
-            verticalAlign: 'middle',
+            alignment: {horizontal: 'center', vertical: 'middle'},
             radius: 10,
         });
 

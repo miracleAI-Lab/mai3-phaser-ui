@@ -11,8 +11,8 @@ import { Label } from './Label';
 import { ProgressBar } from './ProgressBar';
 import { Slider } from './Slider';
 import { VolumeSlider } from './VolumeSlider';
-import { GridItem, GridLayoutConfig, LayoutConfig } from '../types';
-import { Layout } from './Layout';
+import { GridItem, GridLayoutConfig, LinearLayoutConfig } from '../types';
+import { LinearLayout } from './LinearLayout';
 
 export class GridLayout extends Container {
     private _content?: Container;
@@ -77,18 +77,17 @@ export class GridLayout extends Container {
         console.log('RealHeight: ', this._content?.RealHeight);
         console.log('currentY: ', currentY);
 
-        const rowLayoutConfig: LayoutConfig = {
+        const rowLayoutConfig: LinearLayoutConfig = {
             x: 0,
             y: currentY,
             width: contentWidth,
-            horizontalAlign: this.config?.horizontalAlign,
-            verticalAlign: this.config?.verticalAlign,
+            alignment: this.config?.alignment,
             padding: 0,
             background: 0x3A5FCD,
             space: columnGap
         };
 
-        const rowLayout = new Layout(this.scene, rowLayoutConfig);
+        const rowLayout = new LinearLayout(this.scene, rowLayoutConfig);
         const children: GridItem[] = [];
 
         childConfigs.forEach((childConfig) => {

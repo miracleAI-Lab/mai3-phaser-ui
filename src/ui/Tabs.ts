@@ -1,10 +1,10 @@
 import { Container } from './Container';
 import { TabsConfig } from '../types';
-import { Layout } from './Layout';
+import { LinearLayout } from './LinearLayout';
 import BaseScene from '../scene';
 
 export class Tabs extends Container {
-    private _items?: Layout;
+    private _items?: LinearLayout;
 
     config: TabsConfig;
     image?: Phaser.GameObjects.Image;
@@ -54,14 +54,14 @@ export class Tabs extends Container {
             children.push(itemRoot);
         });
 
-        this._items = this.scene.mai3.make.layout({
+        this._items = this.scene.mai3.make.linearLayout({
             width: tabsWidth,
             height: this.config.height,
             children: children,
-            orientation: 'x',
+            orientation: 'horizontal',
         });
 
-        this.add(this._items);
+        this.add(this._items!);
     }
 
     private onTabClick(index: number) {

@@ -29,8 +29,8 @@ export class Toast extends Container {
   reDraw() {
     const width = this.config.width ?? 300;
     const height = this.config.height ?? 80;
-    const alignX = this.config.horizontalAlign ?? 'right';
-    const alignY = this.config.verticalAlign ?? 'top';
+    const alignX = this.config.alignment?.horizontal ?? 'right';
+    const alignY = this.config.alignment?.vertical ?? 'top';
     const type = this.config.type ?? 'info';
     const marginAll = this.config.margin?.all;
     const marginLeft = marginAll ?? (this.config.margin?.x ?? 0);
