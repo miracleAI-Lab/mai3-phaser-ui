@@ -2,6 +2,7 @@ import { Container } from './Container';
 import { TabsConfig } from '../types';
 import { LinearLayout } from './LinearLayout';
 import BaseScene from '../scene';
+import { Label } from './Label';
 
 export class Tabs extends Container {
     private _items?: LinearLayout;
@@ -26,7 +27,7 @@ export class Tabs extends Container {
         const padding = this.config.padding || 0;
 
         this.config.items?.forEach((item, index) => {
-            const itemRoot = this.scene.mai3.make.container({});
+            const itemRoot = new Container(this.scene);
 
             const background = this.scene.add.rectangle(0, 0, itemWidth, this.config.height || 40, this.config.background);
             background.setOrigin(0);
@@ -37,7 +38,7 @@ export class Tabs extends Container {
             image.setDisplaySize(itemWidth - padding * 2, (this.config.height || 40) * 0.6 - padding * 2);
             itemRoot.addAt(image, 1);
 
-            const text = this.scene.mai3.make.label({
+            const text = new Label(this.scene, {
                 x: padding,
                 y: (this.config.height || 40) * 0.6 + padding,
                 width: itemWidth - padding * 2,
@@ -54,7 +55,7 @@ export class Tabs extends Container {
             children.push(itemRoot);
         });
 
-        this._items = this.scene.mai3.make.linearLayout({
+        this._items = new LinearLayout(this.scene, {
             width: tabsWidth,
             height: this.config.height,
             children: children,

@@ -22,7 +22,7 @@ export class ImageButton extends Container {
         this.config.height = config.height ?? 60;
 
         if (!this.image) this.image = this.scene.make.image({});
-        this.image.setTexture(config.texture ?? '', config.frame )
+        this.image.setTexture(config.texture ?? '', config.frame);
         this.image.setDisplaySize(this.config.width, this.config.height);
         this.image.setOrigin(0);
         this.addChild(this.image!);

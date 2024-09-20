@@ -14,6 +14,7 @@ export class Container extends Phaser.GameObjects.Container {
   scene: BaseScene;
 
   constructor(scene: BaseScene, baseConfig?: BaseConfig, type?: string) {
+
     super(scene, baseConfig?.x, baseConfig?.y);
     this._id = baseConfig?.id ?? '';
     this.scene = scene;
@@ -71,9 +72,9 @@ export class Container extends Phaser.GameObjects.Container {
   }
 
   private createCircleHitArea() {
-    if (!this._hitArea) 
+    if (!this._hitArea)
       this._hitArea = new Phaser.Geom.Circle();
-    
+
     const hitArea = this._hitArea as Phaser.Geom.Circle;
     const radius = this._baseConfig?.radius ?? 0;
     const borderWidth = this._baseConfig?.borderWidth ?? 0;
@@ -83,9 +84,9 @@ export class Container extends Phaser.GameObjects.Container {
   }
 
   private createRectangleHitArea() {
-    if (!this._hitArea) 
+    if (!this._hitArea)
       this._hitArea = new Phaser.Geom.Rectangle();
-    
+
     const hitArea = this._hitArea as Phaser.Geom.Rectangle;
     hitArea.setSize(this.RealWidth, this.RealHeight);
     hitArea.setPosition(0, 0);
@@ -123,7 +124,7 @@ export class Container extends Phaser.GameObjects.Container {
 
     this.blendMode = Phaser.BlendModes.ADD;
   }
-  
+
   public findChild(id: string, gameObject?: Phaser.GameObjects.GameObject): Phaser.GameObjects.GameObject | undefined {
     const container = (gameObject ?? this) as Container;
     return container.getAll().find((item) => (item as Container).id === id);
@@ -178,11 +179,11 @@ export class Container extends Phaser.GameObjects.Container {
   }
 
   get Width(): number {
-    return (this._baseConfig?.width ?? 0) + (this._baseConfig?.borderWidth ?? 0);
+    return (this._baseConfig?.width ?? 0) + (this._baseConfig?.borderWidth ? this._baseConfig?.borderWidth * 2 : 0);
   }
 
   get Height(): number {
-    return (this._baseConfig?.height ?? 0) + (this._baseConfig?.borderWidth ?? 0);
+    return (this._baseConfig?.height ?? 0) + (this._baseConfig?.borderWidth ? this._baseConfig?.borderWidth * 2 : 0);
   }
 
   get RealWidth(): number {

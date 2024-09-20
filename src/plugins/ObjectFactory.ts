@@ -12,7 +12,7 @@ import { Container } from "../ui/Container";
 import { RoundedButton } from "../ui/RoundedButton";
 import { TextButton } from "../ui/TextButton";
 import { ImageButton } from "../ui/ImageButton";
-import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, VolumeSliderConfig } from '../types';
+import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig } from '../types';
 import BaseScene from "../scene";
 import { TextBox } from "../ui/TextBox";
 import { Tabs } from "../ui/Tabs";
@@ -20,7 +20,7 @@ import { TextArea } from "../ui/TextArea";
 import { Toast } from "../ui/Toast";
 // import { FlexLayout } from "../ui/FlexLayout";
 import { LinearLayout } from "../ui/LinearLayout";
-import { ListView, ListViewConfig } from "../ui/ListView";
+import { ListView } from "../ui/ListView";
 
 type Constructor<T extends Phaser.GameObjects.GameObject> = new (...args: any[]) => T;
 

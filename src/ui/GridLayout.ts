@@ -13,6 +13,7 @@ import { Slider } from './Slider';
 import { VolumeSlider } from './VolumeSlider';
 import { GridItem, GridLayoutConfig, LinearLayoutConfig } from '../types';
 import { LinearLayout } from './LinearLayout';
+import { Image } from './Image';
 
 export class GridLayout extends Container {
     private _content?: Container;
@@ -73,9 +74,6 @@ export class GridLayout extends Container {
         this._content?.RefreshBounds();
         const contentHeight = this._content?.RealHeight ?? 0;
         let currentY = contentHeight > 0 ? contentHeight + rowGap : 0;
-        
-        console.log('RealHeight: ', this._content?.RealHeight);
-        console.log('currentY: ', currentY);
 
         const rowLayoutConfig: LinearLayoutConfig = {
             x: 0,
@@ -118,6 +116,9 @@ export class GridLayout extends Container {
     private createChildFromConfig(config: any): GridItem {
         let child: GridItem;
         switch (config.type) {
+            case 'Image':
+                child = new Image(this.scene, config);
+                break;
             case 'TextButton':
                 child = new TextButton(this.scene, config);
                 break;

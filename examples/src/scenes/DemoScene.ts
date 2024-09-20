@@ -1,4 +1,5 @@
 import { BaseScene, GridLayout, ListView } from '../../../dist';
+import { ListViewConfig, ListViewItemConfig } from '../../../dist/types';
 export class DemoScene extends BaseScene {
     private gridLayout!: GridLayout;
 
@@ -12,7 +13,7 @@ export class DemoScene extends BaseScene {
 
     async create() {
         this.createDemoNavigation();
-        this.createListViewDemo();
+        // this.createListViewDemo();
     }
 
     private createDemoNavigation() {
@@ -77,40 +78,29 @@ export class DemoScene extends BaseScene {
     }
 
     private createListViewDemo() {
-        const listView = new ListView(this, {
-            x: 750,
-            y: 500,
+        const listViewConfig: ListViewConfig = {
+            x: 0,
+            y: 0,
             width: 300,
             height: 400,
             background: 0x444444,
-            borderWidth: 2,
-            borderColor: 0x000000,
-            radius: 10,
             padding: 10,
-            itemHeight: 50,
-            itemSpacing: 5
-        });
+            itemHeight: 50
+        };
 
+        const listView = new ListView(this, listViewConfig);
         this.add.existing(listView);
 
         for (let i = 1; i <= 20; i++) {
-            const item = this.mai3.add.container({
-                width: 280,
-                height: 50
-            });
-
-            const itemBg = this.add.rectangle(0, 0, 280, 50, 0x666666, 1);
-            itemBg.setOrigin(0);
-            item.add(itemBg);
-
-            const text = this.add.text(10, 15, `列表项 ${i}`, {
-                fontFamily: 'Arial',
-                fontSize: '18px',
-                color: '#FFFFFF'
-            });
-
-            item.add(text);
-            listView.addItem(item);
+            const itemConfig: ListViewItemConfig = {
+                text: `列表项 ${i}`,
+                icon: 'cangshu',
+                rightContent: {
+                    type: 'text',
+                    text: `${i}`
+                }
+            };
+            listView.addItem(itemConfig);
         }
     }
         

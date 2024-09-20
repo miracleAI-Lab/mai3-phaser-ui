@@ -5,7 +5,6 @@ import { Label } from './Label';
 import { TextBox } from './TextBox';
 
 export class TextArea extends TextBox {
-    
     declare config: TextBoxConfig;
     declare label: Label;
     declare selection: Phaser.GameObjects.Rectangle;
@@ -28,7 +27,7 @@ export class TextArea extends TextBox {
         this.isFocus = false;
         this.maxWidth = config.width ?? 100;
         this.maxHeight = config.height ?? 100;
-        this.lineHeight = config.textStyle?.fontSize ? 
+        this.lineHeight = config.textStyle?.fontSize ?
             parseInt(config.textStyle.fontSize.toString()) : 16;
 
         this.createMultilineLabel();
@@ -49,7 +48,7 @@ export class TextArea extends TextBox {
 
     createMultilineLabel() {
         this.label.destroy();
-        this.label = this.scene.mai3.make.label({
+        this.label = new Label(this.scene, {
             ...this.config,
             height: this.maxHeight,
             isWordWrap: true,

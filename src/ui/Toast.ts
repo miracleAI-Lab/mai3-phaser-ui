@@ -20,7 +20,7 @@ export class Toast extends Container {
     super(scene, config);
     this.config = config;
     this.Type = 'Toast';
-    
+
     this.reDraw();
     this.setVisible(false);
     this.setAlpha(0);
@@ -55,12 +55,12 @@ export class Toast extends Container {
     }
 
     const style = this.getStyleByType(type);
-    const color = Utils.numberToHex(style.color);    
+    const color = Utils.numberToHex(style.color);
     this.config.textStyle = Utils.MergeRight(this.config.textStyle ?? DefaultTextStyle, { color: color });
     this.config.textAlign = this.config.textAlign ?? 'center';
 
     if (!this.label) {
-      this.label = this.scene.mai3.make.label({
+      this.label = new Label(this.scene, {
         ...this.config,
         ...style,
         borderColor: style.borderColor,
@@ -74,7 +74,7 @@ export class Toast extends Container {
         backgroundColor: style.backgroundColor
       });
     }
-    
+
     this.label.setPosition(0, 0);
     this.addChildAt(this.label, 0);
     this.setPosition(this.config.x, this.config.y);
@@ -100,7 +100,7 @@ export class Toast extends Container {
     if (this.tween) {
       this.tween.stop();
     }
-    
+
     switch (animation) {
       case 'fade':
         this.tween = this.scene.tweens.add({
@@ -157,13 +157,13 @@ export class Toast extends Container {
     if (this.tween) {
       this.tween.stop();
     }
-    
+
     // 清除自动隐藏计时器
     if (this.autoHideTimer) {
       this.autoHideTimer.remove();
       this.autoHideTimer = undefined;
     }
-    
+
     switch (animation) {
       case 'fade':
         this.tween = this.scene.tweens.add({

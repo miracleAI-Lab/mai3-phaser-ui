@@ -1,16 +1,17 @@
 import Phaser from 'phaser';
 import { ProgressBar } from './ProgressBar';
-import { SliderConfig } from '../types';
+import { RoundedButtonConfig, SliderConfig } from '../types';
 import BaseScene from '../scene';
-
+import Memory from '../utils/Memory';
+import { RoundedButton } from './RoundedButton';
 export class Slider extends ProgressBar {
   min?: number;
   max?: number;
   step?: number;
   sliderConfig?: SliderConfig;
-  sliderBtn?: Phaser.GameObjects.Arc;
-  btnWidth: number = 0;
-  btnHeight: number = 0;
+  sliderBtn?: RoundedButton;
+  btnRadius: number = 0;
+  progressPercent: number = 0;
   private _value: number = 0;
 
   constructor(scene: BaseScene, config: SliderConfig) {
@@ -23,68 +24,156 @@ export class Slider extends ProgressBar {
 
   draw(config?: SliderConfig) {
     this.sliderConfig = config;
+
+    super.reDraw(this.sliderConfig!);
     this.min = this.sliderConfig?.min ?? 0;
     this.max = this.sliderConfig?.max ?? 100;
     this.step = this.sliderConfig?.step ?? 1;
-    this.value = 0;
-
     if (this.sliderBtn) {
-      this.sliderBtn.destroy();
+      Memory.DelEventsBeforeDestory(this.sliderBtn);
+      this.sliderBtn.destroy(true);
     }
-    this.sliderBtn = this.createSliderBtn(config?.progressPercent);
+    this.sliderBtn = this.drawSliderBtn();
     this.addChildAt(this.sliderBtn, 2);
     this.sliderBtn.setInteractive({ draggable: true });
+    this.sliderBtn.debugHitArea();
 
-    this.updateValue(this.sliderBtn.x);
-    this.sliderBtn.on('drag', this.handleDrag, this);
+    // 因为锚点不是在中心，所以需要额外做以下的计算
+    let btnRadius = this.getBtnRadius();
+    // let btnCenterPosX = this.sliderBtn.x + btnRadius;
+    let btnCenterPosX = config?.progressPercent! * this.config?.width!;
+    this.refreshProgress(btnCenterPosX);
+
+    this.fixSliderBtnPosY();
+    this.sliderBtn?.updateMaskPos();
+
+    let dragXRangeLeft = -btnRadius;
+    let dragXRangeRight = this.config?.width! - btnRadius;
+    this.sliderBtn.on('drag', (_pointer: Phaser.Input.Pointer, dragX: number, _dragY: number) => {
+      dragX = Phaser.Math.Clamp(dragX, dragXRangeLeft, dragXRangeRight);
+      this.sliderBtn!.x = dragX;
+      let realBtnCenterPosX = Phaser.Math.Clamp(dragX + btnRadius, 0, this.config?.width!);
+      this.refreshProgress(realBtnCenterPosX);
+      this.fixSliderBtnPosY();
+      this.sliderBtn?.updateMaskPos();
+    }, this);
+
     this.RefreshBounds();
   }
 
+  fixSliderBtnPosY() {
+    let btnRadius = this.getBtnRadius();
+    let realBtnLeftTopPosY = this.bgHeight! / 2 - btnRadius;
+    this.sliderBtn!.y = realBtnLeftTopPosY;
+  }
+
   reDraw(config: SliderConfig) {
-    super.reDraw(config);
     this.draw(config);
   }
 
-  protected createSliderBtn(progressPercent?: number): Phaser.GameObjects.Arc {
-    const handleRadius = this.sliderConfig?.handleRadius ?? (this.config.radius ?? 20) + 4;
-    const handleBorder = this.sliderConfig?.handleBorder ?? 6;
-    const meshColor = this.sliderConfig?.meshColor ?? 0xffd579;
-
-    this.btnHeight = this.btnWidth = handleRadius + handleBorder;
-    const btnX = progressPercent ? this.Width * progressPercent : this.Width / 2;
-    const btnY = this.Height / 2;
-    const sliderBtn = this.scene.add.circle(btnX, btnY, handleRadius + handleBorder, meshColor);
+  protected drawSliderBtn(): RoundedButton {
+    const roundedButtonConfig = this.transformForRoundedButtonConfig();
+    let sliderBtn = this.scene.mai3.add.roundedButton(roundedButtonConfig);
 
     return sliderBtn;
   }
 
-  private handleDrag(_pointer: Phaser.Input.Pointer, dragX: number, _dragY: number) {
-    if (this.sliderBtn) {
-      this.sliderBtn.x = Phaser.Math.Clamp(dragX, 0, this.config?.width!);
-      this.updateValue(dragX);
+  // 暂时先不要删除
+  // getMaskCenterPointerWorldPos() {
+  //   const { btnLeftTopX, btnLeftTopY } = this.computedSliderBtnLeftTopPosition();
+  //   const maskCenterPointerWorldPosX = (this.sliderConfig?.x ?? 0) + btnLeftTopX + this.getBtnRadius();
+  //   const maskCenterPointerWorldPosY = (this.sliderConfig?.y ?? 0) + btnLeftTopY + this.getBtnRadius();
+  //   return {
+  //     maskCenterPointerWorldPosX,
+  //     maskCenterPointerWorldPosY
+  //   }
+  // }
+
+  transformForRoundedButtonConfig(): RoundedButtonConfig {
+    console.warn("transformForRoundedButtonConfig");
+    const handleRadius = this.getHandleRadius();
+    const { btnLeftTopX, btnLeftTopY } = this.computedSliderBtnLeftTopPosition();
+    console.log("🚀 ~ Slider ~ transformForRoundedButtonConfig ~ btnLeftTopX, btnLeftTopY:", btnLeftTopX, btnLeftTopY);
+    // const { maskCenterPointerWorldPosX, maskCenterPointerWorldPosY } = this.getMaskCenterPointerWorldPos();
+    const config: RoundedButtonConfig = {
+      x: btnLeftTopX,
+      y: btnLeftTopY,
+      enableDrag: true,
+      radius: handleRadius,
+      borderWidth: this.sliderConfig?.handleBorderWidth,
+      borderColor: this.sliderConfig?.handleBorderColor,
+      backgroundColor: this.sliderConfig?.handleBackgroundColor,
+      backgroundAlpha: this.sliderConfig?.handleBackgroundAlpha,
+      geomType: this.sliderConfig?.handleGeomType,
+      texture: this.sliderConfig?.handleTexture,
+    }
+
+    return config;
+  }
+
+  private getHandleRadius() {
+    return this.sliderConfig?.handleRadius ?? (this.config.radius ?? 20) + 4;
+  }
+
+  private getHandleBorderWidth() {
+    return this.sliderConfig?.handleBorderWidth ?? 6;
+  }
+
+  private getBtnRadius() {
+    const handleRadius = this.getHandleRadius();
+    const handleBorderWidth = this.getHandleBorderWidth();
+    return handleRadius + handleBorderWidth;
+  }
+
+  private computedSliderBtnLeftTopPosition() {
+    this.btnRadius = this.getBtnRadius();
+    let progressPercent = this.sliderConfig?.progressPercent;
+    if (progressPercent === undefined || progressPercent === null) {
+      progressPercent = 0.5;
+    } else {
+      progressPercent = progressPercent < 0 ? 0 : progressPercent;
+      progressPercent = progressPercent > 1 ? 1 : progressPercent;
+    }
+    progressPercent = parseFloat(progressPercent.toFixed(20));
+    // const btnLeftTopX = this.sliderBtn ?
+    //   this.sliderBtn.x : this.Width * progressPercent - this.btnRadius;
+    // const btnLeftTopY = this.sliderBtn ?
+    //   this.sliderBtn.y : this.Height / 2 - this.btnRadius;
+    const btnLeftTopX = this.Width * progressPercent - this.btnRadius;
+    const btnLeftTopY = this.Height / 2 - this.btnRadius;
+
+    return {
+      btnLeftTopX,
+      btnLeftTopY
     }
   }
 
-  private updateValue(pointerX: number) {
+  private refreshProgress(pointerX: number) {
     if (pointerX > this.bgWidth!) pointerX = this.bgWidth!;
-    if (pointerX < this.btnWidth) pointerX = 0;
+    if (pointerX < this.btnRadius) pointerX = 0;
+    this.progressPercent = pointerX / this.bgWidth!;
+    this.progressPercent = parseFloat(this.progressPercent.toFixed(20));
+    if (this.progressPercent > 1) this.progressPercent = 1;
+    if (this.progressPercent < 0) this.progressPercent = 0;
 
-    let positionRatio = pointerX / this.bgWidth!;
-    if (positionRatio > 1) positionRatio = 1;
-    if (positionRatio < 0.01) positionRatio = 0;
-
-    const rawValue = this.min! + positionRatio * (this.max! - this.min!);
+    const rawValue = this.min! + this.progressPercent * (this.max! - this.min!);
     this._value = Phaser.Math.Clamp(Math.round(rawValue / this.step!) * this.step!, this.min!, this.max!);
-    this.updateSlider();
+    this._updateProgress();
   }
 
-  private updateSlider() {
-    this.progress = (this.value! - this.min!) / (this.max! - this.min!);
+  private _updateProgress() {
+    let val = (this.value! - this.min!) / (this.max! - this.min!);
+    if (val < 0) {
+      val = 0;
+    } else if (val > 1) {
+      val = 1;
+    }
+    this.progress = val;
   }
 
   set value(val: number) {
     this._value = val;
-    this.updateSlider();
+    this._updateProgress();
   }
 
   get value(): number {
@@ -92,10 +181,9 @@ export class Slider extends ProgressBar {
   }
 
   destroy(fromScene?: boolean): void {
-    if (this.sliderBtn) {
-      this.sliderBtn.off('drag', this.handleDrag, this);
-      this.sliderBtn.destroy();
-    }
     super.destroy(fromScene);
+    if (this.sliderBtn) {
+      this.sliderBtn.destroy(true);
+    }
   }
 }

@@ -4,7 +4,6 @@ import { Container } from './Container';
 import BaseScene from '../scene';
 import { Label } from './Label';
 export class TextBox extends Container {
-    
     config: TextBoxConfig;
     label: Label;
     selection: Phaser.GameObjects.Rectangle;
@@ -28,7 +27,7 @@ export class TextBox extends Container {
         this.isFocus = false;
         this.maxWidth = config.width ?? 100;
 
-        this.label = scene.mai3.make.label(config);
+        this.label = new Label(scene, config);
         this.label.Text = config.text ?? '';
         this.label.setPosition(0, 0);
         this.addChildAt(this.label, 0);
@@ -112,7 +111,7 @@ export class TextBox extends Container {
             console.error('无法获取2D上下文');
             return 0;
         }
-    
+
         const fontSize = this.label.Label.style.fontSize || '16px';
         const fontFamily = this.label.Label.style.fontFamily || 'Arial';
         context.font = `${fontSize} ${fontFamily}`;
@@ -249,26 +248,26 @@ export class TextBox extends Container {
             TextBox.measureCanvas = document.createElement('canvas');
             TextBox.measureContext = TextBox.measureCanvas.getContext('2d');
         }
-    
+
         const context = TextBox.measureContext;
         if (!context) {
             console.error('无法获取2D上下文');
             return [];
         }
-    
+
         const fontSize = this.label.Label.style.fontSize || '16px';
         const fontFamily = this.label.Label.style.fontFamily || 'Arial';
         context.font = `${fontSize} ${fontFamily}`;
-        
+
         const charWidths: number[] = [];
-    
+
         const text = this.hiddenInput?.value ?? '';
         for (let i = 0; i < text.length; i++) {
             const char = text[i];
             const charWidth = context.measureText(char).width;
             charWidths.push(charWidth);
         }
-    
+
         return charWidths;
     }
 
@@ -276,11 +275,11 @@ export class TextBox extends Container {
         const charWidths = this.getCharacterWidths();
         index = Math.min(index, charWidths.length);
         let x = 0;
-    
+
         for (let i = 0; i < index; i++) {
             x += charWidths[i] ?? 0;
         }
-    
+
         return x;
     }
 

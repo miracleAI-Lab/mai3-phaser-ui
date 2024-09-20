@@ -6,8 +6,8 @@ export class ProgressBar extends Container {
     protected borderWidth?: number;
     protected borderColor?: number;
     protected radius?: number;
-    protected bgWidth?: number;
-    protected bgHeight?: number;
+    public bgWidth?: number;
+    public bgHeight?: number;
     protected fillWidth?: number;
     protected _progressValue: number = 0;
 
@@ -39,12 +39,13 @@ export class ProgressBar extends Container {
     }
 
     drawBarBg() {
-        if (typeof this.config.bg === 'string') {
+        if (typeof this.config.bg === 'string' && this.config.bg.length > 0) {
             this.bg = this.createOrGetSprite(this.bg, this.config.bg, true);
             this.bg.displayWidth = this.bgWidth!;
             this.bg.displayHeight = this.bgHeight!;
             this.bg.setOrigin(0);
-        } else if (this.config.radius && this.config.radius > 0 && typeof this.config.bg === 'number') {
+        } else if ((this.config.radius && this.config.radius > 0 && typeof this.config.bg === 'number')
+            || (typeof this.config.bg === 'string' && this.config.bg.length == 0)) {
             this.bg = this.reDrawRoundedRectBG(0, 0, this.bgWidth!, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.bg as number || 0xcf4b00);
         } else {
             this.bg = this.createOrGetRectangle(this.bg, true, 0, 0, this.bgWidth, this.bgHeight! - this.borderWidth!, this.config.bg as number);
@@ -56,12 +57,13 @@ export class ProgressBar extends Container {
     }
 
     drawBarFill() {
-        if (typeof this.config.fill === 'string') {
+        if (typeof this.config.fill === 'string' && this.config.fill.length > 0) {
             this.fill = this.createOrGetSprite(this.fill, this.config.fill, false);
             this.fill.displayWidth = 0;
             this.fill.displayHeight = this.bgHeight!;
             this.fill.setOrigin(0);
-        } else if (this.config.radius && this.config.radius > 0 && typeof this.config.fill === 'number') {
+        } else if ((this.config.radius && this.config.radius > 0 && typeof this.config.fill === 'number')
+            || (typeof this.config.fill === 'string' && this.config.fill.length == 0)) {
             this.fill = this.reDrawRoundedRectFill(0, 0, 0, 0, this.borderWidth!, this.radius!, this.borderColor!, this.config.fill as number || 0xff8221);
         } else {
             this.fill = this.createOrGetRectangle(this.fill, false, 0, 0, 4, this.bgHeight! - this.borderWidth!, this.config.fill as number, this.config.borderColorAlpha);

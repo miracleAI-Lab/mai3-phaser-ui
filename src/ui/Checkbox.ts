@@ -11,7 +11,7 @@ export class Checkbox extends Container {
     private config: CheckboxConfig;
     private label?: Phaser.GameObjects.Text;
     private checkbox?: Phaser.GameObjects.RenderTexture;
-    
+
     constructor(scene: BaseScene, config: CheckboxConfig) {
         super(scene, config);
         this.config = config;
@@ -55,7 +55,7 @@ export class Checkbox extends Container {
     private createLabel(): void {
         const text = this.config.text ?? 'MiracleAI';
         const style = this.config.textStyle ?? {};
-        
+
         if (!this.label) {
             this.label = this.scene.make.text({ text, style });
         } else {

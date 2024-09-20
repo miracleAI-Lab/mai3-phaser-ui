@@ -1,4 +1,5 @@
 import { Container } from "../ui/Container";
+import { ProgressBar } from "../ui/ProgressBar";
 import BaseScene from "../scene";
 
 export default class ResizableComponentManager {
@@ -41,7 +42,7 @@ export default class ResizableComponentManager {
 
     const borderGraphics = this.scene.add.graphics();
     borderGraphics.lineStyle(2, 0xffffff, 1);
-    borderGraphics.strokeRect(0, 0, component.RealWidth + padding*2, component.RealHeight + padding*2);
+    borderGraphics.strokeRect(0, 0, component.RealWidth + padding * 2, component.RealHeight + padding * 2);
     resizeContainer.add(borderGraphics);
 
     positions.forEach((pos, index) => {
@@ -67,8 +68,8 @@ export default class ResizableComponentManager {
   private getComponentBorderPositions(component: Container, padding: number) {
     const left = 0;
     const top = 0;
-    const right = component.RealWidth + padding*2;
-    const bottom = component.RealHeight + padding*2;
+    const right = component.RealWidth + padding * 2;
+    const bottom = component.RealHeight + padding * 2;
     const centerX = component.RealWidth / 2;
     const centerY = component.RealHeight / 2;
 
@@ -160,9 +161,15 @@ export default class ResizableComponentManager {
         newConfig.radius = newHeight / 2;
       }
     }
-    
+
+    this.scene.events.emit("resize", newConfig);
+
     (component as any).reDraw(newConfig);
     component.setEventInteractive();
+
+    if (component.Type === 'ProgressBar') {
+      (component as ProgressBar).updateProgress(newConfig.process);
+    }
 
     this.updateResizeHandles(componentIndex);
   }
@@ -183,7 +190,7 @@ export default class ResizableComponentManager {
     const borderGraphics = resizeContainer.list[0] as Phaser.GameObjects.Graphics;
     borderGraphics.clear();
     borderGraphics.lineStyle(2, 0xffffff, 1);
-    borderGraphics.strokeRect(0, 0, component.RealWidth + padding*2, component.RealHeight + padding*2);
+    borderGraphics.strokeRect(0, 0, component.RealWidth + padding * 2, component.RealHeight + padding * 2);
 
     resizeContainer.list.slice(1).forEach((child, index) => {
       if (child instanceof Phaser.GameObjects.Rectangle) {

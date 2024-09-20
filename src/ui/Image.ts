@@ -18,7 +18,7 @@ export class Image extends Container {
         const circleHeight = config.isCircle ? width : height;
         const circleRadius = config.isCircle ? width / 2 : height;
         const circleRadiusMax = config.isCircle ? (width / 2 + borderWidth) : height;
-        
+
         this.image = scene.make.image({ x: borderWidth, y: borderWidth, key: config.key! });
         this.image.setDisplaySize(width, circleHeight);
         this.image.setOrigin(0);
@@ -57,5 +57,5 @@ export class Image extends Container {
         }
     }
 }
-  
+
 

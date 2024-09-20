@@ -1,3 +1,4 @@
+//此脚本暂时没用了
 import { Slider } from './Slider';
 import { VolumeSliderConfig } from '../types';
 import { Container } from './Container';
@@ -27,7 +28,7 @@ export class VolumeSlider extends Container {
     this.addChild(this.sliderLabel);
 
     this.sliderLabel.setPosition(0, 0);
-    this.slider.y = this.sliderLabel.displayHeight + this.slider.btnWidth / 2;
+    this.slider.y = this.sliderLabel.displayHeight + this.slider.btnRadius / 2;
   }
 
   public reDraw(config: VolumeSliderConfig) {

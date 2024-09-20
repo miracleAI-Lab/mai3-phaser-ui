@@ -38,7 +38,9 @@ export class TextButton extends Container implements GridItem {
 
         this.label.setText(text);
         this.label.setStyle(config.textStyle ?? {});
+        this.label.setFontStyle(config.textStyle?.fontStyle!);
         this.label.setPadding(config.textStyle?.padding ?? {});
+        this.label.setOrigin(0);
         this.addChildAt(this.label, 1);
 
         const x = (config.width - this.label?.displayWidth!) / 2

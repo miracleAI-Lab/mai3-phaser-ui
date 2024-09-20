@@ -98,8 +98,9 @@ const Utils = {
     const _borderWidth = borderWidth ?? 0;
     const _borderColor = borderColor ?? 0x000000;
     const _fillColor = fillColor ?? 0x000000;
-    if (_x < _radius || _y < _radius)
-      throw new Error('"The x and y coordinate values cannot be less than the radius."');
+    // RoundedButton组件新功能必须去除这个限制
+    // if (_x < _radius || _y < _radius)
+    //   throw new Error('"The x and y coordinate values cannot be less than the radius."');
 
     if (_radius < _borderWidth)
       throw new Error('"The radius value cannot be less than the borderWidth."');
@@ -177,6 +178,20 @@ const Utils = {
 
   MergeRight(obj1: object, obj2: object): object {
     return Phaser.Utils.Objects.MergeRight(obj1, obj2);
+  },
+
+  getWorldPosition(transformObj: Phaser.GameObjects.Components.Transform) {
+    const worldTransform = transformObj.getWorldTransformMatrix();
+    const worldX = worldTransform.tx;
+    const worldY = worldTransform.ty;
+    return { x: worldX, y: worldY };
+  },
+
+  getLocalPosition(transformObj: Phaser.GameObjects.Components.Transform) {
+    const localTransform = transformObj.getLocalTransformMatrix();
+    const localX = localTransform.tx;
+    const localY = localTransform.ty;
+    return { x: localX, y: localY };
   }
 }
 

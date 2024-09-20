@@ -48,6 +48,7 @@ export class Label extends Container {
     this.label.setStyle(style);
 
     // 确保在设置位置之前计算标签大小
+    this.label.setFontStyle(this.config.textStyle?.fontStyle!);
     this.computedLabelSize();
 
     const textAlign = this.config.textAlign ?? 'left';

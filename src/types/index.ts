@@ -76,6 +76,8 @@ export interface BaseConfig {
   orientation?: OrientationTypes;
   geomType?: string;
   depth?: number;
+  originalId?: string;
+  type?: string;
   columnSpan?: number;
   handleHover?: ButtonHandle;
   handleOut?: ButtonHandle;
@@ -97,6 +99,7 @@ export interface ProgressConfig extends BaseConfig {
   borderWidth?: number;
   borderColor?: number;
   borderColorAlpha?: number;
+  value?: number;
 }
 
 export interface SliderConfig extends ProgressConfig {
@@ -105,12 +108,16 @@ export interface SliderConfig extends ProgressConfig {
   step?: number;
   progressPercent?: number;
   showValue?: boolean;
-  meshColor?: number;
   valueTextStyle?: TextStyle;
   valueTextOffset?: { x?: number; y?: number };
   slider?: Phaser.GameObjects.GameObject | string;
   handleRadius?: number;
-  handleBorder?: number;
+  handleBorderWidth?: number,
+  handleBorderColor?: number,
+  handleBackgroundColor?: number,
+  handleBackgroundAlpha?: number,
+  handleGeomType?: string,
+  handleTexture?: string,
 }
 
 export interface VolumeSliderConfig extends SliderConfig {
@@ -181,6 +188,24 @@ export interface CheckboxGroupItem {
   value?: string;
 }
 
+export interface ListViewConfig extends BaseConfig {
+  width: number;
+  height: number;
+  padding?: number;
+  background?: string | number;
+  itemHeight?: number;
+}
+
+export interface ListViewItemConfig extends BaseConfig {
+  text: string;
+  icon?: string;
+  rightContent?: {
+      type: 'text' | 'switch' | 'arrow';
+      text?: string;
+      checked?: boolean;
+  };
+}
+
 export interface CheckboxGroupConfig extends BaseConfig {
   itemWidth?: number;
   itemHeight?: number;
@@ -249,6 +274,7 @@ export interface TextConfig extends BaseConfig {
   autoWidth?: boolean;
   autoHeight?: boolean;
   textStyle?: TextStyle;
+  isShow?: boolean;
 }
 
 export interface CssStyle {
@@ -354,7 +380,7 @@ export interface FlexLayoutConfig extends BaseConfig {
   children?: Container[];
 }
 
-export interface GridLayoutConfig  extends BaseConfig {
+export interface GridLayoutConfig extends BaseConfig {
   width?: number;
   height?: number;
   padding?: number;

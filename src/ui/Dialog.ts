@@ -64,7 +64,7 @@ export class Dialog extends Container {
             children: this._config?.[name]?.children
         };
 
-        const part = this.scene.mai3.add.linearLayout(conf).setName(`_${name}`);
+        const part = new LinearLayout(this.scene, conf).setName(`_${name}`);
         this._root!.addAt(part, 1);
         return part;
     }
@@ -115,7 +115,7 @@ export class Dialog extends Container {
 
     private _createDialogBackground(): Phaser.GameObjects.GameObject | undefined {
         const { width, height } = this._config!;
-        
+
         if (typeof this._config?.background === 'string' && !this._config.background.startsWith('#')) {
             return this._createImageBackground(width!, height!);
         }
@@ -138,5 +138,14 @@ export class Dialog extends Container {
         return Utils.drawRoundedRectRenderTexture(this.scene, 0, 0,
             width, height, this._config?.borderWidth,
             this._config?.radius, this._config?.borderColor, backgroundColor);
+    }
+
+    destroy(fromScene?: boolean): void {
+        super.destroy(fromScene);
+        this._header?.destroy(fromScene);
+        this._body?.destroy(fromScene);
+        this._footer?.destroy(fromScene);
+        // this.image?.destroy(fromScene);
+        // this.root?.destroy(fromScene);
     }
 }

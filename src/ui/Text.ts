@@ -19,7 +19,7 @@ export class Text extends Container {
   constructor(scene: BaseScene, config: TextConfig) {
     super(scene, config);
     this.config = config;
-    this.Type = 'Label';
+    this.Type = 'Text';
 
     const text = config.text || "Welcome to MiracleAI";
     const style = this.getLabelStyle(config);
@@ -36,9 +36,10 @@ export class Text extends Container {
 
     const text = config.text || "Welcome to MiracleAI";
     const style = this.getLabelStyle(config);
-    
+
     this.text.setText(text);
     this.text.setStyle(style);
+    this.text.setFontStyle(config.textStyle?.fontStyle!);
     this.layout();
   }
 
@@ -48,13 +49,13 @@ export class Text extends Container {
       const labelY = (this._height! - this.text!.displayHeight) / 2;
       this.text!.setPosition(0, labelY);
     }
-    
+
     if (textAlign === 'center') {
       const labelX = (this._width! - this.text!.displayWidth) / 2;
       const labelY = (this._height! - this.text!.displayHeight) / 2;
       this.text!.setPosition(labelX, labelY);
     }
-    
+
     if (textAlign === 'right') {
       const labelX = this._width! - this.text!.displayWidth;
       const labelY = (this._height! - this.text!.displayHeight) / 2;

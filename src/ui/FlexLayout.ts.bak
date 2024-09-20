@@ -1,0 +1,125 @@
+import BaseScene from "../scene";
+import { FlexLayoutConfig } from "../types";
+import { Container } from "./Container";
+import { LinearLayout } from "./LinearLayout";
+
+export class FlexLayout extends Container {
+    private _rowManager: LinearLayout;
+    private _config?: FlexLayoutConfig;
+    
+    constructor(scene: BaseScene, config?: FlexLayoutConfig) {
+        super(scene, { x: config?.x, y: config?.y });
+
+        this._config = config;
+        this._rowManager = new LinearLayout(scene, {
+            x: this._config?.x,
+            y: this._config?.y,
+            orientation: 'vertical',
+            alignment: this._config?.alignment
+        });
+        this.add(this._rowManager);
+        this.updateWidth(this._config?.width ?? 0);
+        this.addContents(...this._config?.contents!);
+    }
+
+    get padding(): number {
+        return this._config?.padding ?? 0;
+    }
+
+    get contents(): Container[] {
+        let contents: Container[] = [];
+        for (var i=0; i<this.rows; i++) {
+            contents = contents.concat(this.getRow(i));
+        }
+        return contents;
+    }
+
+    get rows(): number {
+        return this._rowManager.contents.length;
+    }
+
+    getRow(index: number): Container[] {
+        if (0 <= index && index < this._rowManager.contents.length) {
+            const row: LinearLayout = this._rowManager.contents[index] as LinearLayout;
+            return row.contents;
+        }
+        return [];
+    }
+
+    addContents(...contents: Container[]): FlexLayout {
+        if (contents?.length > 0) {
+            contents.forEach(content => {
+                let row: LinearLayout = this._getLastRow();
+                if (content && (content.displayWidth ?? 0) > (this.width + (this.padding * 2))) {
+                    if (row.contents.length > 0) {
+                        row = this._addRow();
+                    }
+                    const scale: number = (this.width + (this.padding * 2)) / (content.displayWidth ?? 0);
+                    content.setScale!(scale);
+                }
+                if (row.width + (content.displayWidth ?? 0) + this.padding > this.width) {
+                    row = this._addRow();
+                }
+                row.addContents(content);
+            });
+            this._rowManager.refreshLayout();
+            this.setSize(this.width, this._rowManager.height);
+        }
+        return this;
+    }
+
+    updateWidth(width: number): FlexLayout {
+        this.setSize(width, 0);
+        return this.refreshLayout();
+    }
+
+    refreshLayout(): FlexLayout {
+        const contents: Container[] = this.removeAllContent(false);
+        this.addContents(...contents);
+        this.emit(LayoutEvents.RESIZE, {width: this.width, height: this.height});
+        return this;
+    }
+
+    removeContent(content: Container, destroy: boolean = true): Container | undefined {
+        let removed: Container | undefined;
+        let contents: Container[] = this.removeAllContent(false);
+        const index: number = contents.indexOf(content);
+        if (index >= 0) {
+            const r: Container[] = contents.splice(index, 1);
+            removed = r?.shift();
+            if (destroy) {
+                removed?.destroy();
+            }
+        }
+        this.addContents(...contents);
+        return removed;
+    }
+
+    removeAllContent(destroy: boolean = true): Container[] {
+        let contents: Container[] = [];
+        for (var i=0; i<this._rowManager.contents.length; i++) {
+            let row: LinearLayout = this._rowManager.contents[i] as LinearLayout;
+            contents = contents.concat(row.removeAllContent(destroy));
+        }
+        this._rowManager.removeAllContent(true);
+        return contents;
+    }
+
+    private _getLastRow(): LinearLayout {
+        if (this._rowManager.contents.length <= 0) {
+            return this._addRow();
+        } else {
+            return this._rowManager.contents[this._rowManager.contents.length - 1] as LinearLayout;
+        }
+    }
+
+    private _addRow(): LinearLayout {
+        const row: LinearLayout = new LinearLayout(this.scene, {
+            orientation: 'horizontal',
+            padding: this.padding,
+            alignment: this._config?.alignment
+        });
+        this._rowManager.addContents(row);
+        return row;
+    }
+}
