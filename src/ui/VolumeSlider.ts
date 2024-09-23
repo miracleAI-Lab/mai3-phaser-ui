@@ -2,7 +2,7 @@
 import { Slider } from './Slider';
 import { VolumeSliderConfig } from '../types';
 import { Container } from './Container';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 
 export class VolumeSlider extends Container {
   slider?: Slider;

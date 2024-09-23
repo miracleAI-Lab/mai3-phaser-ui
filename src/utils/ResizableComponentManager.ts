@@ -1,6 +1,6 @@
 import { Container } from "../ui/Container";
 import { ProgressBar } from "../ui/ProgressBar";
-import BaseScene from "../scene";
+import { BaseScene } from "../game";
 
 export default class ResizableComponentManager {
   private scene: BaseScene;

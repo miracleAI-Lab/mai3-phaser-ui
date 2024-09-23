@@ -1,4 +1,4 @@
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 import { Container } from './Container';
 import { ImageConfig } from '../types';
 

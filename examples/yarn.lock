@@ -1202,13 +1202,6 @@ magic-string@^0.30.10:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.0"
 
-mai3-phaser-ui@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/mai3-phaser-ui/-/mai3-phaser-ui-1.0.1.tgz#8bfa8a92d9c79d0ea0c589ce0251034c42ee59fe"
-  integrity sha512-8zpsN5TNLUApIJxCb7VHExoZIp7ynOYHoGEw4tgzj4N5RQxtsg/z+f78RVv6sOn4Ki9KqHzsqwT+s935Sx/O+Q==
-  dependencies:
-    phaser "^3.85.2"
-
 merge-stream@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/merge-stream/-/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
@@ -1252,13 +1245,6 @@ pathfinding@^0.4.18:
   integrity sha512-R0TGEQ9GRcFCDvAWlJAWC+KGJ9SLbW4c0nuZRcioVlXVTlw+F5RvXQ8SQgSqI9KXWC1ew95vgmIiyaWTlCe9Ag==
   dependencies:
     heap "0.2.5"
-
-phaser@^3.80.1:
-  version "3.80.1"
-  resolved "https://registry.npmmirror.com/phaser/-/phaser-3.80.1.tgz#d387d7e04042218f74b9d22e261f437e54464440"
-  integrity sha512-VQGAWoDOkEpAWYkI+PUADv5Ql+SM0xpLuAMBJHz9tBcOLqjJ2wd8bUhxJgOqclQlLTg97NmMd9MhS75w16x1Cw==
-  dependencies:
-    eventemitter3 "^5.0.1"
 
 phaser@^3.85.2:
   version "3.85.2"

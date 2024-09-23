@@ -4,9 +4,10 @@ export class ButtonDemo extends BaseScene {
   constructor() {
     super('ButtonDemo');
   }
-  
+
   preload() {
     super.preload();
+    this.load.atlas('buttons', 'https://labs.phaser.io/assets/ui/nine-slice.png', 'https://labs.phaser.io/assets/ui/nine-slice.json');
   }
 
   create() {
@@ -102,11 +103,18 @@ export class ButtonDemo extends BaseScene {
   }
 
   private createRoundedButton() {
+    //无图
     this.mai3.add.roundedButton({
       x: 430,
       y: 70,
       radius: 100,
-      texture: "cangshu",
+      texture: "",
+      //newAddProps:
+      frame: 0,
+      enableDrag: false,
+      backgroundAlpha: 1,
+      geomType: "Circle",
+      //
       borderWidth: 6,
       borderColor: 0xFFD700,
       backgroundColor: 0x32CD32,
@@ -117,17 +125,42 @@ export class ButtonDemo extends BaseScene {
         audio: "sfx-press",
         handleFn: () => {
         }
-      }
+      },
+    });
+
+    //有图
+    this.mai3.add.roundedButton({
+      x: 430,
+      y: 300,
+      radius: 100,
+      texture: "cangshu",
+      //new add
+      frame: 0,
+      enableDrag: false,
+      backgroundAlpha: 1,
+      geomType: "Circle",
+      //
+      borderWidth: 6,
+      borderColor: 0xFFD700,
+      backgroundColor: 0x32CD32,
+      handleHover: {
+        audio: "sfx-hover"
+      },
+      handleDown: {
+        audio: "sfx-press",
+        handleFn: () => {
+        }
+      },
     });
   }
 
   private createStartGameButton() {
-    this.mai3.add.imageButton({
+    const btn = this.mai3.add.imageButton({
       x: 10,
       y: 160,
       width: 160,
       height: 60,
-      texture: "StartGameButton",
+      texture: 'StartGameButton',
       borderWidth: 3,
       handleHover: {
         audio: "sfx-hover",
@@ -148,7 +181,9 @@ export class ButtonDemo extends BaseScene {
         handleFn: () => {
           console.log("handleUp");
         }
-      }
+      },
     });
+
+    btn.debugHitArea();
   }
 }

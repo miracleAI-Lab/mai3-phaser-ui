@@ -20,7 +20,7 @@
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "pathfinding": "^0.4.18",
-    "phaser": "^3.80.1",
+    "phaser": "^3.85.2",
     "short-uuid": "4.2.0",
     "typed-signals": "^3.0.0",
     "vite-plugin-require": "^1.2.14"

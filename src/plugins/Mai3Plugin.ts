@@ -1,6 +1,6 @@
 import { Plugins } from "phaser";
 import ObjectFactory from "./ObjectFactory";
-import BaseScene from "../scene";
+import { BaseScene } from "../game";
 
 export class Mai3Plugin extends Phaser.Plugins.ScenePlugin {
   add: ObjectFactory;

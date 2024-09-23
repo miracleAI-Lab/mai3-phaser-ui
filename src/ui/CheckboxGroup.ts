@@ -1,4 +1,4 @@
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 import { Checkbox } from './Checkbox';
 import { Container } from './Container';
 import { CheckboxGroupConfig } from '../types';

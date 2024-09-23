@@ -1,7 +1,7 @@
 import { Container } from './Container';
 import { GridConfig } from '../types';
 import Utils from '../utils';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 
 export class Grid extends Container {
     private _content: Container;

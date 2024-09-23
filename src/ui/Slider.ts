@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { ProgressBar } from './ProgressBar';
 import { RoundedButtonConfig, SliderConfig } from '../types';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 import Memory from '../utils/Memory';
 import { RoundedButton } from './RoundedButton';
 export class Slider extends ProgressBar {
@@ -30,13 +30,13 @@ export class Slider extends ProgressBar {
     this.max = this.sliderConfig?.max ?? 100;
     this.step = this.sliderConfig?.step ?? 1;
     if (this.sliderBtn) {
-      Memory.DelEventsBeforeDestory(this.sliderBtn);
       this.sliderBtn.destroy(true);
     }
     this.sliderBtn = this.drawSliderBtn();
     this.addChildAt(this.sliderBtn, 2);
     this.sliderBtn.setInteractive({ draggable: true });
     this.sliderBtn.debugHitArea();
+    Memory.DelEventsBeforeDestory(this.sliderBtn);
 
     // 因为锚点不是在中心，所以需要额外做以下的计算
     let btnRadius = this.getBtnRadius();
@@ -45,7 +45,7 @@ export class Slider extends ProgressBar {
     this.refreshProgress(btnCenterPosX);
 
     this.fixSliderBtnPosY();
-    this.sliderBtn?.updateMaskPos();
+    this.sliderBtn?.updateMaskShapePos();
 
     let dragXRangeLeft = -btnRadius;
     let dragXRangeRight = this.config?.width! - btnRadius;
@@ -55,7 +55,7 @@ export class Slider extends ProgressBar {
       let realBtnCenterPosX = Phaser.Math.Clamp(dragX + btnRadius, 0, this.config?.width!);
       this.refreshProgress(realBtnCenterPosX);
       this.fixSliderBtnPosY();
-      this.sliderBtn?.updateMaskPos();
+      this.sliderBtn?.updateMaskShapePos();
     }, this);
 
     this.RefreshBounds();
@@ -78,23 +78,9 @@ export class Slider extends ProgressBar {
     return sliderBtn;
   }
 
-  // 暂时先不要删除
-  // getMaskCenterPointerWorldPos() {
-  //   const { btnLeftTopX, btnLeftTopY } = this.computedSliderBtnLeftTopPosition();
-  //   const maskCenterPointerWorldPosX = (this.sliderConfig?.x ?? 0) + btnLeftTopX + this.getBtnRadius();
-  //   const maskCenterPointerWorldPosY = (this.sliderConfig?.y ?? 0) + btnLeftTopY + this.getBtnRadius();
-  //   return {
-  //     maskCenterPointerWorldPosX,
-  //     maskCenterPointerWorldPosY
-  //   }
-  // }
-
   transformForRoundedButtonConfig(): RoundedButtonConfig {
-    console.warn("transformForRoundedButtonConfig");
     const handleRadius = this.getHandleRadius();
     const { btnLeftTopX, btnLeftTopY } = this.computedSliderBtnLeftTopPosition();
-    console.log("🚀 ~ Slider ~ transformForRoundedButtonConfig ~ btnLeftTopX, btnLeftTopY:", btnLeftTopX, btnLeftTopY);
-    // const { maskCenterPointerWorldPosX, maskCenterPointerWorldPosY } = this.getMaskCenterPointerWorldPos();
     const config: RoundedButtonConfig = {
       x: btnLeftTopX,
       y: btnLeftTopY,

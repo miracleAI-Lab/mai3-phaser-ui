@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { TextBoxConfig } from '../types';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 import { Label } from './Label';
 import { TextBox } from './TextBox';
 

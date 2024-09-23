@@ -1,7 +1,7 @@
 import { Container } from './Container';
 import { Alignment, LinearLayoutConfig } from '../types';
 import Utils from '../utils';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 
 export class LinearLayout extends Container {
     private _content: Container;
@@ -29,8 +29,9 @@ export class LinearLayout extends Container {
     }
 
     private createBackground(): Phaser.GameObjects.Image | Phaser.GameObjects.RenderTexture {
-        const { width = 200, height = 0, background, borderWidth, radius, borderColor } = this._config;
-        const bgHeight = height || (this._content?.RealHeight ?? 0);
+        const { width = 240, height = 0, background, borderWidth, radius, borderColor } = this._config;
+        let bgHeight = height || (this._content?.RealHeight ?? 0);
+        if (bgHeight == 0) bgHeight = 200;
 
         if (typeof background === 'string' && !background.startsWith('#')) {
             const bg = this.scene.make.image({ x: 0, y: 0, key: background });
@@ -47,7 +48,7 @@ export class LinearLayout extends Container {
 
         return Utils.drawRoundedRectRenderTexture(
             this.scene, 0, 0, width, bgHeight, borderWidth, radius, borderColor, backgroundColor
-        );
+        ) as Phaser.GameObjects.RenderTexture;
     }
 
     public reDraw(config: LinearLayoutConfig): void {

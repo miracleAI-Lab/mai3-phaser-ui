@@ -1,7 +1,7 @@
 import { Container } from './Container';
 import { LabelConfig, TextStyle } from '../types';
 import Utils from '../utils';
-import { BaseScene } from "../game";
+import { BaseScene } from '../game';
 import { Panel } from './Panel';
 
 const defaultStyle = {
@@ -42,12 +42,13 @@ export class Label extends Panel {
 
     if (!this.label) {
       this.label = this.scene.make.text({});
-      this.addChildAt(this.label!, 1);
+      this.addChildAt(this.label, 1);
     }
-    this.label?.setText(text);
-    this.label?.setStyle(style);
+    this.label.setText(text);
+    this.label.setStyle(style);
 
-    this.label?.setFontStyle(this.config.textStyle?.fontStyle!);
+    // 确保在设置位置之前计算标签大小
+    this.label.setFontStyle(this.config.textStyle?.fontStyle!);
     this.computedLabelSize();
 
     const textAlign = this.config.textAlign ?? 'left';
@@ -71,7 +72,7 @@ export class Label extends Panel {
 
   private computedLabelSize() {
     const autoWidth = this.config.autoWidth ? true : (this.config.width ? false : true);
-    const autoHeight = this.config.autoHeight ? true : (this.config.height ? false : true);
+    const autoHeight = this.config.autoWidth ? true : (this.config.height ? false : true);
     this._width = autoWidth ? (this.scene.scale.width - 20) : (this.config.width ?? 150);
 
     const paddingLeft = this.config.padding?.x ? this.config.padding?.x : (this.config.padding?.left ?? 0);
@@ -113,17 +114,17 @@ export class Label extends Panel {
   }
 
   set Text(text: string) {
-    this.config = Utils.MergeRight(this.config, { text }) as LabelConfig;
+    this.config = Utils.MergeRight(this.config, { text });
     this.reDraw(this.config);
   }
 
   setWidth(width: number) {
-    this.config = Utils.MergeRight(this.config, { width }) as LabelConfig;
+    this.config = Utils.MergeRight(this.config, { width });
     this.reDraw(this.config);
   }
 
   setStyle(textStyle: TextStyle) {
-    this.config = Utils.MergeRight(this.config, { textStyle }) as LabelConfig;
+    this.config = Utils.MergeRight(this.config, { textStyle });
     this.reDraw(this.config);
   }
 
@@ -133,13 +134,5 @@ export class Label extends Panel {
 
   get Label(): Phaser.GameObjects.Text {
     return this.label!;
-  }
-
-  destroy(fromScene?: boolean) {
-    if (this.label) {
-      this.label.destroy();
-      this.label = undefined;
-    }
-    super.destroy(fromScene);
   }
 }

@@ -12,15 +12,15 @@ import { Container } from "../ui/Container";
 import { RoundedButton } from "../ui/RoundedButton";
 import { TextButton } from "../ui/TextButton";
 import { ImageButton } from "../ui/ImageButton";
-import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig } from '../types';
-import BaseScene from "../scene";
+import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig, PanelConfig } from '../types';
+import { BaseScene } from "../game";
 import { TextBox } from "../ui/TextBox";
 import { Tabs } from "../ui/Tabs";
 import { TextArea } from "../ui/TextArea";
 import { Toast } from "../ui/Toast";
-// import { FlexLayout } from "../ui/FlexLayout";
 import { LinearLayout } from "../ui/LinearLayout";
 import { ListView } from "../ui/ListView";
+import { Panel } from "../ui/Panel";
 
 type Constructor<T extends Phaser.GameObjects.GameObject> = new (...args: any[]) => T;
 
@@ -74,6 +74,10 @@ class ObjectFactory {
 
   text(config: TextConfig): Text {
     return this.createGameObject(Text, this.scene, config);
+  }
+
+  panel(config: PanelConfig): Panel {
+    return this.createGameObject(Panel, this.scene, config);
   }
 
   label(config: LabelConfig): Label {

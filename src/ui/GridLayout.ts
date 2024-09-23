@@ -1,6 +1,6 @@
 import { Container } from './Container';
 import Utils from '../utils';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 import { TextButton } from './TextButton';
 import { TextBox } from './TextBox';
 import { ImageButton } from './ImageButton';

@@ -9,6 +9,7 @@ export class Preloader extends BaseScene {
         super("Preloader");
     }
     preload() {
+        super.preload();
 
         this.loadskill()
         this.add.image(0, 0, "preloader");
@@ -40,6 +41,14 @@ export class Preloader extends BaseScene {
         this.load.audio('sfx-press', 'assets/audio/sfx-press.wav');
         this.load.audio('bgm-game', 'assets/audio/bgm-game.mp3');
         this.load.audio('bgm-main', 'assets/audio/bgm-main.mp3');
+
+        //ImageButtonFillBg
+        this.load.image('ImageButtonFillBg', 'assets/images/ImageButtonFillBg.png');
+
+        //slider
+        this.load.image('ProgressBg', 'assets/images/ProgressBg.png');
+        this.load.image('ProgressFillBg', 'assets/images/ProgressFillBg.png');
+        this.load.image('RoundedButtonFillBg', 'assets/images/RoundedButtonFillBg.png');
 
         // let progressBar: ProgressBar;
         // this.load.on('filecomplete-json-config', (key: string) => {
@@ -87,22 +96,21 @@ export class Preloader extends BaseScene {
             radius: 20,
             borderWidth: 0,
             borderColor: 0xcf4b00,
-            bg: 0x008B8B,
-            fill: 0xff8221,
+            bgColor: 0x008B8B,
+            fillColor: 0xff8221,
         };
 
         this.progressBar1 = this.mai3.add.progressBar(this.config);
 
         const progressBar2 = this.mai3.add.progressBar({
             x: 10, y: 50,
-            // y: progressBar1.getBottom() + 100,
             width: 480,
             height: 40,
             radius: 10,
             borderWidth: 4,
             borderColor: 0xC71585,
-            bg: "strokeImage",
-            fill: "progressImage",
+            bgTexture: "strokeImage",
+            fillTexture: "progressImage",
             // bg: 0x008B8B,
             // fill: 0xff8221,
         });
@@ -113,9 +121,7 @@ export class Preloader extends BaseScene {
             this.progressBar1?.updateProgress(progress);
             progressBar2.updateProgress(progress);
             // progressBar.updateProgress(progress);
-
             this.add.text(10, 10, "isnafosdansa")
-
         });
     }
 

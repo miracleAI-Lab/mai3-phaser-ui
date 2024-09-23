@@ -1,7 +1,7 @@
 import { Container } from './Container';
 import { BackgroundType, ProgressConfig } from '../types';
 import Utils from '../utils';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 export class ProgressBar extends Container {
     protected borderWidth?: number;
     protected borderColor?: number;
@@ -39,17 +39,16 @@ export class ProgressBar extends Container {
     }
 
     drawBarBg() {
-        if (typeof this.config.bg === 'string' && this.config.bg.length > 0) {
-            this.bg = this.createOrGetSprite(this.bg, this.config.bg, true);
+        if (this.config.bgTexture && this.config.bgTexture.length > 0) {
+            this.bg = this.createOrGetSprite(this.bg, this.config.bgTexture, true);
             this.bg.displayWidth = this.bgWidth!;
             this.bg.displayHeight = this.bgHeight!;
             this.bg.setOrigin(0);
-        } else if ((this.config.radius && this.config.radius > 0 && typeof this.config.bg === 'number')
-            || (typeof this.config.bg === 'string' && this.config.bg.length == 0)) {
-            this.bg = this.reDrawRoundedRectBG(0, 0, this.bgWidth!, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.bg as number || 0xcf4b00);
+        } else if ((this.config.radius && this.config.radius > 0 || (this.config.bgTexture && this.config.bgTexture.length == 0))) {
+            this.bg = this.reDrawRoundedRectBG(0, 0, this.bgWidth!, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.bgColor as number || 0xcf4b00);
         } else {
-            this.bg = this.createOrGetRectangle(this.bg, true, 0, 0, this.bgWidth, this.bgHeight! - this.borderWidth!, this.config.bg as number);
-            this.bg.setStrokeStyle(this.borderWidth, this.config.bg as number, this.config.borderColorAlpha).setOrigin(0, 0);
+            this.bg = this.createOrGetRectangle(this.bg, true, 0, 0, this.bgWidth, this.bgHeight! - this.borderWidth!, this.config.bgColor as number);
+            this.bg.setStrokeStyle(this.borderWidth, this.config.bgColor as number, this.config.borderColorAlpha).setOrigin(0, 0);
             this.bg.setOrigin(0);
         }
 
@@ -57,16 +56,15 @@ export class ProgressBar extends Container {
     }
 
     drawBarFill() {
-        if (typeof this.config.fill === 'string' && this.config.fill.length > 0) {
-            this.fill = this.createOrGetSprite(this.fill, this.config.fill, false);
+        if (this.config.fillTexture && this.config.fillTexture.length > 0) {
+            this.fill = this.createOrGetSprite(this.fill, this.config.fillTexture, false);
             this.fill.displayWidth = 0;
             this.fill.displayHeight = this.bgHeight!;
             this.fill.setOrigin(0);
-        } else if ((this.config.radius && this.config.radius > 0 && typeof this.config.fill === 'number')
-            || (typeof this.config.fill === 'string' && this.config.fill.length == 0)) {
-            this.fill = this.reDrawRoundedRectFill(0, 0, 0, 0, this.borderWidth!, this.radius!, this.borderColor!, this.config.fill as number || 0xff8221);
+        } else if ((this.config.radius && this.config.radius > 0) || (this.config.fillTexture && this.config.fillTexture.length == 0)) {
+            this.fill = this.reDrawRoundedRectFill(0, 0, 1, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.fillColor as number || 0xff8221);
         } else {
-            this.fill = this.createOrGetRectangle(this.fill, false, 0, 0, 4, this.bgHeight! - this.borderWidth!, this.config.fill as number, this.config.borderColorAlpha);
+            this.fill = this.createOrGetRectangle(this.fill, false, 0, 0, 4, this.bgHeight! - this.borderWidth!, this.config.fillColor as number, this.config.borderColorAlpha);
             this.fill.setOrigin(0);
         }
 
@@ -76,7 +74,7 @@ export class ProgressBar extends Container {
     createOrGetSprite(obj?: any, key?: string, isBg?: boolean) {
         let gameObj = obj ?? this.scene.make.sprite({ key });
         if (!(obj instanceof Phaser.GameObjects.Sprite)) {
-            gameObj.destroy(true);
+            if (obj) obj.destroy(true);
             gameObj = this.scene.make.sprite({ key });
 
             if (isBg) this.bg = gameObj;
@@ -91,7 +89,7 @@ export class ProgressBar extends Container {
     createOrGetRectangle(obj?: any, isBg?: boolean, x?: number, y?: number, width?: number, height?: number, fillColor?: number, fillAlpha?: number) {
         let gameObj = (obj ?? this.scene.add.rectangle(x, y, width, height, fillColor, fillAlpha)) as Phaser.GameObjects.Rectangle;
         if (!(obj instanceof Phaser.GameObjects.Rectangle)) {
-            gameObj.destroy(true);
+            if (obj) obj.destroy(true);
             gameObj = this.scene.add.rectangle(x, y, width, height, fillColor, fillAlpha);
 
             if (isBg) this.bg = gameObj;
@@ -111,7 +109,10 @@ export class ProgressBar extends Container {
         }
 
         const rt = this.bg as Phaser.GameObjects.RenderTexture;
-        this.bg = Utils.reDrawRoundedRectRenderTexture(this.scene, rt, x, y, width, height, borderWidth, radius, borderColor, fillColor);
+        const newBg = Utils.reDrawRoundedRectRenderTexture(this.scene, rt, x, y, width, height, borderWidth, radius, borderColor, fillColor);
+        if (newBg) {
+            this.bg = newBg;
+        }
         return this.bg;
     }
 
@@ -121,7 +122,10 @@ export class ProgressBar extends Container {
         }
 
         const rt = this.fill as Phaser.GameObjects.RenderTexture;
-        this.fill = Utils.reDrawRoundedRectRenderTexture(this.scene, rt, x, y, width, height, borderWidth, radius, borderColor, fillColor);
+        const newFill = Utils.reDrawRoundedRectRenderTexture(this.scene, rt, x, y, width, height, borderWidth, radius, borderColor, fillColor);
+        if (newFill) {
+            this.fill = newFill;
+        }
         return this.fill;
     }
 
@@ -139,8 +143,11 @@ export class ProgressBar extends Container {
 
         if (this.fill instanceof Phaser.GameObjects.RenderTexture) {
             this.fillWidth = this.bgWidth! * progress;
-            this.fill = this.reDrawRoundedRectFill(0, 0, this.fillWidth, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.fill as number || 0xff8221);
-            this.addChildAt(this.fill, 1);
+            if (this.fillWidth === 0) this.fillWidth++;
+            this.fill = this.reDrawRoundedRectFill(0, 0, this.fillWidth, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.fillColor as number || 0xff8221);
+            if (this.fill) {
+                this.addChildAt(this.fill, 1);
+            }
         }
 
         this._progressValue = progress;

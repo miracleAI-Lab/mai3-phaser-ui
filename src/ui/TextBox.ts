@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { TextBoxConfig } from '../types';
 import { Container } from './Container';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 import { Label } from './Label';
 export class TextBox extends Container {
     config: TextBoxConfig;

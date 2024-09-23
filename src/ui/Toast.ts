@@ -1,6 +1,6 @@
 import { Container } from './Container';
 import { ToastConfig } from '../types';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 import { Label } from './Label';
 import Utils from '../utils';
 

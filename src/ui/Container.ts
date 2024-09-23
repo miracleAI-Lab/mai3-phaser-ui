@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { BaseConfig, ButtonHandle } from '../types';
 import Utils from "../utils";
-import BaseScene from "../scene";
+import { BaseScene } from "../game";
 
 const ENABLED_EVENT_TYPES = ['ImageButton', 'TextButton', 'RoundedButton', 'Label', 'Text', 'Image', 'Checkbox', 'CheckboxGroup', 'Slider', 'ProgressBar', 'VolumeSlider'];
 
@@ -87,25 +87,27 @@ export class Container extends Phaser.GameObjects.Container {
     if (!this._hitArea)
       this._hitArea = new Phaser.Geom.Rectangle();
 
+    const width = Utils.GetValue(this.RealSize, 'width', this._baseConfig?.width);
+    const height = Utils.GetValue(this.RealSize, 'height', this._baseConfig?.height);
     const hitArea = this._hitArea as Phaser.Geom.Rectangle;
-    hitArea.setSize(this.RealWidth, this.RealHeight);
+    hitArea.setSize(width, height);
     hitArea.setPosition(0, 0);
     this.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains);
+
+    console.log('this.width, this.height: ', `${width}, ${height}`)
   }
 
   protected handleHover(): void {
     this.handleEvent(this._baseConfig?.handleHover);
-    this.blendMode = Phaser.BlendModes.ADD;
   }
 
   protected handleOut(): void {
     this.handleEvent(this._baseConfig?.handleOut);
-    this.blendMode = Phaser.BlendModes.NORMAL;
   }
 
   protected handleDown(): void {
     this.handleEvent(this._baseConfig?.handleDown);
-    this.alpha = 0.5;
+    this.alpha = 0.8;
   }
 
   protected handleUp(): void {
@@ -122,7 +124,7 @@ export class Container extends Phaser.GameObjects.Container {
       handle.handleFn();
     }
 
-    this.blendMode = Phaser.BlendModes.ADD;
+    this.blendMode = Phaser.BlendModes.NORMAL;
   }
 
   public findChild(id: string, gameObject?: Phaser.GameObjects.GameObject): Phaser.GameObjects.GameObject | undefined {

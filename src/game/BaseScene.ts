@@ -15,7 +15,7 @@ class BaseScene extends Phaser.Scene {
     this.resizableManager = new ResizableComponentManager(this);
   }
 
-  preload() {
+  preload() {   
     if (this.isDebugPrint) {
       const bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x551A8B);
       bg.setOrigin(0, 0);

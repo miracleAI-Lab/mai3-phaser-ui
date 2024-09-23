@@ -2,7 +2,7 @@ import { Container } from './Container';
 import { DialogBody, DialogConfig, DialogFooter, DialogHeader, LinearLayoutConfig } from '../types';
 import Utils from '../utils';
 import { LinearLayout } from './LinearLayout';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 
 export class Dialog extends Container {
     private _header?: LinearLayout;
@@ -113,7 +113,7 @@ export class Dialog extends Container {
         this._footer?.addChildren(children);
     }
 
-    private _createDialogBackground(): Phaser.GameObjects.GameObject | undefined {
+    private _createDialogBackground(): Phaser.GameObjects.GameObject {
         const { width, height } = this._config!;
 
         if (typeof this._config?.background === 'string' && !this._config.background.startsWith('#')) {
@@ -137,7 +137,7 @@ export class Dialog extends Container {
 
         return Utils.drawRoundedRectRenderTexture(this.scene, 0, 0,
             width, height, this._config?.borderWidth,
-            this._config?.radius, this._config?.borderColor, backgroundColor);
+            this._config?.radius, this._config?.borderColor, backgroundColor) as Phaser.GameObjects.GameObject;
     }
 
     destroy(fromScene?: boolean): void {

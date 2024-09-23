@@ -1,8 +1,7 @@
 import { CheckboxConfig } from '../types';
 import { Container } from './Container';
 import Utils from '../utils';
-import BaseScene from '../scene';
-
+import { BaseScene } from "../game";
 export class Checkbox extends Container {
     private _value: string = '';
     private _isChecked: boolean = false;
@@ -38,9 +37,13 @@ export class Checkbox extends Container {
         const uncheckColor = this.config.uncheckColor ?? 0xff8221;
         const borderWidth = this.config.borderWidth ?? 4;
 
+        if (this.checkbox) {
+            this.checkbox.destroy();
+        }
+
         this.checkbox = Utils.reDrawCircleRenderTexture(
             this.scene,
-            this.checkbox,
+            this.scene.make.renderTexture({ x: 0, y: 0, width: radius * 2, height: radius * 2 }),
             radius,
             radius,
             radius,
@@ -67,10 +70,10 @@ export class Checkbox extends Container {
         const fontSize = this.getFontSize();
 
         const radius = this._height / 2;
-        this.label.x = radius * 2 + labelSpace;
-        this.label.y = (radius * 2 - fontSize) / 2;
+        this.label!.x = radius * 2 + labelSpace;
+        this.label!.y = (radius * 2 - fontSize) / 2;
 
-        this.addChild(this.label);
+        this.addChild(this.label!);
     }
 
     private getFontSize(): number {

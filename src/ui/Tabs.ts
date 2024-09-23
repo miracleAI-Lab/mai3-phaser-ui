@@ -1,7 +1,7 @@
 import { Container } from './Container';
 import { TabsConfig } from '../types';
 import { LinearLayout } from './LinearLayout';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 import { Label } from './Label';
 
 export class Tabs extends Container {

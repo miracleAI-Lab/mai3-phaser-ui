@@ -92,14 +92,17 @@ export interface FlexLayoutConfig extends BaseConfig {
 }
 
 export interface ProgressConfig extends BaseConfig {
-  bg: Phaser.Textures.Texture | string | number;
-  fill: Phaser.Textures.Texture | string | number;
+  bgColor?: number;
+  fillColor?: number;
+  bgTexture?: string;
+  fillTexture?: string;
   radius?: number;
   border?: number;
   borderWidth?: number;
   borderColor?: number;
   borderColorAlpha?: number;
   value?: number;
+  process?: number;
 }
 
 export interface SliderConfig extends ProgressConfig {
@@ -200,9 +203,9 @@ export interface ListViewItemConfig extends BaseConfig {
   text: string;
   icon?: string;
   rightContent?: {
-      type: 'text' | 'switch' | 'arrow';
-      text?: string;
-      checked?: boolean;
+    type: 'text' | 'switch' | 'arrow';
+    text?: string;
+    checked?: boolean;
   };
 }
 
@@ -221,9 +224,7 @@ export interface CheckboxGroupConfig extends BaseConfig {
   handleSelect?: Function
 }
 
-export interface ImageButtonConfig extends BaseConfig {
-  texture: string;
-  frame?: string | number;
+export interface ImageButtonConfig extends NinePatchConfig {
   handleHover?: ButtonHandle,
   handleOut?: ButtonHandle,
   handleDown?: ButtonHandle,
@@ -244,7 +245,28 @@ export interface RoundedButtonConfig extends BaseConfig {
   handleUp?: ButtonHandle;
 }
 
-export interface LabelConfig extends BaseConfig {
+export interface NinePatchConfig extends BaseConfig  {
+  x?: number;
+  y?: number;
+  texture?: string | Phaser.Textures.Texture;
+  frame?: string | number;
+  width?: number; 
+  height?: number;
+  leftWidth?: number; 
+  rightWidth?: number;
+  topHeight?: number;
+  bottomHeight?: number;
+}
+
+export interface PanelConfig extends NinePatchConfig {
+  borderWidth?: number;
+  borderColor?: number;
+  backgroundColor?: number;
+  backgroundAlpha?: number;
+  padding?: Padding;
+}
+
+export interface LabelConfig extends PanelConfig {
   text?: string;
   textAlign?: string; // left | right | center
   isWordWrap?: boolean;

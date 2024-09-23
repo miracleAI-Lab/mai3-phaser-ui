@@ -1,7 +1,7 @@
 import { Container } from './Container';
 import { LabelConfig, TextConfig, TextStyle } from '../types';
 import Utils from '../utils';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 
 const defaultStyle = {
   fontFamily: 'Arial', // 字体
@@ -30,7 +30,7 @@ export class Text extends Container {
     this.reDraw(config);
   }
 
-  public reDraw(config: LabelConfig) {
+  public reDraw(config: TextConfig) {
     this.config = config;
     this.computedLabelSize();
 
@@ -102,17 +102,17 @@ export class Text extends Container {
   }
 
   set Text(text: string) {
-    this.config = Utils.MergeRight(this.config, { text });
+    this.config = Utils.MergeRight(this.config, { text }) as TextConfig;
     this.reDraw(this.config);
   }
 
   setWidth(width: number) {
-    this.config = Utils.MergeRight(this.config, { width });
+    this.config = Utils.MergeRight(this.config, { width }) as TextConfig;
     this.reDraw(this.config);
   }
 
   setStyle(textStyle: TextStyle) {
-    this.config = Utils.MergeRight(this.config, { textStyle });
+    this.config = Utils.MergeRight(this.config, { textStyle }) as TextConfig;
     this.reDraw(this.config);
   }
 }

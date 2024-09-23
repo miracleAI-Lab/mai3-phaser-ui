@@ -1,7 +1,7 @@
 import { Container } from './Container';
 import { ButtonConfig, GridItem } from '../types';
 import Utils from '../utils';
-import BaseScene from '../scene';
+import { BaseScene } from "../game";
 
 export class TextButton extends Container implements GridItem {
     config: ButtonConfig;
@@ -30,7 +30,7 @@ export class TextButton extends Container implements GridItem {
         const backgroundColor = config.backgroundColor ?? 0;
         const borderWidth = config.borderWidth ?? 0;
         const borderColor = config.borderColor || 0xcf4b00;
-        this.bg = Utils.reDrawRoundedRectRenderTexture(this.scene, this.bg, 0, 0, config.width, config.height, borderWidth, radius, borderColor, backgroundColor)!;
+        this.bg = Utils.reDrawRoundedRectRenderTexture(this.scene, this.bg ?? this.scene.make.renderTexture({ x: 0, y: 0, width: config.width, height: config.height }), 0, 0, config.width, config.height, borderWidth, radius, borderColor, backgroundColor)!;
         this.addChildAt(this.bg, 0);
 
         if (!this.label)
