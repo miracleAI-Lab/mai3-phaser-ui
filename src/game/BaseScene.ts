@@ -2,13 +2,12 @@ import Phaser from 'phaser';
 import { Mai3Plugin } from '../plugins/Mai3Plugin';
 import ResizableComponentManager from '../utils/ResizableComponentManager';
 import { Container } from '../ui/Container';
+
 class BaseScene extends Phaser.Scene {
   mai3!: Mai3Plugin;
-
-  // 实时打印坐标位置
-  printer: Phaser.GameObjects.Text | undefined;
-  isDebugPrint: boolean = true;
-  private resizableManager?: ResizableComponentManager;
+  private resizableManager: ResizableComponentManager;
+  private printer?: Phaser.GameObjects.Text;
+  private isDebugPrint: boolean = true;
 
   constructor(key: string) {
     super({ key });
@@ -17,24 +16,27 @@ class BaseScene extends Phaser.Scene {
 
   preload() {   
     if (this.isDebugPrint) {
-      const bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x551A8B);
-      bg.setOrigin(0, 0);
-      bg.setInteractive()
-        .on('pointerdown', this.printPointer, this)
-        .on('pointerup', this.printPointer, this)
-        .on('pointermove', this.printPointer, this);
-
-      this.printer = this.add.text(1, 1, `pointer: 0, 0`, {
-        fontSize: 18,
-        color: "#fff"
-      });
+      this.setupDebugEnvironment();
     }
   }
 
-  protected printPointer(pointer: Phaser.Input.Pointer) {
-    if (this.printer) {
-      this.printer.text = `pointer: ${pointer.x.toFixed(2)}, ${pointer.y.toFixed(2)}`;
-    }
+  private setupDebugEnvironment() {
+    const bg = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x551A8B)
+      .setOrigin(0, 0)
+      .setInteractive();
+    
+    ['pointerdown', 'pointerup', 'pointermove'].forEach(event => {
+      bg.on(event, this.printPointer, this);
+    });
+
+    this.printer = this.add.text(1, 1, '指针: 0, 0', {
+      fontSize: '18px',
+      color: "#ffffff"
+    });
+  }
+
+  private printPointer(pointer: Phaser.Input.Pointer) {
+    this.printer?.setText(`指针: ${pointer.x.toFixed(2)}, ${pointer.y.toFixed(2)}`);
   }
 
   protected switchDragResizeComponent(component: Container) {

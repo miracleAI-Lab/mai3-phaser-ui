@@ -25,8 +25,7 @@ yarn add mai3-phaser-ui
 Here’s a quick example of how to create different types of buttons using the **mai3-phaser-ui** library:
 
 ```typescript
-import { BaseScene } from "mai3-phaser-ui";
-import { Mai3Plugin } from 'mai3-phaser-ui';
+import { BaseScene, Mai3Game, Mai3Plugin } from "mai3-phaser-ui";
 
 export class ButtonDemo extends BaseScene {
 
@@ -159,22 +158,36 @@ export class ButtonDemo extends BaseScene {
   }
 }
 
-const game = new Phaser.Game({
-  type: Phaser.AUTO,
-  width: 800,
-  height: 800,
-  backgroundColor: '#111111',
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
-  },
-  plugins: {
-    scene: [
-      { key: 'Mai3Plugin', plugin: Mai3Plugin, mapping: 'mai3' },
-    ],
-  },
-  scene: [ ButtonDemo ]
-});
+const config = getGameConfig();
+const game = Mai3Game.Init(config);
+game.scene.add('ButtonDemo', ButtonDemo, true);
+
+//==== config.ts ====
+export function getGameConfig() {
+  const config: Phaser.Types.Core.GameConfig = {
+    type: Phaser.AUTO,
+    backgroundColor: '#00746b',
+    scale: {
+      width: 960,
+      height: 1280,
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+    },
+    dom: {
+      createContainer: true
+    },
+    parent: 'root',
+    physics: {
+      default: 'arcade',
+      arcade: {
+        debug: true,
+        gravity: { x: 0, y: 0 }
+      }
+    },
+  };
+
+  return config;
+}
 ```
 
 This example demonstrates how to integrate different types of buttons, including text, draggable, rounded, and image buttons, all fully customizable through the **mai3-phaser-ui** library.
