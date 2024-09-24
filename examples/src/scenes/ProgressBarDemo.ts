@@ -1,5 +1,5 @@
-import { BaseScene, ProgressBar } from "../../../dist";
-import { ProgressConfig } from "../../../dist/types";
+import { BaseScene, ProgressBar, Utils } from "../../../dist";
+import { ImageProgressConfig, ProgressConfig } from "../../../dist/types";
 export class ProgressBarDemo extends BaseScene {
   config?: ProgressConfig;
   progressBar1?: ProgressBar;
@@ -10,12 +10,76 @@ export class ProgressBarDemo extends BaseScene {
   }
 
   async preload() {
-    this.createProgressBar();
+    super.preload();
+    // this.createProgressBar();
   }
 
   async create() {
     // this.createProgressBar();
     this.createReturnButton();
+
+    const config1: ImageProgressConfig = {
+      x: 50, y: 200,
+      barTexture: {
+        key: "ProgressBg",
+        width: 400,
+      },
+      fillTexture: {
+        x: 2,
+        y: 0,
+        key: "ProgressFillBg",
+        width: 13,
+        leftWidth: 6,
+        rightWidth: 6,
+      }
+    };
+
+    const config2: ImageProgressConfig = {
+      x: 50, y: 300,
+      barTexture: {
+        key: "ui",
+        frame: "ButtonOrange",
+        width: 400,
+      },
+      fillTexture: {
+        x: 16,
+        y: 10,
+        key: "ui",
+        frame: "ButtonOrangeFill1",
+        width: 13,
+        leftWidth: 6,
+        rightWidth: 6,
+      }
+    };
+
+    const config3: ImageProgressConfig = {
+      x: 50, y: 400,
+      barTexture: {
+        key: "ui",
+        frame: "ButtonOrange",
+        width: 400,
+      },
+      fillTexture: {
+        x: 16,
+        y: 10,
+        key: "ui",
+        frame: "ButtonOrangeFill2",
+        width: 13,
+        leftWidth: 6,
+        rightWidth: 6,
+      },
+      value: 0.5
+    };
+
+    const p1 = this.mai3.add.imageProgressBar(config1);
+    const p2 = this.mai3.add.imageProgressBar(config2);
+    // const p3 = this.mai3.add.imageProgressBar(config3);
+    this.mai3.add.imageProgressBar(config3);
+    Utils.addTimer(this, 20, () => {
+      p1.value = p1.value < 1 ? p1.value + 0.01 : 0.01;
+      p2.value = p2.value < 1 ? p2.value + 0.01 : 0.01;
+      // p3.value = p3.value < 1 ? p3.value + 0.01 : 0.01;
+    });
   }
 
   createProgressBar() {
@@ -65,7 +129,7 @@ export class ProgressBarDemo extends BaseScene {
   private createReturnButton() {
     this.mai3.add.textButton({
       x: 10,
-      y: 10,
+      y: 20,
       width: 150,
       height: 50,
       text: "返回DemoScene",

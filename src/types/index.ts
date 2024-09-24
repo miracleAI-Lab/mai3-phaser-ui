@@ -105,6 +105,25 @@ export interface ProgressConfig extends BaseConfig {
   process?: number;
 }
 
+export interface progressTextrureConfig {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  key?: string;
+  frame?: string;
+  leftWidth?: number;
+  rightWidth?: number;
+  topHeight?: number;
+  bottomHeight?: number;
+}
+
+export interface ImageProgressConfig extends BaseConfig {
+  barTexture?: progressTextrureConfig;
+  fillTexture?: progressTextrureConfig;
+  value?: number;
+}
+
 export interface SliderConfig extends ProgressConfig {
   min?: number;
   max?: number;

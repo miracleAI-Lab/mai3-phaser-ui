@@ -12,7 +12,7 @@ import { Container } from "../ui/Container";
 import { RoundedButton } from "../ui/RoundedButton";
 import { TextButton } from "../ui/TextButton";
 import { ImageButton } from "../ui/ImageButton";
-import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig, PanelConfig } from '../types';
+import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig, PanelConfig, ImageProgressConfig } from '../types';
 import { BaseScene } from "../game";
 import { TextBox } from "../ui/TextBox";
 import { Tabs } from "../ui/Tabs";
@@ -21,6 +21,7 @@ import { Toast } from "../ui/Toast";
 import { LinearLayout } from "../ui/LinearLayout";
 import { ListView } from "../ui/ListView";
 import { Panel } from "../ui/Panel";
+import { ImageProgressBar } from "../ui/ImageProgressBar";
 
 type Constructor<T extends Phaser.GameObjects.GameObject> = new (...args: any[]) => T;
 
@@ -134,6 +135,10 @@ class ObjectFactory {
 
   listView(config: ListViewConfig): ListView {
     return this.createGameObject(ListView, this.scene, config);
+  }
+
+  imageProgressBar(config: ImageProgressConfig): ImageProgressBar {
+    return this.createGameObject(ImageProgressBar, this.scene, config);
   }
 };
 export default ObjectFactory;

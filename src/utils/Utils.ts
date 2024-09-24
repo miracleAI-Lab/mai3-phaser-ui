@@ -174,6 +174,17 @@ const Utils = {
   getLocalPosition(transformObj: Phaser.GameObjects.Components.Transform) {
     const localTransform = transformObj.getLocalTransformMatrix();
     return { x: localTransform.tx, y: localTransform.ty };
+  },
+
+  addTimer(scene: Phaser.Scene, delay?: number, callback?: Function, loop?: boolean) {
+    const timer = scene.time.addEvent({
+      delay: delay ?? 50,
+      callback: callback,
+      callbackScope: scene,
+      loop: loop ?? true
+    });
+
+    return timer;
   }
 }
 

@@ -127,6 +127,11 @@ export class TextArea extends TextBox {
         } else if (this.cursor.y < 0) {
             this.label.y = -this.cursor.y;
         }
+
+        // 如果光标在文本末尾，确保光标位置在文本框的末尾
+        if (cursorPosition === this.hiddenTextArea!.value.length) {
+            this.cursor.x = this.label.width;
+        }
     }
 
     override getCharacterXPosition(index: number, line?: string): number {
@@ -149,6 +154,37 @@ export class TextArea extends TextBox {
         this.hiddenTextArea!.value = newText;
         this.setCursorPosition(cursorPosition + text.length);
         this.updateTextFromTextArea();
+    }
+
+    handlePointerDown(pointer: Phaser.Input.Pointer) {
+        if (this.isFocus) {
+            const localX = this.label.x + this.label.getBounds().left;
+            const localY = this.label.y + this.label.getBounds().top;
+            const cursorX = pointer.x - localX;
+            const cursorY = pointer.y - localY;
+
+            const lines = this.label.Text.split('\n');
+            let currentLineIndex = Math.floor(cursorY / this.lineHeight);
+            if (currentLineIndex >= lines.length) {
+                currentLineIndex = lines.length - 1;
+            }
+
+            const line = lines[currentLineIndex];
+            let offsetInLine = Math.floor(this.getCharacterXPosition(cursorX, line));
+            
+            // 如果点击位置超过当前行的长度，将光标设置在行尾
+            if (offsetInLine > line.length) {
+                offsetInLine = line.length;
+            }
+
+            let cursorPosition = 0;
+            for (let i = 0; i < currentLineIndex; i++) {
+                cursorPosition += lines[i].length + 1; // +1 for newline character
+            }
+            cursorPosition += offsetInLine;
+
+            this.setCursorPosition(cursorPosition);
+        }
     }
 
     destroy(fromScene?: boolean): void {

@@ -20,6 +20,7 @@ import { VolumeSlider } from "./ui/VolumeSlider";
 import { Mai3Plugin } from "./plugins/Mai3Plugin";
 import { BaseScene, Mai3Game } from "./game";
 import * as Types from "./types";
+import Utils from "./utils";
 import { ListView } from "./ui/ListView";
 
 export {
@@ -46,7 +47,8 @@ export {
   ListView,
   Mai3Plugin,
   Mai3Game,
-  Types
+  Types,
+  Utils
 };
 
 const Mai3 = {
@@ -73,7 +75,8 @@ const Mai3 = {
   ListView: ListView,
   Mai3Plugin: Mai3Plugin,
   Mai3Game: Mai3Game,
-  Types: Types
+  Types: Types,
+  Utils: Utils
 };
 
 export default Mai3;

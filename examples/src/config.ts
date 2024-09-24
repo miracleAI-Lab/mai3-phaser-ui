@@ -2,7 +2,7 @@
 export function getGameConfig() {
   const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
-    backgroundColor: 0xffffff,
+    backgroundColor: '#00746b',
     scale: {
       width: 960,
       height: 1280,
