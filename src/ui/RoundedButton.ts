@@ -1,13 +1,13 @@
 import { Container } from './Container';
 import { RoundedButtonConfig } from '../types';
 import Utils from '../utils';
-import { BaseScene } from "../game";
+import { BaseScene } from '../game';
 
 export class RoundedButton extends Container {
-    config: RoundedButtonConfig;
-    bg?: Phaser.GameObjects.Graphics;
-    image?: Phaser.GameObjects.Image;
-    maskShape?: Phaser.GameObjects.Graphics;
+    public config: RoundedButtonConfig;
+    protected bg?: Phaser.GameObjects.RenderTexture | null;
+    protected image?: Phaser.GameObjects.Image;
+    protected maskShape?: Phaser.GameObjects.Graphics;
 
     constructor(scene: BaseScene, config: RoundedButtonConfig) {
         config.geomType = 'Circle';
@@ -28,10 +28,9 @@ export class RoundedButton extends Container {
         const backgroundColor = config.backgroundColor ?? 0x32CD32;
         const backgroundAlpha = config.backgroundAlpha ?? 1;
 
-        if (!this.bg) this.bg = this.scene.add.graphics();
         if (!this.maskShape) this.maskShape = this.scene.add.graphics();
         if (!this.image) this.image = this.scene.make.image({});
-        this.reDrawBg(this.bg, btnRadius, btnRadius, btnRadius, borderWidth, borderColor, backgroundColor, backgroundAlpha);
+        this.reDrawBg(btnRadius, btnRadius, btnRadius, borderWidth, borderColor, backgroundColor, backgroundAlpha);
         let visible = true;
         if (!config.texture) {
             visible = false;
@@ -43,8 +42,11 @@ export class RoundedButton extends Container {
         this.RefreshBounds();
     }
 
-    reDrawBg(graphics: Phaser.GameObjects.Graphics, x?: number, y?: number, radius?: number, borderWidth?: number, borderColor?: number, fillColor?: number, backgroundAlpha?: number) {
-        this.bg = Utils.reDrawCircle(graphics, x, y, radius, borderWidth, borderColor, fillColor).setAlpha(backgroundAlpha);
+    reDrawBg(x: number, y: number, radius: number, borderWidth: number, borderColor: number, fillColor: number, backgroundAlpha: number) {
+        if (this.bg) {
+            this.bg.destroy();
+        }
+        this.bg = Utils.drawCircleRenderTexture(this.scene, x, y, radius, borderWidth, borderColor, fillColor).setAlpha(backgroundAlpha);
         this.image!.setVisible(false);
         this.addChildAt(this.bg, 1);
     }

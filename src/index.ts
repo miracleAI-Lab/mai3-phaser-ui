@@ -3,7 +3,6 @@ import { CheckboxGroup } from "./ui/CheckboxGroup";
 import { Container } from "./ui/Container";
 import { Dialog } from "./ui/Dialog";
 import { Grid } from "./ui/Grid";
-import { GridLayout } from "./ui/GridLayout";
 import { Image } from "./ui/Image";
 import { ImageButton } from "./ui/ImageButton";
 import { Label } from "./ui/Label";
@@ -30,7 +29,6 @@ export {
   Container,
   Dialog,
   Grid,
-  GridLayout,
   LinearLayout,
   Image,
   ImageButton,
@@ -58,7 +56,6 @@ const Mai3 = {
   Container: Container,
   Dialog: Dialog,
   Grid: Grid,
-  GridLayout: GridLayout,
   LinearLayout: LinearLayout,
   Image: Image,
   ImageButton: ImageButton,

@@ -53,8 +53,8 @@ export class CheckboxGroup extends Container {
             x, y,
             width: this._config.itemWidth,
             height: this._config.itemHeight,
-            checkColor: this._config.checkColor,
-            uncheckColor: this._config.uncheckColor,
+            // checkColor: this._config.checkColor,
+            // uncheckColor: this._config.uncheckColor,
             text: item.text,
             value: item.value,
             isChecked: this._config.defaultSelectedIndex === index,
@@ -63,8 +63,23 @@ export class CheckboxGroup extends Container {
                 fontFamily: 'Arial',
                 fontSize: '24px',
                 color: '#fff',
+                fontStyle: this._config.textStyle?.fontStyle
             },
-            handleSelect: this._handleCheckClick.bind(this)
+            handleSelect: this._handleCheckClick.bind(this),
+            markBgRadius: 15,
+            markBgBorderWidth: 3,
+            markBgBorderColor: 0xff0,
+            markBgColor: 0x1f1,
+            markBgAlpha: 1,
+            markBgTexture: "logo",
+
+            markFillRadius: 12,
+            markFillBorderWidth: 3,
+            markFillBorderColor: 0xffeeff,
+            markFillColor: 0xff00ff,
+            markFillAlpha: 1,
+            markFillTexture: "logo3",
+            enablePointer: true
         });
     }
 
@@ -84,7 +99,7 @@ export class CheckboxGroup extends Container {
         this._selectedIndexes = [];
         const multiSelect = this._config.multiSelect ?? false;
 
-        if (ckb.checked && !multiSelect) {
+        if (ckb.isChecked && !multiSelect) {
             this._handleSingleSelect(ckb);
         } else if (multiSelect) {
             this._handleMultiSelect();
@@ -97,9 +112,9 @@ export class CheckboxGroup extends Container {
 
     private _handleSingleSelect(ckb: Checkbox): void {
         this._checkboxes.forEach((checkbox, index) => {
-            if (checkbox.checked && checkbox.value !== ckb.value) {
-                checkbox.checked = false;
-            } else if (checkbox.checked && checkbox.value === ckb.value) {
+            if (checkbox.isChecked && checkbox.value !== ckb.value) {
+                checkbox.isChecked = false;
+            } else if (checkbox.isChecked && checkbox.value === ckb.value) {
                 this._selectedIndexes.push(index);
                 this._selectedValues.push(ckb.value);
             }
@@ -108,7 +123,7 @@ export class CheckboxGroup extends Container {
 
     private _handleMultiSelect(): void {
         this._checkboxes.forEach((checkbox, index) => {
-            if (checkbox.checked) {
+            if (checkbox.isChecked) {
                 this._selectedIndexes.push(index);
                 this._selectedValues.push(checkbox.value);
             }

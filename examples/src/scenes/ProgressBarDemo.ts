@@ -146,7 +146,8 @@ export class ProgressBarDemo extends BaseScene {
         handleFn: () => {
           this.scene.start('DemoScene');
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 }

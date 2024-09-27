@@ -5,7 +5,7 @@ export class LabelDemo extends BaseScene {
   constructor() {
     super('LabelDemo');
   }
-  
+
   preload() {
     super.preload();
   }
@@ -44,7 +44,8 @@ export class LabelDemo extends BaseScene {
         handleFn: () => {
           this.scene.start('DemoScene');
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 
@@ -65,7 +66,7 @@ export class LabelDemo extends BaseScene {
         color: '#FFD700',
       },
       isWordWrap: true,
-      padding: { x: 5, y: 5 }
+      padding: { x: 5, y: 5 },
     });
   }
 
@@ -86,7 +87,7 @@ export class LabelDemo extends BaseScene {
         fontSize: '24px',
         color: '#fff',
       },
-      padding: { x: 10, y: 10 }
+      padding: { x: 10, y: 10 },
     };
     this.mai3.add.label(cfg);
   }
@@ -109,7 +110,7 @@ export class LabelDemo extends BaseScene {
         fontSize: '24px',
         color: '#fff',
       },
-      padding: { x: 10, y: 10 }
+      padding: { x: 10, y: 10 },
     };
     this.mai3.add.label(cfg);
   }
@@ -138,7 +139,8 @@ export class LabelDemo extends BaseScene {
         fontSize: '24px',
         color: '#fff',
       },
-      padding: { x: 5, y: 5 }
+      padding: { x: 5, y: 5 },
+      enablePointer: true
     };
     const text = this.mai3.add.text(textCfg);
     text.enableDrag();
@@ -163,9 +165,9 @@ export class LabelDemo extends BaseScene {
         color: '#fff',
       },
       isWordWrap: true,
-      padding: { left: 20, right: 20, top: 10, bottom: 0 }
+      padding: { left: 20, right: 20, top: 10, bottom: 0 },
     };
     this.mai3.add.label(labelCfg);
   }
-  
+
 }

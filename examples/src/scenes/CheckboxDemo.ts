@@ -10,36 +10,41 @@ export class CheckboxDemo extends BaseScene {
     }
 
     async create() {
-        this.createCheckbox();
+        //无图
+        this.createCheckboxWithNoImages();
+        //有图
+        this.createCheckboxWithImages();
         this.createCheckboxGroup();
         this.createReturnButton();
     }
-  
+
     private createReturnButton() {
-      this.mai3.add.textButton({
-        x: 10,
-        y: 10,
-        width: 150,
-        height: 50,
-        text: "返回DemoScene",
-        backgroundColor: 0x4CAF50,
-        borderColor: 0x45A049,
-        borderWidth: 2,
-        radius: 10,
-        textStyle: {
-          fontFamily: 'Arial',
-          fontSize: '18px',
-          color: '#FFFFFF',
-        },
-        handleUp: {
-          handleFn: () => {
-            this.scene.start('DemoScene');
-          }
-        }
-      });
+        this.mai3.add.textButton({
+            x: 10,
+            y: 10,
+            width: 150,
+            height: 50,
+            text: "返回DemoScene",
+            backgroundColor: 0x4CAF50,
+            borderColor: 0x45A049,
+            borderWidth: 2,
+            radius: 10,
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '18px',
+                color: '#FFFFFF',
+            },
+            handleUp: {
+                handleFn: () => {
+                    this.scene.start('DemoScene');
+                }
+            },
+            enablePointer: true,
+        });
     }
-    
-    private createCheckbox() {
+
+    //有图
+    private createCheckboxWithImages() {
         const ckbConfig = {
             x: 10, y: 350,
             width: 100,
@@ -54,10 +59,66 @@ export class CheckboxDemo extends BaseScene {
                 fontFamily: 'Arial',
                 fontSize: '24px',
                 color: '#fff',
+                fontStyle: '',//bold or 100-1200
             },
             handleSelect() {
                 console.log('checked: ', this.isChecked);
-            }
+            },
+            markBgRadius: 15,
+            markBgBorderWidth: 3,
+            markBgBorderColor: 0xff0,
+            markBgColor: 0x1f1,
+            markBgAlpha: 1,
+            markBgTexture: "logo",
+
+            markFillRadius: 12,
+            markFillBorderWidth: 3,
+            markFillBorderColor: 0xffeeff,
+            markFillColor: 0xff00ff,
+            markFillAlpha: 1,
+            markFillTexture: "logo3",
+            enablePointer: true,
+        };
+
+        const ckb = this.mai3.add.checkbox(ckbConfig);
+        ckb.debugDrawBorderLine();
+    }
+
+    //无图
+    private createCheckboxWithNoImages() {
+        const ckbConfig = {
+            x: 10, y: 450,
+            width: 100,
+            height: 40,
+            checkColor: 0xFFD700,
+            uncheckColor: 0xcf4b00,
+            text: "Mai3",
+            isChecked: true,
+            borderWidth: 6,
+            labelSpace: 10,
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '24px',
+                color: '#fff',
+                fontStyle: '',//bold or 100-1200
+            },
+            handleSelect() {
+                console.log('checked: ', this.isChecked);
+            },
+            markBgRadius: 15,
+            markBgBorderWidth: 3,
+            markBgBorderColor: 0xff0,
+            markBgColor: 0x1f1,
+            markBgAlpha: 1,
+            markBgTexture: "",
+
+            markFillRadius: 12,
+            markFillBorderWidth: 3,
+            markFillBorderColor: 0xffeeff,
+            markFillColor: 0xff00ff,
+            markFillAlpha: 1,
+            markFillTexture: "",
+            enablePointer: true,
         };
 
         const ckb = this.mai3.add.checkbox(ckbConfig);
@@ -90,6 +151,6 @@ export class CheckboxDemo extends BaseScene {
             console.log('选中的项目:', selectedItems);
         });
     }
-        
+
     update() { }
 }

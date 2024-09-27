@@ -42,7 +42,8 @@ export class ButtonDemo extends BaseScene {
         handleFn: () => {
           this.scene.start('DemoScene');
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 
@@ -71,7 +72,8 @@ export class ButtonDemo extends BaseScene {
       handleUp: {
         handleFn: () => {
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 
@@ -109,12 +111,10 @@ export class ButtonDemo extends BaseScene {
       y: 70,
       radius: 100,
       texture: "",
-      //newAddProps:
       frame: 0,
       enableDrag: false,
       backgroundAlpha: 1,
       geomType: "Circle",
-      //
       borderWidth: 6,
       borderColor: 0xFFD700,
       backgroundColor: 0x32CD32,
@@ -126,6 +126,7 @@ export class ButtonDemo extends BaseScene {
         handleFn: () => {
         }
       },
+      enablePointer: true,
     });
 
     //有图
@@ -134,12 +135,10 @@ export class ButtonDemo extends BaseScene {
       y: 300,
       radius: 100,
       texture: "cangshu",
-      //new add
       frame: 0,
       enableDrag: false,
       backgroundAlpha: 1,
       geomType: "Circle",
-      //
       borderWidth: 6,
       borderColor: 0xFFD700,
       backgroundColor: 0x32CD32,
@@ -151,6 +150,7 @@ export class ButtonDemo extends BaseScene {
         handleFn: () => {
         }
       },
+      enablePointer: true,
     });
   }
 
@@ -182,6 +182,7 @@ export class ButtonDemo extends BaseScene {
           console.log("handleUp");
         }
       },
+      enablePointer: true,
     });
 
     btn.debugHitArea();

@@ -10,14 +10,14 @@ import { Image } from './Image';
 import { Text } from './Text';
 import { TextBox } from './TextBox';
 import { ListViewConfig, ListViewItemConfig } from '../types';
-import { GridLayout } from './GridLayout';
+import { Grid } from './Grid';
 
 export class ListView extends Container {
     private _content!: Container;
     private _mask!: Phaser.GameObjects.Graphics;
     private _scrollBar!: Phaser.GameObjects.Graphics;
     private _allItems: ListViewItemConfig[] = [];
-    private _visibleItems: GridLayout[] = [];
+    private _visibleItems: Grid[] = [];
     private _startIndex: number = 0;
     private _itemsPerPage: number = 10;
 
@@ -91,15 +91,14 @@ export class ListView extends Container {
         console.log(`所有项目数量: ${this._allItems.length}`);
     }
 
-    private createItem(config: ListViewItemConfig, y: number): GridLayout {
+    private createItem(config: ListViewItemConfig, y: number): Grid {
         const { width, itemHeight = 50 } = this.config;
-        const item = new GridLayout(this.scene, {
+        const item = new Grid(this.scene, {
             x: 0,
             y: y,
             width: width - 20,
             height: itemHeight,
             background: 0xffffff,
-            padding: 5,
             columnGap: 10,
             rowGap: 5
         });

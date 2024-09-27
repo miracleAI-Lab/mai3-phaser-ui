@@ -70,6 +70,7 @@ export interface BaseConfig {
   width?: number;
   height?: number;
   enableDrag?: boolean;
+  enablePointer?: boolean;
   radius?: number;
   borderWidth?: number;
   space?: number;
@@ -190,13 +191,21 @@ export interface BaseContainerConfig {
 }
 
 export interface CheckboxConfig extends BaseConfig {
-  x?: number,
+  x?: number;
   y?: number;
-  radius?: number;
-  borderWidth?: number;
-  checkColor?: number;
-  uncheckColor?: number;
-  borderColorAlpha?: number;
+  markBgRadius: number;
+  markBgBorderWidth?: number;
+  markBgBorderColor?: number;
+  markBgColor?: number;
+  markBgAlpha?: number;
+  markBgTexture?: string;
+
+  markFillRadius: number;
+  markFillBorderWidth?: number;
+  markFillBorderColor?: number;
+  markFillColor?: number;
+  markFillAlpha?: number;
+  markFillTexture?: string;
   isChecked?: boolean;
   text?: string;
   value?: string;
@@ -264,14 +273,14 @@ export interface RoundedButtonConfig extends BaseConfig {
   handleUp?: ButtonHandle;
 }
 
-export interface NinePatchConfig extends BaseConfig  {
+export interface NinePatchConfig extends BaseConfig {
   x?: number;
   y?: number;
   texture?: string | Phaser.Textures.Texture;
   frame?: string | number;
-  width?: number; 
+  width?: number;
   height?: number;
-  leftWidth?: number; 
+  leftWidth?: number;
   rightWidth?: number;
   topHeight?: number;
   bottomHeight?: number;
@@ -421,12 +430,15 @@ export interface FlexLayoutConfig extends BaseConfig {
   children?: Container[];
 }
 
-export interface GridLayoutConfig extends BaseConfig {
+export interface GridConfig extends PanelConfig {
   width?: number;
   height?: number;
-  padding?: number;
+  rows?: number;
+  columns?: number;
   rowGap?: number;
   columnGap?: number;
+  autoFill?: boolean;
+  draggable?: boolean;
   background?: string | number;
   borderWidth?: number;
   radius?: number;
@@ -456,30 +468,25 @@ export interface TabItem {
   title?: string;
   texture?: string;
 }
-
-export interface GridConfig extends BaseConfig {
-  cellWidth?: number;
-  cellHeight?: number;
-  borderWidth?: number;
-  borderColor?: number;
-  radius?: number;
-  background?: string | number;
-  children?: Mai3Component[];
-  alignment?: Alignment;
-  itemSpace?: number;
-  padding?: number;
-}
-
-export interface ImageConfig extends SpriteConfig {
+export interface ImageConfig extends BaseConfig {
   id?: string;
   x?: number;
   y?: number;
+  type?: string;
   width?: number;
   height?: number;
   radius?: number;
+  key?: string;
+  frame?: string;
   isCircle?: boolean;
+  enableDrag?: boolean;
   borderWidth?: number;
   borderColor?: number;
+  enablePointer?: boolean;
   backgroundColor?: number;
   backgroundAlpha?: number;
+}
+
+export interface GridItemConfig extends BaseConfig {
+  itemConfigs: any[];
 }

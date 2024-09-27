@@ -17,53 +17,55 @@ export class DialogDemo extends BaseScene {
         this.createReturnButton();
         this.createShowDialogButton();
     }
-  
+
     private createReturnButton() {
-      this.mai3.add.textButton({
-        x: 10,
-        y: 10,
-        width: 150,
-        height: 50,
-        text: "返回DemoScene",
-        backgroundColor: 0x4CAF50,
-        borderColor: 0x45A049,
-        borderWidth: 2,
-        radius: 10,
-        textStyle: {
-          fontFamily: 'Arial',
-          fontSize: '18px',
-          color: '#FFFFFF',
-        },
-        handleUp: {
-          handleFn: () => {
-            this.scene.start('DemoScene');
-          }
-        }
-      });
+        this.mai3.add.textButton({
+            x: 10,
+            y: 10,
+            width: 150,
+            height: 50,
+            text: "返回DemoScene",
+            backgroundColor: 0x4CAF50,
+            borderColor: 0x45A049,
+            borderWidth: 2,
+            radius: 10,
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '18px',
+                color: '#FFFFFF',
+            },
+            handleUp: {
+                handleFn: () => {
+                    this.scene.start('DemoScene');
+                }
+            },
+            enablePointer: true,
+        });
     }
 
     private createShowDialogButton() {
-      this.mai3.add.textButton({
-        x: 10,
-        y: 70,
-        width: 150,
-        height: 50,
-        text: "显示对话框",
-        backgroundColor: 0x2196F3,
-        borderColor: 0x1E88E5,
-        borderWidth: 2,
-        radius: 10,
-        textStyle: {
-          fontFamily: 'Arial',
-          fontSize: '18px',
-          color: '#FFFFFF',
-        },
-        handleUp: {
-          handleFn: () => {
-            this.dialog.show();
-          }
-        }
-      });
+        this.mai3.add.textButton({
+            x: 10,
+            y: 70,
+            width: 150,
+            height: 50,
+            text: "显示对话框",
+            backgroundColor: 0x2196F3,
+            borderColor: 0x1E88E5,
+            borderWidth: 2,
+            radius: 10,
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '18px',
+                color: '#FFFFFF',
+            },
+            handleUp: {
+                handleFn: () => {
+                    this.dialog.show();
+                }
+            },
+            enablePointer: true,
+        });
     }
 
     private createDialog() {
@@ -78,7 +80,8 @@ export class DialogDemo extends BaseScene {
             radius: 20,
             header: this.createDialogHeader(),
             body: this.createDialogBody(),
-            footer: this.createDialogFooter()
+            footer: this.createDialogFooter(),
+            enablePointer: true,
         });
         this.dialog.hide();
 
@@ -93,8 +96,7 @@ export class DialogDemo extends BaseScene {
             height: 60,
             title: '我是Dialog',
             background: '#000080',
-            horizontalAlign: 'left',
-            verticalAlign: 'top',
+            alignment: { horizontal: 'left', vertical: 'top' },
             orientation: 'vertical',
         };
     }
@@ -102,8 +104,7 @@ export class DialogDemo extends BaseScene {
     private createDialogBody(): DialogBody {
         return {
             background: '#104E8B',
-            horizontalAlign: 'left',
-            verticalAlign: 'top',
+            alignment: { horizontal: 'left', vertical: 'top' },
             orientation: 'vertical',
             padding: 20,
             children: []
@@ -114,8 +115,7 @@ export class DialogDemo extends BaseScene {
         return {
             height: 80,
             background: '#FF1493',
-            horizontalAlign: 'left',
-            verticalAlign: 'top',
+            alignment: { horizontal: 'left', vertical: 'top' },
             orientation: 'horizontal',
             padding: 5,
             children: [],
@@ -152,7 +152,8 @@ export class DialogDemo extends BaseScene {
                 handleFn: () => {
                     this.dialog.hide();
                 }
-            }
+            },
+            enablePointer: true
         });
         footerBtn.debugHitArea();
         return footerBtn;
@@ -182,7 +183,8 @@ export class DialogDemo extends BaseScene {
                 handleFn: () => {
                     this.dialog.hide();
                 }
-            }
+            },
+            enablePointer: true,
         });
         footerBtn1.debugHitArea();
         return footerBtn1;
@@ -207,6 +209,6 @@ export class DialogDemo extends BaseScene {
 
         return [textBox];
     }
-        
+
     update() { }
 }

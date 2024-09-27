@@ -1,7 +1,6 @@
-import { BaseScene, GridLayout, ListView } from '../../../dist';
-import { ListViewConfig, ListViewItemConfig } from '../../../dist/types';
+import { BaseScene, Grid } from '../../../dist';
 export class DemoScene extends BaseScene {
-    private gridLayout!: GridLayout;
+    private grid!: Grid;
 
     constructor() {
         super('DemoScene');
@@ -13,30 +12,31 @@ export class DemoScene extends BaseScene {
 
     async create() {
         this.createDemoNavigation();
-        // this.createListViewDemo();
     }
 
     private createDemoNavigation() {
-        this.gridLayout = new GridLayout(this, {
+        this.grid = new Grid(this, {
             x: 100,
             y: 100,
             width: 600,
             height: 400,
-            padding: 10,
+            padding: { all: 20 },
             rowGap: 10,
             columnGap: 10,
-            background: 0x333333,
-            borderWidth: 2,
-            borderColor: 0x000000,
-            alignment: {horizontal: 'center', vertical: 'middle'},
+            rows: 4,
+            columns: 3,
+            borderWidth: 6,
+            borderColor: 0xB03060,
+            backgroundColor: 0x333333,
+            alignment: { horizontal: 'center', vertical: 'middle' },
             radius: 10,
         });
 
-        this.add.existing(this.gridLayout);
+        this.add.existing(this.grid);
 
         const demoScenes = [
             { name: 'Toast演示', scene: 'ToastDemo', color: 0x4CAF50 },
-            { name: '网格布局演示', scene: 'GridLayoutDemo', color: 0x2196F3 },
+            { name: '网格演示', scene: 'GridDemo', color: 0x2196F3 },
             { name: '标签页演示', scene: 'TabsDemo', color: 0xFFC107 },
             { name: '复选框演示', scene: 'CheckboxDemo', color: 0xFF5722 },
             { name: '滑块演示', scene: 'SliderDemo', color: 0x9C27B0 },
@@ -56,7 +56,7 @@ export class DemoScene extends BaseScene {
                 rowButtons.push({
                     type: 'TextButton',
                     text: demo.name,
-                    width: 180,
+                    width: 150,
                     height: 60,
                     textStyle: { fontFamily: 'Arial', fontSize: '20px', color: '#FFFFFF' },
                     backgroundColor: demo.color,
@@ -66,43 +66,16 @@ export class DemoScene extends BaseScene {
                     columnSpan: 4,
                     handleHover: { audio: "sfx-hover" },
                     handleDown: { audio: "sfx-press" },
-                    handleUp: { 
+                    handleUp: {
                         handleFn: () => {
                             this.scene.start(demo.scene);
                         }
                     }
                 });
             }
-            this.gridLayout.addRow(rowButtons);
+            this.grid.addRow(rowButtons);
         }
     }
 
-    private createListViewDemo() {
-        const listViewConfig: ListViewConfig = {
-            x: 0,
-            y: 0,
-            width: 300,
-            height: 400,
-            background: 0x444444,
-            padding: 10,
-            itemHeight: 50
-        };
-
-        const listView = new ListView(this, listViewConfig);
-        this.add.existing(listView);
-
-        for (let i = 1; i <= 20; i++) {
-            const itemConfig: ListViewItemConfig = {
-                text: `列表项 ${i}`,
-                icon: 'cangshu',
-                rightContent: {
-                    type: 'text',
-                    text: `${i}`
-                }
-            };
-            listView.addItem(itemConfig);
-        }
-    }
-        
     update() { }
 }

@@ -74,7 +74,9 @@ export class ProgressBar extends Container {
     createOrGetSprite(obj?: any, key?: string, isBg?: boolean) {
         let gameObj = obj ?? this.scene.make.sprite({ key });
         if (!(obj instanceof Phaser.GameObjects.Sprite)) {
-            if (obj) obj.destroy(true);
+            // ai虽好，但还请是需要重新审核一下代码，谨慎为好
+            // if (obj) obj.destroy(true);
+            gameObj.destroy(true);
             gameObj = this.scene.make.sprite({ key });
 
             if (isBg) this.bg = gameObj;
@@ -89,7 +91,8 @@ export class ProgressBar extends Container {
     createOrGetRectangle(obj?: any, isBg?: boolean, x?: number, y?: number, width?: number, height?: number, fillColor?: number, fillAlpha?: number) {
         let gameObj = (obj ?? this.scene.add.rectangle(x, y, width, height, fillColor, fillAlpha)) as Phaser.GameObjects.Rectangle;
         if (!(obj instanceof Phaser.GameObjects.Rectangle)) {
-            if (obj) obj.destroy(true);
+            // if (obj) obj.destroy(true);
+            gameObj.destroy(true);
             gameObj = this.scene.add.rectangle(x, y, width, height, fillColor, fillAlpha);
 
             if (isBg) this.bg = gameObj;

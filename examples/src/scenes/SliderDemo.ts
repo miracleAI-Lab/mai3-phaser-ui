@@ -33,7 +33,8 @@ export class SliderDemo extends BaseScene {
         handleFn: () => {
           this.scene.start('DemoScene');
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 

@@ -13,29 +13,30 @@ export class TextBoxDemo extends BaseScene {
         this.createTextBox();
         this.createReturnButton();
     }
-  
+
     private createReturnButton() {
-      this.mai3.add.textButton({
-        x: 10,
-        y: 10,
-        width: 150,
-        height: 50,
-        text: "返回DemoScene",
-        backgroundColor: 0x4CAF50,
-        borderColor: 0x45A049,
-        borderWidth: 2,
-        radius: 10,
-        textStyle: {
-          fontFamily: 'Arial',
-          fontSize: '18px',
-          color: '#FFFFFF',
-        },
-        handleUp: {
-          handleFn: () => {
-            this.scene.start('DemoScene');
-          }
-        }
-      });
+        this.mai3.add.textButton({
+            x: 10,
+            y: 10,
+            width: 150,
+            height: 50,
+            text: "返回DemoScene",
+            backgroundColor: 0x4CAF50,
+            borderColor: 0x45A049,
+            borderWidth: 2,
+            radius: 10,
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '18px',
+                color: '#FFFFFF',
+            },
+            handleUp: {
+                handleFn: () => {
+                    this.scene.start('DemoScene');
+                }
+            },
+            enablePointer: true,
+        });
     }
 
     private createTextArea() {
@@ -88,9 +89,9 @@ export class TextBoxDemo extends BaseScene {
                 fontSize: '24px',
                 color: '#000',
             },
-            padding: {x: 10}
+            padding: { x: 10 }
         });
     }
-        
+
     update() { }
 }

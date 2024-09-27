@@ -4,7 +4,7 @@ export class ResizeDemo extends BaseScene {
   constructor() {
     super('ResizeDemo');
   }
-  
+
   preload() {
     super.preload();
   }
@@ -39,7 +39,8 @@ export class ResizeDemo extends BaseScene {
         handleFn: () => {
           this.switchDragResizeComponent(returnButton);
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 
@@ -120,7 +121,8 @@ export class ResizeDemo extends BaseScene {
         handleFn: () => {
           this.switchDragResizeComponent(text);
         }
-      }
+      },
+      enablePointer: true
     });
 
     const checkbox = this.mai3.add.checkbox({
@@ -129,12 +131,27 @@ export class ResizeDemo extends BaseScene {
       width: 30,
       height: 30,
       text: '复选框',
-      textStyle: { fontFamily: 'Arial', fontSize: '18px', color: '#000000' },
+      textStyle: { fontFamily: 'Arial', fontSize: '18px', color: '#000000', fontStyle: '' },
       handleDown: {
         handleFn: () => {
           this.switchDragResizeComponent(checkbox);
         }
-      }
+      },
+      // handleSelect: this._handleCheckClick.bind(this),
+      markBgRadius: 15,
+      markBgBorderWidth: 3,
+      markBgBorderColor: 0xff0,
+      markBgColor: 0x1f1,
+      markBgAlpha: 1,
+      markBgTexture: "logo",
+
+      markFillRadius: 12,
+      markFillBorderWidth: 3,
+      markFillBorderColor: 0xffeeff,
+      markFillColor: 0xff00ff,
+      markFillAlpha: 1,
+      markFillTexture: "logo3",
+      enablePointer: true,
     });
 
     const checkboxGroup = this.mai3.add.checkboxGroup({
@@ -166,7 +183,7 @@ export class ResizeDemo extends BaseScene {
         handleFn: () => {
           this.switchDragResizeComponent(label);
         }
-      }
+      },
     });
     label.setEventInteractive();
 

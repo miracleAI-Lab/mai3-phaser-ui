@@ -5,7 +5,7 @@ import { ResizeDemo } from './ResizeDemo';
 import { ButtonDemo } from './ButtonDemo';
 import { CheckboxDemo } from './CheckboxDemo';
 import { DialogDemo } from './DialogDemo';
-import { GridLayoutDemo } from './GridLayoutDemo';
+import { GridDemo } from './GridDemo';
 import { ImageDemo } from './ImageDemo';
 import { LabelDemo } from './LabelDemo';
 import { SliderDemo } from './SliderDemo';
@@ -17,6 +17,6 @@ import { ProgressBarDemo } from './ProgressBarDemo';
 export {
   Boot, Preloader,
   DemoScene, ResizeDemo, ButtonDemo, CheckboxDemo, DialogDemo,
-  GridLayoutDemo, ImageDemo, LabelDemo, SliderDemo, TabsDemo,
+  GridDemo, ImageDemo, LabelDemo, SliderDemo, TabsDemo,
   TextBoxDemo, ToastDemo, ProgressBarDemo
 };
