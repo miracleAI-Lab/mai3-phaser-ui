@@ -74,7 +74,8 @@ export class ButtonDemo extends BaseScene {
         handleFn: () => {
           // Add action for handleUp if needed
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 
@@ -122,7 +123,8 @@ export class ButtonDemo extends BaseScene {
         handleFn: () => {
           // Add action for handleDown if needed
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 
@@ -153,7 +155,8 @@ export class ButtonDemo extends BaseScene {
         handleFn: () => {
           console.log("Button released");
         }
-      }
+      },
+      enablePointer: true,
     });
   }
 }
@@ -200,13 +203,17 @@ You can explore various **mai3-phaser-ui** components by following these steps:
 # Clone the repository
 git clone https://github.com/miracleAI-Lab/mai3-phaser-ui
 
-# Navigate to the examples directory
-cd mai3-phaser-ui/examples
+cd mai3-phaser-ui
 
-# Install dependencies
 yarn install
 
-# Start the development server
+yarn build
+
+# Navigate to the examples directory
+cd examples
+
+yarn install
+
 yarn start
 ```
 
