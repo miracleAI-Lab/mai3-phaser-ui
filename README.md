@@ -10,6 +10,83 @@
 - **Flexible Event Handling**: Easy-to-use event handlers for interactions like clicks, hovers, and value changes.
 - **Responsive Design**: Adaptable UI elements that work across different screen sizes and game layouts.
 
+## Supported Components
+
+- ✅ Checkbox
+- ✅ CheckboxGroup
+- ✅ Container
+- ✅ Dialog
+- ✅ Grid
+- ✅ LinearLayout
+- ✅ Image
+- ✅ ImageButton
+- ✅ Label
+- ✅ ProgressBar
+- ✅ RoundedButton
+- ✅ Slider
+- ✅ Tabs
+- ✅ Text
+- ✅ TextBox
+- ✅ TextButton
+- ✅ Toast
+- ✅ VolumeSlider
+- ✅ Sprite
+
+## future implementation:
+
+- 🚧 FloatButton
+- 🚧 Divider
+- 🚧 Flex
+- 🚧 Space
+- 🚧 Splitter
+- 🚧 Anchor
+- 🚧 ListView
+- 🚧 Breadcrumb
+- 🚧 Dropdown
+- 🚧 Menu
+- 🚧 Pagination
+- 🚧 Steps
+- 🚧 AutoComplete
+- 🚧 Cascader
+- 🚧 ColorPicker
+- 🚧 DatePicker
+- 🚧 Form
+- 🚧 InputNumber
+- 🚧 Mentions
+- 🚧 Rate
+- 🚧 TimePicker
+- 🚧 Transfer
+- 🚧 TreeSelect
+- 🚧 Upload
+- 🚧 Avatar
+- 🚧 Badge
+- 🚧 Calendar
+- 🚧 Card
+- 🚧 Carousel
+- 🚧 Collapse
+- 🚧 Descriptions
+- 🚧 Empty
+- 🚧 Popover
+- 🚧 QRCode
+- 🚧 Segmented
+- 🚧 Statistic
+- 🚧 Table
+- 🚧 Timeline
+- 🚧 Tooltip
+- 🚧 Tour
+- 🚧 Tree
+- 🚧 Alert
+- 🚧 Drawer
+- 🚧 Message
+- 🚧 Modal
+- 🚧 Notification
+- 🚧 Popconfirm
+- 🚧 Result
+- 🚧 Skeleton
+- 🚧 Spin
+- 🚧 Watermark
+
+
 ## Installation
 
 Install **mai3-phaser-ui** via npm or yarn:
@@ -216,19 +293,6 @@ yarn install
 
 yarn start
 ```
-
-## Documentation & Examples
-
-Explore individual examples directly in the **mai3-phaser-ui** repository:
-
-- [Button Example](https://github.com/miracleAI-Lab/mai3-phaser-ui/blob/main/examples/src/scenes/ButtonDemo.ts)
-- [Checkbox Example](https://github.com/miracleAI-Lab/mai3-phaser-ui/blob/main/examples/src/scenes/CheckboxDemo.ts)
-- [Dialog Example](https://github.com/miracleAI-Lab/mai3-phaser-ui/blob/main/examples/src/scenes/DialogDemo.ts)
-- [ProgressBar Example](https://github.com/miracleAI-Lab/mai3-phaser-ui/blob/main/examples/src/scenes/ProgressBarDemo.ts)
-- [Slider Example](https://github.com/miracleAI-Lab/mai3-phaser-ui/blob/main/examples/src/scenes/SliderDemo.ts)
-- [TextBox Example](https://github.com/miracleAI-Lab/mai3-phaser-ui/blob/main/examples/src/scenes/TextBoxDemo.ts)
-
-These examples demonstrate how to utilize each component in real-world Phaser 3 game development scenarios.
 
 ## Contribution
 
