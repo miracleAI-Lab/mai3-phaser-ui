@@ -55,7 +55,6 @@
 - 🚧 Table
 - 🚧 Tooltip
 - 🚧 Alert
-- 🚧 Skeleton
 - 🚧 QRCode
 - 🚧 Segmented
 - 🚧 Tree
