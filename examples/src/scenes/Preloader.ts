@@ -19,7 +19,7 @@ export class Preloader extends BaseScene {
         this.load.image('logo4', 'assets/images/logo4.jpeg');
         this.load.json('config', 'assets/json/config.json');
         this.load.pack('loadimg', 'assets/json/assetimg.json');
-        this.load.pack('loadsprites', 'assets/json/assetsprites.json');
+        //this.load.pack('loadsprites', 'assets/json/assetsprites.json');
 
         this.load.image("mainMenuBg", "assets/images/mainMenuBg.png");
         this.load.image('StartGameButton', 'assets/images/StartGameButton.png');
@@ -117,21 +117,21 @@ export class Preloader extends BaseScene {
             x: (this.sys.scale.width - 500) / 2,
             y: 300,
             barTexture: {
-              key: "ui",
-              frame: "ButtonOrange",
-              width: 500,
+                key: "ui",
+                frame: "ButtonOrange",
+                width: 500,
             },
             fillTexture: {
-              x: 16,
-              y: 10,
-              key: "ui",
-              frame: "ButtonOrangeFill1",
-              width: 13,
-              leftWidth: 6,
-              rightWidth: 6,
+                x: 16,
+                y: 10,
+                key: "ui",
+                frame: "ButtonOrangeFill1",
+                width: 13,
+                leftWidth: 6,
+                rightWidth: 6,
             }
-          };
-        
+        };
+
         const p1 = this.mai3.add.imageProgressBar(config);
         this.load.on("progress", async (progress: number) => {
             // console.log('progress: ', progress);

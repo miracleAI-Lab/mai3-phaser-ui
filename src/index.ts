@@ -21,6 +21,7 @@ import { BaseScene, Mai3Game } from "./game";
 import * as Types from "./types";
 import Utils from "./utils";
 import { ListView } from "./ui/ListView";
+import { Sprite } from "./ui/Sprite";
 
 export {
   BaseScene,
@@ -43,6 +44,7 @@ export {
   Toast,
   VolumeSlider,
   ListView,
+  Sprite,
   Mai3Plugin,
   Mai3Game,
   Types,
@@ -70,6 +72,7 @@ const Mai3 = {
   Toast: Toast,
   VolumeSlider: VolumeSlider,
   ListView: ListView,
+  Sprite: Sprite,
   Mai3Plugin: Mai3Plugin,
   Mai3Game: Mai3Game,
   Types: Types,

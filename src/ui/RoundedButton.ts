@@ -4,7 +4,7 @@ import Utils from '../utils';
 import { BaseScene } from '../game';
 
 export class RoundedButton extends Container {
-    public config: RoundedButtonConfig;
+    private _config: RoundedButtonConfig;
     protected bg?: Phaser.GameObjects.RenderTexture | null;
     protected image?: Phaser.GameObjects.Image;
     protected maskShape?: Phaser.GameObjects.Graphics;
@@ -12,13 +12,13 @@ export class RoundedButton extends Container {
     constructor(scene: BaseScene, config: RoundedButtonConfig) {
         config.geomType = 'Circle';
         super(scene, config, 'RoundedButton');
-        this.config = config;
+        this._config = config;
 
-        this.reDraw(this.config);
+        this.reDraw(this._config);
     }
 
     reDraw(config: RoundedButtonConfig) {
-        this.config = config;
+        this._config = config;
         this.updateConfig(config);
 
         const radius = config.radius ?? 0;
@@ -73,8 +73,8 @@ export class RoundedButton extends Container {
 
     //根据按钮的位置来更新mask的位置但不重绘
     updateMaskShapePos() {
-        const radius = this.config.radius ?? 0;
-        const borderWidth = this.config.borderWidth ?? 0;
+        const radius = this._config.radius ?? 0;
+        const borderWidth = this._config.borderWidth ?? 0;
         const btnRadius = radius + borderWidth;
         let bgLeftTopPos = Utils.getWorldPosition(this.bg!);
         this.maskShape!.setPosition(bgLeftTopPos.x + btnRadius, bgLeftTopPos.y + btnRadius);

@@ -3,12 +3,12 @@ import { Container } from './Container';
 import { ImageConfig } from '../types';
 
 export class Image extends Container {
-    config: ImageConfig;
-    image: Phaser.GameObjects.Image;
+    private _config: ImageConfig;
+    public image: Phaser.GameObjects.Image;
 
     constructor(scene: BaseScene, config: ImageConfig) {
         super(scene, config);
-        this.config = config;
+        this._config = config;
         this.Type = 'Image';
 
         const width = config.width ?? 200;

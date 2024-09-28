@@ -5,9 +5,10 @@ import { RoundedButton } from './RoundedButton';
 import Memory from '../utils/Memory';
 export class Checkbox extends Container {
     private _value?: string;
+    private _config?: CheckboxConfig;
+
     public isChecked?: boolean;
 
-    config?: CheckboxConfig;
     label?: Phaser.GameObjects.Text;
     checkmark?: Phaser.GameObjects.Container;
 
@@ -22,36 +23,36 @@ export class Checkbox extends Container {
         super.handleDown();
         this.isChecked = !this.isChecked;
         this.reDrawCheckmark();
-        if (this.config?.handleSelect) {
-            this.config?.handleSelect(this);
+        if (this._config?.handleSelect) {
+            this._config?.handleSelect(this);
         }
         this.blendMode = 'add';
     }
 
     public reDraw(config: CheckboxConfig) {
-        this.config = config;
-        this.isChecked = this.config.isChecked ?? false;
+        this._config = config;
+        this.isChecked = this._config.isChecked ?? false;
         this.reDrawCheckmark();
         this.reDrawLabel();
         this.RefreshBounds();
     }
 
     public reDrawLabel() {
-        const text = this.config!.text ?? 'MiracleAI';
-        const style = this.config!.textStyle ?? {};
+        const text = this._config!.text ?? 'MiracleAI';
+        const style = this._config!.textStyle ?? {};
         if (!this.label) {
             this.label = this.scene.make.text({ text, style });
         } else {
             this.label.setText(text);
             this.label.setStyle(style);
-            this.label.setFontStyle(this.config!.textStyle?.fontStyle!);
+            this.label.setFontStyle(this._config!.textStyle?.fontStyle!);
         }
         this.aligningCenterBetweenLabelAndCheckMark();
         this.addChild(this.label);
     }
 
     private aligningCenterBetweenLabelAndCheckMark() {
-        const labelSpace = this.config!.labelSpace ?? 10;
+        const labelSpace = this._config!.labelSpace ?? 10;
         let checkmarkBounds = this.checkmark!.getBounds();
         let fontSize = this.getLabelFontSize();
         let fill = this.checkmark?.getByName("fill") as RoundedButton;
@@ -66,10 +67,10 @@ export class Checkbox extends Container {
 
     private getLabelFontSize(): number {
         let fontSize = 16;
-        if (typeof this.config!.textStyle?.fontSize === 'string') {
-            fontSize = Number(this.config!.textStyle?.fontSize.replace('px', ''));
+        if (typeof this._config!.textStyle?.fontSize === 'string') {
+            fontSize = Number(this._config!.textStyle?.fontSize.replace('px', ''));
         } else {
-            fontSize = this.config!.textStyle?.fontSize ?? 16;
+            fontSize = this._config!.textStyle?.fontSize ?? 16;
         }
         return fontSize;
     }
@@ -85,9 +86,9 @@ export class Checkbox extends Container {
     }
 
     protected drawCheckmark(): Phaser.GameObjects.Container {
-        const bgConfig = this.transformForRoundedButtonConfig("bg", this.config!.markBgRadius);
+        const bgConfig = this.transformForRoundedButtonConfig("bg", this._config!.markBgRadius);
         let bg = this.scene.mai3.add.roundedButton(bgConfig).setName("bg");
-        const fillConfig = this.transformForRoundedButtonConfig("fill", this.config!.markFillRadius);
+        const fillConfig = this.transformForRoundedButtonConfig("fill", this._config!.markFillRadius);
         let fill = this.scene.mai3.add.roundedButton(fillConfig).setName("fill");
 
         fill.setVisible(this.isChecked!);
@@ -105,7 +106,7 @@ export class Checkbox extends Container {
     }
 
     private transformForRoundedButtonConfig(isBgOrFill: string, radius?: number): RoundedButtonConfig {
-        this._value = this.config!.value ?? '0';
+        this._value = this._config!.value ?? '0';
         let markBgRadius = 0;
         let markFillRadius = 0;
         let borderWidth = 0;
@@ -116,22 +117,22 @@ export class Checkbox extends Container {
         let x = 0;
         let y = 0;
         if (isBgOrFill == "bg") {
-            this.config!.borderWidth = this.config!.markBgBorderWidth;
-            markBgRadius = this.config!.markBgRadius;
-            borderWidth = this.config!.markBgBorderWidth ?? 4;
-            borderColor = this.config!.markBgBorderColor ?? 0xFFD700;
-            backgroundColor = this.config!.markBgColor ?? 0xff8221;
-            backgroundAlpha = this.config!.markBgAlpha ?? 1;
-            texture = this.config!.markBgTexture;
+            this._config!.borderWidth = this._config!.markBgBorderWidth;
+            markBgRadius = this._config!.markBgRadius;
+            borderWidth = this._config!.markBgBorderWidth ?? 4;
+            borderColor = this._config!.markBgBorderColor ?? 0xFFD700;
+            backgroundColor = this._config!.markBgColor ?? 0xff8221;
+            backgroundAlpha = this._config!.markBgAlpha ?? 1;
+            texture = this._config!.markBgTexture;
         } else {
-            this.config!.borderWidth = this.config!.markFillBorderWidth;
-            markFillRadius = this.config!.markFillRadius;
-            borderWidth = this.config!.markFillBorderWidth ?? 4;
-            borderColor = this.config!.markFillBorderColor ?? 0xFFD700;
-            backgroundColor = this.config!.markFillColor ?? 0xff8221;
-            backgroundAlpha = this.config!.markFillAlpha ?? 1;
-            texture = this.config!.markFillTexture;
-            x = (this.config!.markBgRadius! + this.config!.markBgBorderWidth!) - (this.config!.markFillRadius! + this.config!.markFillBorderWidth!);
+            this._config!.borderWidth = this._config!.markFillBorderWidth;
+            markFillRadius = this._config!.markFillRadius;
+            borderWidth = this._config!.markFillBorderWidth ?? 4;
+            borderColor = this._config!.markFillBorderColor ?? 0xFFD700;
+            backgroundColor = this._config!.markFillColor ?? 0xff8221;
+            backgroundAlpha = this._config!.markFillAlpha ?? 1;
+            texture = this._config!.markFillTexture;
+            x = (this._config!.markBgRadius! + this._config!.markBgBorderWidth!) - (this._config!.markFillRadius! + this._config!.markFillBorderWidth!);
             y = x;
         }
         const config: RoundedButtonConfig = {
@@ -157,6 +158,10 @@ export class Checkbox extends Container {
 
     get value(): string {
         return this._value ?? '';
+    }
+
+    get config(): CheckboxConfig {
+        return this._config!;
     }
 
     destroy(fromScene?: boolean): void {

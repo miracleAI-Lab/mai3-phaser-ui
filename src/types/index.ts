@@ -17,7 +17,6 @@ export type Mai3Component = TextButton | ImageButton | RoundedButton
 export type BackgroundType = Phaser.GameObjects.Sprite | Phaser.GameObjects.Rectangle | Phaser.GameObjects.Graphics | Phaser.GameObjects.RenderTexture;
 export type TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
 export type PhaserTextPadding = Phaser.Types.GameObjects.Text.TextPadding;
-export type SpriteConfig = Phaser.Types.GameObjects.Sprite.SpriteConfig;
 export type RoundedRectRadius = Phaser.Types.GameObjects.Graphics.RoundedRectRadius | number;
 
 export interface Padding extends PhaserTextPadding {
@@ -430,6 +429,12 @@ export interface FlexLayoutConfig extends BaseConfig {
   children?: Container[];
 }
 
+export interface DragHandlers {
+  handleDragStart?: (child: Container, pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => void;
+  handleDrag?: (pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => void;
+  handleDragEnd?: (pointer: Phaser.Input.Pointer) => void;
+}
+
 export interface GridConfig extends PanelConfig {
   width?: number;
   height?: number;
@@ -446,6 +451,9 @@ export interface GridConfig extends PanelConfig {
   showGrid?: boolean;
   alignment?: Alignment;
   children?: GridItem[];
+  handleDragStart?: (dragChild: Container | undefined, pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => void;
+  handleDrag?: (dragChild: Container | undefined, pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => void;
+  handleDragEnd?: (dragChild: Container | undefined, targetChild: Container | undefined, pointer: Phaser.Input.Pointer) => void;
 }
 
 export interface GridItem extends Container {
@@ -487,6 +495,4 @@ export interface ImageConfig extends BaseConfig {
   backgroundAlpha?: number;
 }
 
-export interface GridItemConfig extends BaseConfig {
-  itemConfigs: any[];
-}
+export type SpriteConfig = Phaser.Types.GameObjects.Sprite.SpriteConfig & BaseConfig;

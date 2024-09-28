@@ -8,8 +8,8 @@ export class Dialog extends Container {
     private _header?: LinearLayout;
     private _body?: LinearLayout;
     private _footer?: LinearLayout;
-    private _config?: DialogConfig;
     private _root?: Container;
+    private _config?: DialogConfig;
 
     constructor(scene: BaseScene, config: DialogConfig) {
         super(scene, { ...config, x: 0, y: 0 });
@@ -138,6 +138,10 @@ export class Dialog extends Container {
         return Utils.drawRoundedRectRenderTexture(this.scene, 0, 0,
             width, height, this._config?.borderWidth,
             this._config?.radius, this._config?.borderColor, backgroundColor) as Phaser.GameObjects.GameObject;
+    }
+
+    get config(): DialogConfig {
+        return this._config!;
     }
 
     destroy(fromScene?: boolean): void {

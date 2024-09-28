@@ -4,7 +4,8 @@ import Utils from '../utils';
 import { BaseScene } from "../game";
 
 export class TextButton extends Container implements GridItem {
-    config: ButtonConfig;
+    private _config: ButtonConfig;
+
     bg?: Phaser.GameObjects.RenderTexture;
     label?: Phaser.GameObjects.Text;
     columnSpan?: number;
@@ -13,7 +14,7 @@ export class TextButton extends Container implements GridItem {
         config.width = config.width ?? 200;
         config.height = config.height ?? 60;
         super(scene, config, 'TextButton');
-        this.config = config;
+        this._config = config;
         this.columnSpan = 12;
 
         this.reDraw(config);
@@ -23,7 +24,7 @@ export class TextButton extends Container implements GridItem {
     reDraw(config: ButtonConfig) {
         config.width = config.width ?? 200;
         config.height = config.height ?? 60;
-        this.config = config;
+        this._config = config;
 
         const text = config.text ?? 'MiracleAI';
         const radius = config.radius ?? 0;

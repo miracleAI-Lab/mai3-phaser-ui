@@ -23,8 +23,10 @@ export class DemoScene extends BaseScene {
             padding: { all: 20 },
             rowGap: 10,
             columnGap: 10,
-            rows: 4,
+            rows: 5,
             columns: 3,
+            autoFill: true,
+            draggable: false,
             borderWidth: 6,
             borderColor: 0xB03060,
             backgroundColor: 0x333333,
@@ -47,35 +49,35 @@ export class DemoScene extends BaseScene {
             { name: '按钮演示', scene: 'ButtonDemo', color: 0xCDDC39 },
             { name: '调整大小演示', scene: 'ResizeDemo', color: 0xFF9800 },
             { name: '文本框演示', scene: 'TextBoxDemo', color: 0x8BC34A },
+            { name: '精灵演示', scene: 'SpriteDemo', color: 0x4CA600 },
         ];
 
-        for (let i = 0; i < demoScenes.length; i += 3) {
-            const rowButtons = [];
-            for (let j = 0; j < 3 && i + j < demoScenes.length; j++) {
-                const demo = demoScenes[i + j];
-                rowButtons.push({
-                    type: 'TextButton',
-                    text: demo.name,
-                    width: 150,
-                    height: 60,
-                    textStyle: { fontFamily: 'Arial', fontSize: '20px', color: '#FFFFFF' },
-                    backgroundColor: demo.color,
-                    borderColor: Phaser.Display.Color.IntegerToColor(demo.color).darken(15).color,
-                    borderWidth: 2,
-                    radius: 10,
-                    columnSpan: 4,
-                    handleHover: { audio: "sfx-hover" },
-                    handleDown: { audio: "sfx-press" },
-                    handleUp: {
-                        handleFn: () => {
-                            this.scene.start(demo.scene);
-                        }
+        const rowButtons = [];
+        for (let i = 0; i < demoScenes.length; i++) {      
+            const demo = demoScenes[i];
+            rowButtons.push({
+                type: 'TextButton',
+                text: demo.name,
+                width: 150,
+                height: 60,
+                textStyle: { fontFamily: 'Arial', fontSize: '20px', color: '#FFFFFF' },
+                backgroundColor: demo.color,
+                borderColor: Phaser.Display.Color.IntegerToColor(demo.color).darken(15).color,
+                borderWidth: 2,
+                radius: 10,
+                columnSpan: 4,
+                handleHover: { audio: "sfx-hover" },
+                handleDown: { audio: "sfx-press" },
+                handleUp: {
+                    handleFn: () => {
+                        this.scene.start(demo.scene);
                     }
-                });
-            }
-            this.grid.addRow(rowButtons);
+                },
+                enablePointer: true,
+            });
         }
+        this.grid.addItems(rowButtons);
     }
-
+    
     update() { }
 }

@@ -10,28 +10,28 @@ export class ProgressBar extends Container {
     public bgHeight?: number;
     protected fillWidth?: number;
     protected _progressValue: number = 0;
-
-    config: ProgressConfig;
+    protected _config?: ProgressConfig;
+    
     bg?: BackgroundType;
     fill?: BackgroundType;
 
     constructor(scene: BaseScene, config: ProgressConfig) {
         super(scene, config);
-        this.config = config;
+        this._config = config;
         this.Type = 'ProgressBar';
 
         this.reDraw(config);
     }
 
     reDraw(config: ProgressConfig) {
-        this.config = config;
+        this._config = config;
         this.bgWidth = config.width ?? 300;
         this.bgHeight = config.height ?? 32;
 
         this.fillWidth = 0;
         this.borderWidth = config.borderWidth ?? 0;
-        this.borderColor = this.config.borderColor ?? 0xcf4b00;
-        this.radius = this.config.radius ?? 0;
+        this.borderColor = this._config?.borderColor ?? 0xcf4b00;
+        this.radius = this._config?.radius ?? 0;
 
         this.drawBarBg();
         this.drawBarFill();
@@ -39,16 +39,16 @@ export class ProgressBar extends Container {
     }
 
     drawBarBg() {
-        if (this.config.bgTexture && this.config.bgTexture.length > 0) {
-            this.bg = this.createOrGetSprite(this.bg, this.config.bgTexture, true);
+        if (this._config?.bgTexture && this._config?.bgTexture.length > 0) {
+            this.bg = this.createOrGetSprite(this.bg, this._config?.bgTexture, true);
             this.bg.displayWidth = this.bgWidth!;
             this.bg.displayHeight = this.bgHeight!;
             this.bg.setOrigin(0);
-        } else if ((this.config.radius && this.config.radius > 0 || (this.config.bgTexture && this.config.bgTexture.length == 0))) {
-            this.bg = this.reDrawRoundedRectBG(0, 0, this.bgWidth!, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.bgColor as number || 0xcf4b00);
+        } else if ((this._config?.radius && this._config?.radius > 0 || (this._config?.bgTexture && this._config?.bgTexture.length == 0))) {
+            this.bg = this.reDrawRoundedRectBG(0, 0, this.bgWidth!, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this._config?.bgColor as number || 0xcf4b00);
         } else {
-            this.bg = this.createOrGetRectangle(this.bg, true, 0, 0, this.bgWidth, this.bgHeight! - this.borderWidth!, this.config.bgColor as number);
-            this.bg.setStrokeStyle(this.borderWidth, this.config.bgColor as number, this.config.borderColorAlpha).setOrigin(0, 0);
+            this.bg = this.createOrGetRectangle(this.bg, true, 0, 0, this.bgWidth, this.bgHeight! - this.borderWidth!, this._config?.bgColor as number);
+            this.bg.setStrokeStyle(this.borderWidth, this._config?.bgColor as number, this._config?.borderColorAlpha).setOrigin(0, 0);
             this.bg.setOrigin(0);
         }
 
@@ -56,15 +56,15 @@ export class ProgressBar extends Container {
     }
 
     drawBarFill() {
-        if (this.config.fillTexture && this.config.fillTexture.length > 0) {
-            this.fill = this.createOrGetSprite(this.fill, this.config.fillTexture, false);
+        if (this._config?.fillTexture && this._config?.fillTexture.length > 0) {
+            this.fill = this.createOrGetSprite(this.fill, this._config?.fillTexture, false);
             this.fill.displayWidth = 0;
             this.fill.displayHeight = this.bgHeight!;
             this.fill.setOrigin(0);
-        } else if ((this.config.radius && this.config.radius > 0) || (this.config.fillTexture && this.config.fillTexture.length == 0)) {
-            this.fill = this.reDrawRoundedRectFill(0, 0, 1, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.fillColor as number || 0xff8221);
+        } else if ((this._config?.radius && this._config?.radius > 0) || (this._config?.fillTexture && this._config?.fillTexture.length == 0)) {
+            this.fill = this.reDrawRoundedRectFill(0, 0, 1, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this._config?.fillColor as number || 0xff8221);
         } else {
-            this.fill = this.createOrGetRectangle(this.fill, false, 0, 0, 4, this.bgHeight! - this.borderWidth!, this.config.fillColor as number, this.config.borderColorAlpha);
+            this.fill = this.createOrGetRectangle(this.fill, false, 0, 0, 4, this.bgHeight! - this.borderWidth!, this._config?.fillColor as number, this._config?.borderColorAlpha);
             this.fill.setOrigin(0);
         }
 
@@ -147,7 +147,7 @@ export class ProgressBar extends Container {
         if (this.fill instanceof Phaser.GameObjects.RenderTexture) {
             this.fillWidth = this.bgWidth! * progress;
             if (this.fillWidth === 0) this.fillWidth++;
-            this.fill = this.reDrawRoundedRectFill(0, 0, this.fillWidth, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this.config.fillColor as number || 0xff8221);
+            this.fill = this.reDrawRoundedRectFill(0, 0, this.fillWidth, this.bgHeight!, this.borderWidth!, this.radius!, this.borderColor!, this._config?.fillColor as number || 0xff8221);
             if (this.fill) {
                 this.addChildAt(this.fill, 1);
             }

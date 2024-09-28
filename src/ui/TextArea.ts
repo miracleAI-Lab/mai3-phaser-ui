@@ -5,7 +5,7 @@ import { Label } from './Label';
 import { TextBox } from './TextBox';
 
 export class TextArea extends TextBox {
-    declare config: TextBoxConfig;
+    protected _config: TextBoxConfig;
     declare label: Label;
     declare selection: Phaser.GameObjects.Rectangle;
     declare cursor: Phaser.GameObjects.Text;
@@ -23,7 +23,7 @@ export class TextArea extends TextBox {
 
     constructor(scene: BaseScene, config: TextBoxConfig) {
         super(scene, config);
-        this.config = config;
+        this._config = config;
         this.isFocus = false;
         this.maxWidth = config.width ?? 100;
         this.maxHeight = config.height ?? 100;
@@ -49,7 +49,7 @@ export class TextArea extends TextBox {
     createMultilineLabel() {
         this.label.destroy();
         this.label = new Label(this.scene, {
-            ...this.config,
+            ...this._config,
             height: this.maxHeight,
             isWordWrap: true,
             autoHeight: true

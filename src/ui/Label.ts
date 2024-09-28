@@ -13,20 +13,19 @@ const defaultStyle = {
 export class Label extends Panel {
   private _width?: number;
   private _height?: number;
-
   private label?: Phaser.GameObjects.Text;
-  private config: LabelConfig;
+  protected _config: LabelConfig;
 
   constructor(scene: BaseScene, config: LabelConfig) {
     super(scene, config);
-    this.config = config;
+    this._config = config;
     this.Type = 'Label';
 
     this.reDraw(config);
   }
 
   public reDraw(config: LabelConfig) {
-    this.config = config;
+    this._config = config;
 
     this.drawText();
     this.drawBg();
@@ -34,11 +33,11 @@ export class Label extends Panel {
   }
 
   public drawText() {
-    const text = this.config.text ?? "Welcome to MiracleAI";
-    const style = this.getLabelStyle(this.config);
-    const paddingLeft = this.config.padding?.x ? this.config.padding?.x : (this.config.padding?.left ?? 0);
-    const paddingRight = this.config.padding?.x ? this.config.padding?.x : (this.config.padding?.right ?? 0);
-    const paddingTop = this.config.padding?.y ? this.config.padding?.y : (this.config.padding?.top ?? 0);
+    const text = this._config.text ?? "Welcome to MiracleAI";
+    const style = this.getLabelStyle(this._config);
+    const paddingLeft = this._config.padding?.x ? this._config.padding?.x : (this._config.padding?.left ?? 0);
+    const paddingRight = this._config.padding?.x ? this._config.padding?.x : (this._config.padding?.right ?? 0);
+    const paddingTop = this._config.padding?.y ? this._config.padding?.y : (this._config.padding?.top ?? 0);
 
     if (!this.label) {
       this.label = this.scene.make.text({});
@@ -47,10 +46,10 @@ export class Label extends Panel {
     this.label?.setText(text);
     this.label?.setStyle(style);
 
-    this.label?.setFontStyle(this.config.textStyle?.fontStyle!);
+    this.label?.setFontStyle(this._config.textStyle?.fontStyle!);
     this.computedLabelSize();
 
-    const textAlign = this.config.textAlign ?? 'left';
+    const textAlign = this._config.textAlign ?? 'left';
     if (textAlign === 'left') {
       const labelY = paddingTop ? paddingTop : (this._height! - this.label!.displayHeight) / 2;
       this.label!.setPosition(paddingLeft, labelY);
@@ -70,24 +69,24 @@ export class Label extends Panel {
   }
 
   private computedLabelSize() {
-    const autoWidth = this.config.autoWidth ? true : (this.config.width ? false : true);
-    const autoHeight = this.config.autoHeight ? true : (this.config.height ? false : true);
-    this._width = autoWidth ? (this.scene.scale.width - 20) : (this.config.width ?? 150);
+    const autoWidth = this._config.autoWidth ? true : (this._config.width ? false : true);
+    const autoHeight = this._config.autoHeight ? true : (this._config.height ? false : true);
+    this._width = autoWidth ? (this.scene.scale.width - 20) : (this._config.width ?? 150);
 
-    const paddingLeft = this.config.padding?.x ? this.config.padding?.x : (this.config.padding?.left ?? 0);
-    const paddingRight = this.config.padding?.x ? this.config.padding?.x : (this.config.padding?.right ?? 0);
-    const paddingTop = this.config.padding?.y ? this.config.padding?.y : (this.config.padding?.top ?? 0);
-    const paddingBottom = this.config.padding?.y ? this.config.padding?.y : (this.config.padding?.bottom ?? 0);
+    const paddingLeft = this._config.padding?.x ? this._config.padding?.x : (this._config.padding?.left ?? 0);
+    const paddingRight = this._config.padding?.x ? this._config.padding?.x : (this._config.padding?.right ?? 0);
+    const paddingTop = this._config.padding?.y ? this._config.padding?.y : (this._config.padding?.top ?? 0);
+    const paddingBottom = this._config.padding?.y ? this._config.padding?.y : (this._config.padding?.bottom ?? 0);
 
     this._width = autoWidth ? (this.label?.displayWidth ?? this._width) : this._width;
-    this._height = autoHeight ? (this.label?.displayHeight ?? 30) : (this.config.height ?? (this.label?.displayHeight ?? 30));
+    this._height = autoHeight ? (this.label?.displayHeight ?? 30) : (this._config.height ?? (this.label?.displayHeight ?? 30));
     this._width! += paddingLeft + paddingRight;
     this._height! += paddingTop + paddingBottom;
   }
 
   private getLabelStyle(config: LabelConfig) {
     const textStyle = config.textStyle ?? defaultStyle;
-    const autoWidth = this.config.autoWidth ? true : (this.config.width ? false : true);
+    const autoWidth = this._config.autoWidth ? true : (this._config.width ? false : true);
     this._width = autoWidth ? (this.scene.scale.width - 20) : (config.width ?? 150);
 
     const style = Object.assign({}, textStyle, {
@@ -113,18 +112,18 @@ export class Label extends Panel {
   }
 
   set Text(text: string) {
-    this.config = Utils.MergeRight(this.config, { text }) as LabelConfig;
-    this.reDraw(this.config);
+    this._config = Utils.MergeRight(this._config, { text }) as LabelConfig;
+    this.reDraw(this._config);
   }
 
   setWidth(width: number) {
-    this.config = Utils.MergeRight(this.config, { width }) as LabelConfig;
-    this.reDraw(this.config);
+    this._config = Utils.MergeRight(this._config, { width }) as LabelConfig;
+    this.reDraw(this._config);
   }
 
   setStyle(textStyle: TextStyle) {
-    this.config = Utils.MergeRight(this.config, { textStyle }) as LabelConfig;
-    this.reDraw(this.config);
+    this._config = Utils.MergeRight(this._config, { textStyle }) as LabelConfig;
+    this.reDraw(this._config);
   }
 
   get TextWidth(): number {

@@ -3,14 +3,14 @@ import { ImageProgressConfig } from "../types";
 import { Container } from "./Container";
 
 export class ImageProgressBar extends Container {
-  private config: ImageProgressConfig;
   private bar?: Phaser.GameObjects.NineSlice;
   private fill?: Phaser.GameObjects.NineSlice;
   private _value: number = 0;
+  private _config: ImageProgressConfig;
 
   constructor(scene: BaseScene, config: ImageProgressConfig) {
     super(scene, config);
-    this.config = config;
+    this._config = config;
     this.Type = 'ImageProgressBar';
     this.initializeProgressBar();
   }
@@ -18,17 +18,17 @@ export class ImageProgressBar extends Container {
   private initializeProgressBar(): void {
     this.createBar();
     this.createFill();
-    this.value = this.config.value ?? 0;
+    this.value = this._config.value ?? 0;
   }
 
   private createBar(): void {
-    const { x = 0, y = 0, key = '', frame, width, height, leftWidth, rightWidth, topHeight, bottomHeight } = this.config.barTexture ?? {};
+    const { x = 0, y = 0, key = '', frame, width, height, leftWidth, rightWidth, topHeight, bottomHeight } = this._config.barTexture ?? {};
     this.bar = this.createNineSlice(x, y, key, frame, width, height, leftWidth, rightWidth, topHeight, bottomHeight);
     this.addChildAt(this.bar, 0);
   }
 
   private createFill(): void {
-    const { x = 0, y = 0, key = '', frame, width, height, leftWidth, rightWidth, topHeight, bottomHeight } = this.config.fillTexture ?? {};
+    const { x = 0, y = 0, key = '', frame, width, height, leftWidth, rightWidth, topHeight, bottomHeight } = this._config.fillTexture ?? {};
     this.fill = this.createNineSlice(x, y, key, frame, width, height, leftWidth, rightWidth, topHeight, bottomHeight);
     this.addChildAt(this.fill, 1);
   }
@@ -40,8 +40,8 @@ export class ImageProgressBar extends Container {
   }
 
   public updateProgress(progress: number): void {
-    const barWidth = this.config.barTexture?.width ?? 0;
-    const fillWidth = this.config.fillTexture?.x ?? 0;
+    const barWidth = this._config.barTexture?.width ?? 0;
+    const fillWidth = this._config.fillTexture?.x ?? 0;
     const realWidth = barWidth - fillWidth * 2;
     this.fill?.setSize(progress * realWidth, this.fill.height); 
   }
@@ -56,7 +56,7 @@ export class ImageProgressBar extends Container {
   }
 
   public reDraw(newConfig: ImageProgressConfig): void {
-    this.config = newConfig;
+    this._config = newConfig;
     this.bar?.destroy();
     this.fill?.destroy();
     this.removeAll();

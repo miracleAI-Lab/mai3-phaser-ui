@@ -12,13 +12,13 @@ const defaultStyle = {
 export class Text extends Container {
   private _width?: number;
   private _height?: number;
+  private _config: TextConfig;
 
   text: Phaser.GameObjects.Text;
-  config: TextConfig;
 
   constructor(scene: BaseScene, config: TextConfig) {
     super(scene, config);
-    this.config = config;
+    this._config = config;
     this.Type = 'Text';
 
     const text = config.text || "Welcome to MiracleAI";
@@ -31,7 +31,7 @@ export class Text extends Container {
   }
 
   public reDraw(config: TextConfig) {
-    this.config = config;
+    this._config = config;
     this.computedLabelSize();
 
     const text = config.text || "Welcome to MiracleAI";
@@ -44,7 +44,7 @@ export class Text extends Container {
   }
 
   private layout() {
-    const textAlign = this.config.textAlign ?? 'left';
+    const textAlign = this._config.textAlign ?? 'left';
     if (textAlign === 'left') {
       const labelY = (this._height! - this.text!.displayHeight) / 2;
       this.text!.setPosition(0, labelY);
@@ -67,11 +67,11 @@ export class Text extends Container {
   }
 
   private computedLabelSize() {
-    const autoWidth = this.config.autoWidth ? true : (this.config.width ? false : true);
-    const autoHeight = this.config.autoWidth ? true : (this.config.height ? false : true);
-    this._width = autoWidth ? (this.scene.scale.width - 20) : (this.config.width ?? 150);
+    const autoWidth = this._config.autoWidth ? true : (this._config.width ? false : true);
+    const autoHeight = this._config.autoWidth ? true : (this._config.height ? false : true);
+    this._width = autoWidth ? (this.scene.scale.width - 20) : (this._config.width ?? 150);
     this._width = autoWidth ? this.text.displayWidth : this._width;
-    this._height = autoHeight ? this.text.displayHeight : (this.config.height ?? this.text.displayHeight);
+    this._height = autoHeight ? this.text.displayHeight : (this._config.height ?? this.text.displayHeight);
   }
 
   private getLabelStyle(config: LabelConfig) {
@@ -102,17 +102,17 @@ export class Text extends Container {
   }
 
   set Text(text: string) {
-    this.config = Utils.MergeRight(this.config, { text }) as TextConfig;
-    this.reDraw(this.config);
+    this._config = Utils.MergeRight(this._config, { text }) as TextConfig;
+    this.reDraw(this._config);
   }
 
   setWidth(width: number) {
-    this.config = Utils.MergeRight(this.config, { width }) as TextConfig;
-    this.reDraw(this.config);
+    this._config = Utils.MergeRight(this._config, { width }) as TextConfig;
+    this.reDraw(this._config);
   }
 
   setStyle(textStyle: TextStyle) {
-    this.config = Utils.MergeRight(this.config, { textStyle }) as TextConfig;
-    this.reDraw(this.config);
+    this._config = Utils.MergeRight(this._config, { textStyle }) as TextConfig;
+    this.reDraw(this._config);
   }
 }

@@ -5,8 +5,8 @@ import { BaseScene } from "../game";
 
 export class LinearLayout extends Container {
     private _content: Container;
-    private _config: LinearLayoutConfig;
     private _bg?: Phaser.GameObjects.Image | Phaser.GameObjects.RenderTexture;
+    private _config: LinearLayoutConfig;
 
     constructor(scene: BaseScene, config: LinearLayoutConfig) {
         super(scene, config);

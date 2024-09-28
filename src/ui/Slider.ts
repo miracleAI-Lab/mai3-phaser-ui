@@ -8,27 +8,27 @@ export class Slider extends ProgressBar {
   min?: number;
   max?: number;
   step?: number;
-  sliderConfig?: SliderConfig;
   sliderBtn?: RoundedButton;
   btnRadius: number = 0;
   progressPercent: number = 0;
   private _value: number = 0;
+  protected _config?: SliderConfig;
 
   constructor(scene: BaseScene, config: SliderConfig) {
     super(scene, config);
 
-    this.sliderConfig = config;
+    this._config = config;
     this.Type = 'Slider';
     this.draw(config);
   }
 
   draw(config?: SliderConfig) {
-    this.sliderConfig = config;
+    this._config = config;
 
-    super.reDraw(this.sliderConfig!);
-    this.min = this.sliderConfig?.min ?? 0;
-    this.max = this.sliderConfig?.max ?? 100;
-    this.step = this.sliderConfig?.step ?? 1;
+    super.reDraw(this._config!);
+    this.min = this._config?.min ?? 0;
+    this.max = this._config?.max ?? 100;
+    this.step = this._config?.step ?? 1;
     if (this.sliderBtn) {
       this.sliderBtn.destroy(true);
     }
@@ -41,18 +41,18 @@ export class Slider extends ProgressBar {
     // 因为锚点不是在中心，所以需要额外做以下的计算
     let btnRadius = this.getBtnRadius();
     // let btnCenterPosX = this.sliderBtn.x + btnRadius;
-    let btnCenterPosX = config?.progressPercent! * this.config?.width!;
+    let btnCenterPosX = config?.progressPercent! * this._config?.width!;
     this.refreshProgress(btnCenterPosX);
 
     this.fixSliderBtnPosY();
     this.sliderBtn?.updateMaskShapePos();
 
     let dragXRangeLeft = -btnRadius;
-    let dragXRangeRight = this.config?.width! - btnRadius;
+    let dragXRangeRight = this._config?.width! - btnRadius;
     this.sliderBtn.on('drag', (_pointer: Phaser.Input.Pointer, dragX: number, _dragY: number) => {
       dragX = Phaser.Math.Clamp(dragX, dragXRangeLeft, dragXRangeRight);
       this.sliderBtn!.x = dragX;
-      let realBtnCenterPosX = Phaser.Math.Clamp(dragX + btnRadius, 0, this.config?.width!);
+      let realBtnCenterPosX = Phaser.Math.Clamp(dragX + btnRadius, 0, this._config?.width!);
       this.refreshProgress(realBtnCenterPosX);
       this.fixSliderBtnPosY();
       this.sliderBtn?.updateMaskShapePos();
@@ -86,23 +86,23 @@ export class Slider extends ProgressBar {
       y: btnLeftTopY,
       enableDrag: true,
       radius: handleRadius,
-      borderWidth: this.sliderConfig?.handleBorderWidth,
-      borderColor: this.sliderConfig?.handleBorderColor,
-      backgroundColor: this.sliderConfig?.handleBackgroundColor,
-      backgroundAlpha: this.sliderConfig?.handleBackgroundAlpha,
-      geomType: this.sliderConfig?.handleGeomType,
-      texture: this.sliderConfig?.handleTexture,
+      borderWidth: this._config?.handleBorderWidth,
+      borderColor: this._config?.handleBorderColor,
+      backgroundColor: this._config?.handleBackgroundColor,
+      backgroundAlpha: this._config?.handleBackgroundAlpha,
+      geomType: this._config?.handleGeomType,
+      texture: this._config?.handleTexture,
     }
 
     return config;
   }
 
   private getHandleRadius() {
-    return this.sliderConfig?.handleRadius ?? (this.config.radius ?? 20) + 4;
+    return this._config?.handleRadius ?? (this._config?.radius ?? 20) + 4;
   }
 
   private getHandleBorderWidth() {
-    return this.sliderConfig?.handleBorderWidth ?? 6;
+    return this._config?.handleBorderWidth ?? 6;
   }
 
   private getBtnRadius() {
@@ -113,7 +113,7 @@ export class Slider extends ProgressBar {
 
   private computedSliderBtnLeftTopPosition() {
     this.btnRadius = this.getBtnRadius();
-    let progressPercent = this.sliderConfig?.progressPercent;
+    let progressPercent = this._config?.progressPercent;
     if (progressPercent === undefined || progressPercent === null) {
       progressPercent = 0.5;
     } else {

@@ -3,7 +3,7 @@ import { BaseConfig, ButtonHandle } from '../types';
 import Utils from "../utils";
 import { BaseScene } from "../game";
 
-// const ENABLED_EVENT_TYPES = ['ImageButton', 'TextButton', 'RoundedButton', 'Label', 'Text', 'Image', 'Checkbox', 'CheckboxGroup', 'Slider', 'ProgressBar', 'VolumeSlider'];
+const ENABLED_EVENT_TYPES = ['ImageButton', 'TextButton', 'RoundedButton',  'Checkbox', 'CheckboxGroup', 'Slider', 'ProgressBar', 'VolumeSlider'];
 
 export class Container extends Phaser.GameObjects.Container {
   private _id: string;
@@ -24,28 +24,23 @@ export class Container extends Phaser.GameObjects.Container {
     this.initializeEvents();
   }
 
-  protected initializeEvents() {
-    if (this.isEnabledDrag()) {
+  protected initializeEvents(): void {
+    if (this._baseConfig?.enableDrag) {
       this.enableDrag();
+      return;
     }
-    if (this.isEnabledPointer()) {
-      this.enabledPointer();
-    }
-  }
 
-  protected isEnabledPointer(): boolean {
-    let ok = this._baseConfig?.enablePointer ?? false;
-    console.log("ok:", ok);
-    return ok;
-    // return enabledEventTypes.includes(this.Type);
-  }
+    if (!this.isEventEnabled()) return;
 
-  protected isEnabledDrag(): boolean {
-    return this._baseConfig?.enableDrag ?? false;
-  }
-
-  public enabledPointer() {
     this.setEventInteractive();
+    this.setupEventListeners();
+  }
+
+  protected isEventEnabled(): boolean {
+    return ENABLED_EVENT_TYPES.includes(this.Type);
+  }
+
+  private setupEventListeners(): void {
     this.on('pointerover', this.handleHover, this);
     this.on('pointerout', this.handleOut, this);
     this.on('pointerdown', this.handleDown, this);
@@ -53,35 +48,9 @@ export class Container extends Phaser.GameObjects.Container {
     this.on('pointerupoutside', this.handleUp, this);
   }
 
-  // protected initializeEvents(): void {
-  //   if (this._baseConfig?.enableDrag) {
-  //     this.enableDrag();
-  //     return;
-  //   }
-
-  //   if (!this.isEventEnabled()) return;
-
-  //   this.setEventInteractive();
-  //   this.setupEventListeners();
-  // }
-
-  // protected isEventEnabled(): boolean {
-  //   return ENABLED_EVENT_TYPES.includes(this.Type);
-  // }
-
-  // private setupEventListeners(): void {
-  //   this.on('pointerover', this.handleHover, this);
-  //   this.on('pointerout', this.handleOut, this);
-  //   this.on('pointerdown', this.handleDown, this);
-  //   this.on('pointerup', this.handleUp, this);
-  //   this.on('pointerupoutside', this.handleUp, this);
-  // }
-
   public updateConfig(config: BaseConfig): void {
     this._baseConfig = config;
   }
-
-
 
   public setAutoArea(): void {
     if (!this._hitArea) {

@@ -4,7 +4,8 @@ import { Container } from './Container';
 import { BaseScene } from "../game";
 import { Label } from './Label';
 export class TextBox extends Container {
-    config: TextBoxConfig;
+    protected _config: TextBoxConfig;
+    
     label: Label;
     selection: Phaser.GameObjects.Rectangle;
     cursor: Phaser.GameObjects.Text;
@@ -23,7 +24,7 @@ export class TextBox extends Container {
 
     constructor(scene: BaseScene, config: TextBoxConfig) {
         super(scene, config, 'TextBox');
-        this.config = config;
+        this._config = config;
         this.isFocus = false;
         this.maxWidth = config.width ?? 100;
 

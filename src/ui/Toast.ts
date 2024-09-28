@@ -11,14 +11,14 @@ const DefaultTextStyle = {
 };
 
 export class Toast extends Container {
-  config: ToastConfig;
-  label?: Label;
+  private _config: ToastConfig;
+  private label?: Label;
   private tween?: Phaser.Tweens.Tween;
   private autoHideTimer?: Phaser.Time.TimerEvent;
 
   constructor(scene: BaseScene, config: ToastConfig) {
     super(scene, config);
-    this.config = config;
+    this._config = config;
     this.Type = 'Toast';
 
     this.reDraw();
@@ -27,48 +27,48 @@ export class Toast extends Container {
   }
 
   reDraw() {
-    const width = this.config.width ?? 300;
-    const height = this.config.height ?? 80;
-    const alignX = this.config.alignment?.horizontal ?? 'right';
-    const alignY = this.config.alignment?.vertical ?? 'top';
-    const type = this.config.type ?? 'info';
-    const marginAll = this.config.margin?.all;
-    const marginLeft = marginAll ?? (this.config.margin?.x ?? 0);
-    const marginRight = marginAll ?? (this.config.margin?.x ?? 0);
-    const marginTop = marginAll ?? (this.config.margin?.y ?? 0);
-    const marginBottom = marginAll ?? (this.config.margin?.y ?? 0);
+    const width = this._config.width ?? 300;
+    const height = this._config.height ?? 80;
+    const alignX = this._config.alignment?.horizontal ?? 'right';
+    const alignY = this._config.alignment?.vertical ?? 'top';
+    const type = this._config.type ?? 'info';
+    const marginAll = this._config.margin?.all;
+    const marginLeft = marginAll ?? (this._config.margin?.x ?? 0);
+    const marginRight = marginAll ?? (this._config.margin?.x ?? 0);
+    const marginTop = marginAll ?? (this._config.margin?.y ?? 0);
+    const marginBottom = marginAll ?? (this._config.margin?.y ?? 0);
 
     if (alignX === 'left') {
-      this.config.x = marginLeft;
+      this._config.x = marginLeft;
     } else if (alignX === 'center') {
-      this.config.x = (this.scene.scale.width - width) / 2;
+      this._config.x = (this.scene.scale.width - width) / 2;
     } else if (alignX === 'right') {
-      this.config.x = this.scene.scale.width - width - marginRight;
+      this._config.x = this.scene.scale.width - width - marginRight;
     }
 
     if (alignY === 'top') {
-      this.config.y = marginTop;
+      this._config.y = marginTop;
     } else if (alignY === 'middle') {
-      this.config.y = (this.scene.scale.height - height) / 2;
+      this._config.y = (this.scene.scale.height - height) / 2;
     } else if (alignY === 'bottom') {
-      this.config.y = this.scene.scale.height - height - marginBottom;
+      this._config.y = this.scene.scale.height - height - marginBottom;
     }
 
     const style = this.getStyleByType(type);
     const color = Utils.numberToHex(style.color);
-    this.config.textStyle = Utils.MergeRight(this.config.textStyle ?? DefaultTextStyle, { color: color });
-    this.config.textAlign = this.config.textAlign ?? 'center';
+    this._config.textStyle = Utils.MergeRight(this._config.textStyle ?? DefaultTextStyle, { color: color });
+    this._config.textAlign = this._config.textAlign ?? 'center';
 
     if (!this.label) {
       this.label = new Label(this.scene, {
-        ...this.config,
+        ...this._config,
         ...style,
         borderColor: style.borderColor,
         backgroundColor: style.backgroundColor
       });
     } else {
       this.label.reDraw({
-        ...this.config,
+        ...this._config,
         ...style,
         borderColor: style.borderColor,
         backgroundColor: style.backgroundColor
@@ -77,7 +77,7 @@ export class Toast extends Container {
 
     this.label.setPosition(0, 0);
     this.addChildAt(this.label, 0);
-    this.setPosition(this.config.x, this.config.y);
+    this.setPosition(this._config.x, this._config.y);
   }
 
   private getStyleByType(type: string) {
@@ -95,7 +95,7 @@ export class Toast extends Container {
   }
 
   public show(animationType?: string) {
-    const animation = animationType || this.config.animationType || 'fade';
+    const animation = animationType || this._config.animationType || 'fade';
     this.setVisible(true);
     if (this.tween) {
       this.tween.stop();
@@ -145,15 +145,15 @@ export class Toast extends Container {
     }
 
     // 设置自动隐藏计时器
-    if (this.config.duration && this.config.duration > 0) {
-      this.autoHideTimer = this.scene.time.delayedCall(this.config.duration, () => {
+    if (this._config.duration && this._config.duration > 0) {
+      this.autoHideTimer = this.scene.time.delayedCall(this._config.duration, () => {
         this.hide(animation);
       });
     }
   }
 
   public hide(animationType?: string) {
-    const animation = animationType || this.config.animationType || 'fade';
+    const animation = animationType || this._config.animationType || 'fade';
     if (this.tween) {
       this.tween.stop();
     }
@@ -221,7 +221,7 @@ export class Toast extends Container {
   }
 
   public close(animationType?: string) {
-    const animation = animationType || this.config.animationType || 'fade';
+    const animation = animationType || this._config.animationType || 'fade';
     this.hide(animation);
     this.scene.time.delayedCall(300, () => {
       this.destroy(true);

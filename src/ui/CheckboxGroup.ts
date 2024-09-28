@@ -4,10 +4,10 @@ import { Container } from './Container';
 import { CheckboxGroupConfig } from '../types';
 
 export class CheckboxGroup extends Container {
-    private _config: CheckboxGroupConfig;
     private _checkboxes: Checkbox[] = [];
     private _selectedValues: string[] = [];
     private _selectedIndexes: number[] = [];
+    private _config: CheckboxGroupConfig;
 
     constructor(scene: BaseScene, config: CheckboxGroupConfig) {
         super(scene, config);
@@ -137,6 +137,10 @@ export class CheckboxGroup extends Container {
         this._selectedValues = [];
         this._selectedIndexes = [];
         this._initCheckboxGroup();
+    }
+
+    get config(): CheckboxGroupConfig {
+        return this._config!;
     }
 
     public destroy(fromScene?: boolean): void {
