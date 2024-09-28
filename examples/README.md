@@ -44,7 +44,7 @@ yarn
 Once the dependencies are installed, you can start the development server using Vite:
 
 ```bash
-yarn dev
+yarn start
 ```
 
 This will start the server and provide you with a local development URL, usually `http://localhost:3000`.
