@@ -13,11 +13,13 @@
   "keywords": [
     "phaser",
     "phaser-ui",
-    "Mai3"
+    "mai3",
+    "MAI3",
+    "MiracleAI"
   ],
-  "author": "William",
+  "author": "William.Wang",
   "license": "MIT",
-  "description": "",
+  "description": "A UI component library based on the Phaser game engine",
   "devDependencies": {
     "@types/node": "^22.7.4",
     "rimraf": "^6.0.1",
