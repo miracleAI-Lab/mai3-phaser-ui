@@ -70,4 +70,8 @@ export class Tabs extends Container {
         }
         this.emit('tabChange', index);
     }
+    
+    get config(): TabsConfig {
+        return this._config!;
+    }
 }

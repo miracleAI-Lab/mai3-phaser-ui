@@ -45,7 +45,6 @@ export class LabelDemo extends BaseScene {
           this.scene.start('DemoScene');
         }
       },
-      enablePointer: true,
     });
   }
 
@@ -140,7 +139,6 @@ export class LabelDemo extends BaseScene {
         color: '#fff',
       },
       padding: { x: 5, y: 5 },
-      enablePointer: true
     };
     const text = this.mai3.add.text(textCfg);
     text.enableDrag();

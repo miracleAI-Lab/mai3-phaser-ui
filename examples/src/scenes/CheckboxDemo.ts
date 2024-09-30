@@ -39,7 +39,6 @@ export class CheckboxDemo extends BaseScene {
                     this.scene.start('DemoScene');
                 }
             },
-            enablePointer: true,
         });
     }
 
@@ -77,7 +76,6 @@ export class CheckboxDemo extends BaseScene {
             markFillColor: 0xff00ff,
             markFillAlpha: 1,
             markFillTexture: "logo3",
-            enablePointer: true,
         };
 
         const ckb = this.mai3.add.checkbox(ckbConfig);
@@ -118,7 +116,6 @@ export class CheckboxDemo extends BaseScene {
             markFillColor: 0xff00ff,
             markFillAlpha: 1,
             markFillTexture: "",
-            enablePointer: true,
         };
 
         const ckb = this.mai3.add.checkbox(ckbConfig);

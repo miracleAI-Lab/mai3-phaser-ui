@@ -54,6 +54,10 @@ export class ImageProgressBar extends Container {
     this._value = value;
     this.updateProgress(value);
   }
+  
+  get config(): ImageProgressConfig {
+    return this._config!;
+  }
 
   public reDraw(newConfig: ImageProgressConfig): void {
     this._config = newConfig;
@@ -69,4 +73,5 @@ export class ImageProgressBar extends Container {
     this.fill?.destroy();
     super.destroy(fromScene);
   }
+
 }

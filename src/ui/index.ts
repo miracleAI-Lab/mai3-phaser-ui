@@ -17,3 +17,4 @@ export * from "./ListView";
 export * from "./Tabs";
 export * from "./TextBox";
 export * from "./Sprite";
+export * from "./ConnectWalletButton";

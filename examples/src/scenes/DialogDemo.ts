@@ -39,7 +39,6 @@ export class DialogDemo extends BaseScene {
                     this.scene.start('DemoScene');
                 }
             },
-            enablePointer: true,
         });
     }
 
@@ -64,7 +63,6 @@ export class DialogDemo extends BaseScene {
                     this.dialog.show();
                 }
             },
-            enablePointer: true,
         });
     }
 
@@ -81,7 +79,6 @@ export class DialogDemo extends BaseScene {
             header: this.createDialogHeader(),
             body: this.createDialogBody(),
             footer: this.createDialogFooter(),
-            enablePointer: true,
         });
         this.dialog.hide();
 
@@ -153,7 +150,6 @@ export class DialogDemo extends BaseScene {
                     this.dialog.hide();
                 }
             },
-            enablePointer: true
         });
         footerBtn.debugHitArea();
         return footerBtn;
@@ -184,7 +180,6 @@ export class DialogDemo extends BaseScene {
                     this.dialog.hide();
                 }
             },
-            enablePointer: true,
         });
         footerBtn1.debugHitArea();
         return footerBtn1;

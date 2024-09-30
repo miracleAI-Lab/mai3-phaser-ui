@@ -40,7 +40,6 @@ export class ResizeDemo extends BaseScene {
           this.switchDragResizeComponent(returnButton);
         }
       },
-      enablePointer: true,
     });
   }
 
@@ -122,7 +121,6 @@ export class ResizeDemo extends BaseScene {
           this.switchDragResizeComponent(text);
         }
       },
-      enablePointer: true
     });
 
     const checkbox = this.mai3.add.checkbox({
@@ -151,7 +149,6 @@ export class ResizeDemo extends BaseScene {
       markFillColor: 0xff00ff,
       markFillAlpha: 1,
       markFillTexture: "logo3",
-      enablePointer: true,
     });
 
     const checkboxGroup = this.mai3.add.checkboxGroup({

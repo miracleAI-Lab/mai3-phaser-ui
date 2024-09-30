@@ -73,7 +73,6 @@ export class DemoScene extends BaseScene {
                         this.scene.start(demo.scene);
                     }
                 },
-                enablePointer: true,
             });
         }
         this.grid.addItems(rowButtons);

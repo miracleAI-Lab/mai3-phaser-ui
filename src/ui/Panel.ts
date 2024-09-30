@@ -71,6 +71,10 @@ export class Panel extends Container {
     this._config!.height = height;
     this.reDraw(this._config!);
   }
+  
+  get config(): PanelConfig {
+    return this._config!;
+  }
 
   destroy(fromScene?: boolean) {
     if (this.bg) {
@@ -79,4 +83,5 @@ export class Panel extends Container {
     }
     super.destroy(fromScene);
   }
+
 }

@@ -1,3 +1,4 @@
+import { Wallet, WalletApp as walletApp } from "../game";
 import { Checkbox } from "../ui/Checkbox";
 import { CheckboxGroup } from "../ui/CheckboxGroup";
 import { Container } from "../ui/Container";
@@ -10,14 +11,49 @@ import { TextBox } from "../ui/TextBox";
 import { TextButton } from "../ui/TextButton";
 import { VolumeSlider } from "../ui/VolumeSlider";
 
-export type OrientationTypes = 'horizontal' | 'vertical';
-export type Mai3Component = TextButton | ImageButton | RoundedButton
-  | Checkbox | CheckboxGroup | Label | ProgressBar | Slider | VolumeSlider
+export type OrientationTypes = "horizontal" | "vertical";
+export type Mai3Component =
+  | TextButton
+  | ImageButton
+  | RoundedButton
+  | Checkbox
+  | CheckboxGroup
+  | Label
+  | ProgressBar
+  | Slider
+  | VolumeSlider
   | TextBox;
-export type BackgroundType = Phaser.GameObjects.Sprite | Phaser.GameObjects.Rectangle | Phaser.GameObjects.Graphics | Phaser.GameObjects.RenderTexture;
+export type BackgroundType =
+  | Phaser.GameObjects.Sprite
+  | Phaser.GameObjects.Rectangle
+  | Phaser.GameObjects.Graphics
+  | Phaser.GameObjects.RenderTexture;
 export type TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
 export type PhaserTextPadding = Phaser.Types.GameObjects.Text.TextPadding;
-export type RoundedRectRadius = Phaser.Types.GameObjects.Graphics.RoundedRectRadius | number;
+export type RoundedRectRadius =
+  | Phaser.Types.GameObjects.Graphics.RoundedRectRadius
+  | number;
+
+export type WalletApp = walletApp;
+export type Styles = "light" | "dark";
+export type Locales = "en" | "ru";
+
+export interface Locale {
+  connectWallet: string;
+  disconnectWallet: string;
+  copyAddress: string;
+  addressCopied: string;
+}
+
+export interface LocalesDictionary {
+  en: Locale;
+  ru: Locale;
+  [k: string]: Locale;
+}
+
+export interface HandleError {
+  (error: Error | unknown): void;
+}
 
 export interface Padding extends PhaserTextPadding {
   all?: number;
@@ -34,32 +70,32 @@ export interface BorderRadius {
 }
 
 export const BorderStyle = {
-  dotted: 'dotted', // 定义点线边框
-  dashed: 'dashed', // 定义虚线边框
-  solid: 'solid', // 定义实线边框
-  double: 'double', // 定义双边框
-  groove: 'groove', // 定义 3D 坡口边框。效果取决于 border-color 值
-  ridge: 'ridge', // 定义 3D 脊线边框。效果取决于 border-color 值
-  inset: 'inset', // 定义 3D inset 边框。效果取决于 border-color 值
-  outset: 'outset', // 定义 3D outset 边框。效果取决于 border-color 值
-  none: 'none', // 定义无边框
-  hidden: 'hidden' // 定义隐藏边框
-}
+  dotted: "dotted", // 定义点线边框
+  dashed: "dashed", // 定义虚线边框
+  solid: "solid", // 定义实线边框
+  double: "double", // 定义双边框
+  groove: "groove", // 定义 3D 坡口边框。效果取决于 border-color 值
+  ridge: "ridge", // 定义 3D 脊线边框。效果取决于 border-color 值
+  inset: "inset", // 定义 3D inset 边框。效果取决于 border-color 值
+  outset: "outset", // 定义 3D outset 边框。效果取决于 border-color 值
+  none: "none", // 定义无边框
+  hidden: "hidden", // 定义隐藏边框
+};
 
 export const FontStyle = {
-  normal: 'normal',
-  italic: 'italic',
-  oblique: 'oblique'
+  normal: "normal",
+  italic: "italic",
+  oblique: "oblique",
 };
 
 export const FontWeight = {
-  normal: 'normal',
-  bold: 'bold',
+  normal: "normal",
+  bold: "bold",
 };
 
 export interface Alignment {
-  horizontal: 'left' | 'center' | 'right';
-  vertical: 'top' | 'middle' | 'bottom';
+  horizontal: "left" | "center" | "right";
+  vertical: "top" | "middle" | "bottom";
 }
 
 export interface BaseConfig {
@@ -68,8 +104,7 @@ export interface BaseConfig {
   y?: number;
   width?: number;
   height?: number;
-  enableDrag?: boolean;
-  enablePointer?: boolean;
+  draggable?: boolean;
   radius?: number;
   borderWidth?: number;
   space?: number;
@@ -79,6 +114,10 @@ export interface BaseConfig {
   originalId?: string;
   type?: string;
   columnSpan?: number;
+}
+
+export interface BaseButtonConfig extends BaseConfig {
+  enableSmoothScaleAnim?: boolean;
   handleHover?: ButtonHandle;
   handleOut?: ButtonHandle;
   handleDown?: ButtonHandle;
@@ -134,12 +173,12 @@ export interface SliderConfig extends ProgressConfig {
   valueTextOffset?: { x?: number; y?: number };
   slider?: Phaser.GameObjects.GameObject | string;
   handleRadius?: number;
-  handleBorderWidth?: number,
-  handleBorderColor?: number,
-  handleBackgroundColor?: number,
-  handleBackgroundAlpha?: number,
-  handleGeomType?: string,
-  handleTexture?: string,
+  handleBorderWidth?: number;
+  handleBorderColor?: number;
+  handleBackgroundColor?: number;
+  handleBackgroundAlpha?: number;
+  handleGeomType?: string;
+  handleTexture?: string;
 }
 
 export interface VolumeSliderConfig extends SliderConfig {
@@ -167,10 +206,10 @@ export interface ButtonConfig extends BaseConfig {
   text?: string;
   textStyle?: TextStyle;
   radius?: number;
-  handleHover?: ButtonHandle,
-  handleOut?: ButtonHandle,
-  handleDown?: ButtonHandle,
-  handleUp?: ButtonHandle
+  handleHover?: ButtonHandle;
+  handleOut?: ButtonHandle;
+  handleDown?: ButtonHandle;
+  handleUp?: ButtonHandle;
 }
 
 export interface ContainerConfig extends BaseConfig {
@@ -210,7 +249,7 @@ export interface CheckboxConfig extends BaseConfig {
   value?: string;
   textStyle?: TextStyle;
   labelSpace?: number;
-  handleSelect?: Function
+  handleSelect?: Function;
 }
 
 export interface CheckboxGroupItem {
@@ -230,7 +269,7 @@ export interface ListViewItemConfig extends BaseConfig {
   text: string;
   icon?: string;
   rightContent?: {
-    type: 'text' | 'switch' | 'arrow';
+    type: "text" | "switch" | "arrow";
     text?: string;
     checked?: boolean;
   };
@@ -248,17 +287,29 @@ export interface CheckboxGroupConfig extends BaseConfig {
   defaultSelectedIndex?: number;
   textStyle?: TextStyle;
   items?: CheckboxGroupItem[];
-  handleSelect?: Function
+  handleSelect?: Function;
 }
 
 export interface ImageButtonConfig extends NinePatchConfig {
-  handleHover?: ButtonHandle,
-  handleOut?: ButtonHandle,
-  handleDown?: ButtonHandle,
-  handleUp?: ButtonHandle
+  handleHover?: ButtonHandle;
+  handleOut?: ButtonHandle;
+  handleDown?: ButtonHandle;
+  handleUp?: ButtonHandle;
 }
 
-export interface RoundedButtonConfig extends BaseConfig {
+export interface ConnectWalletButtonConfig extends NinePatchConfig {
+  text?: string;
+  frame?: string;
+  texture?: string;
+  textStyle?: TextStyle;
+  style?: Styles;
+  language?: Locales;
+  walletApp?: WalletApp;
+  onWalletChange?: (wallet: Wallet | null) => void;
+  onError?: HandleError;
+}
+
+export interface RoundedButtonConfig extends BaseButtonConfig {
   radius?: number;
   texture?: string;
   frame?: string | number;
@@ -266,13 +317,9 @@ export interface RoundedButtonConfig extends BaseConfig {
   borderColor?: number;
   backgroundColor?: number;
   backgroundAlpha?: number;
-  handleHover?: ButtonHandle;
-  handleOut?: ButtonHandle;
-  handleDown?: ButtonHandle;
-  handleUp?: ButtonHandle;
 }
 
-export interface NinePatchConfig extends BaseConfig {
+export interface NinePatchConfig extends BaseButtonConfig {
   x?: number;
   y?: number;
   texture?: string | Phaser.Textures.Texture;
@@ -310,8 +357,14 @@ export interface LabelConfig extends PanelConfig {
 
 export interface ToastConfig extends LabelConfig {
   alignment?: Alignment;
-  type?: 'success' | 'warn' | 'error' | 'info';
-  animationType?: 'fade' | 'slide' | 'slideDown' | 'slideUp' | 'scale' | 'bounce';
+  type?: "success" | "warn" | "error" | "info";
+  animationType?:
+    | "fade"
+    | "slide"
+    | "slideDown"
+    | "slideUp"
+    | "scale"
+    | "bounce";
   duration?: number;
   margin?: Margin;
 }
@@ -365,9 +418,9 @@ export type DialogHeader = {
   orientation: OrientationTypes;
   radius?: number;
   alignment?: Alignment;
-  children?: Container[],
-  padding?: number
-}
+  children?: Container[];
+  padding?: number;
+};
 
 export type DialogBody = {
   height?: number;
@@ -377,9 +430,9 @@ export type DialogBody = {
   orientation: OrientationTypes;
   radius?: number;
   alignment?: Alignment;
-  children?: Container[],
-  padding?: number
-}
+  children?: Container[];
+  padding?: number;
+};
 
 export type DialogFooter = {
   height?: number;
@@ -389,9 +442,9 @@ export type DialogFooter = {
   orientation: OrientationTypes;
   radius?: number;
   alignment?: Alignment;
-  children?: Container[],
-  padding?: number
-}
+  children?: Container[];
+  padding?: number;
+};
 
 export interface DialogConfig extends BaseConfig {
   borderWidth?: number;
@@ -423,15 +476,24 @@ export interface FlexLayoutConfig extends BaseConfig {
   borderColor?: number;
   padding?: number;
   space?: number;
-  alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch';
-  justifyContent?: 'flex-start' | 'flex-end' | 'center';
-  flexDirection?: 'row' | 'column';
+  alignItems?: "flex-start" | "flex-end" | "center" | "stretch";
+  justifyContent?: "flex-start" | "flex-end" | "center";
+  flexDirection?: "row" | "column";
   children?: Container[];
 }
 
 export interface DragHandlers {
-  handleDragStart?: (child: Container, pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => void;
-  handleDrag?: (pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => void;
+  handleDragStart?: (
+    child: Container,
+    pointer: Phaser.Input.Pointer,
+    dragX: number,
+    dragY: number
+  ) => void;
+  handleDrag?: (
+    pointer: Phaser.Input.Pointer,
+    dragX: number,
+    dragY: number
+  ) => void;
   handleDragEnd?: (pointer: Phaser.Input.Pointer) => void;
 }
 
@@ -451,9 +513,23 @@ export interface GridConfig extends PanelConfig {
   showGrid?: boolean;
   alignment?: Alignment;
   children?: GridItem[];
-  handleDragStart?: (dragChild: Container | undefined, pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => void;
-  handleDrag?: (dragChild: Container | undefined, pointer: Phaser.Input.Pointer, dragX: number, dragY: number) => void;
-  handleDragEnd?: (dragChild: Container | undefined, targetChild: Container | undefined, pointer: Phaser.Input.Pointer) => void;
+  handleDragStart?: (
+    dragChild: Container | undefined,
+    pointer: Phaser.Input.Pointer,
+    dragX: number,
+    dragY: number
+  ) => void;
+  handleDrag?: (
+    dragChild: Container | undefined,
+    pointer: Phaser.Input.Pointer,
+    dragX: number,
+    dragY: number
+  ) => void;
+  handleDragEnd?: (
+    dragChild: Container | undefined,
+    targetChild: Container | undefined,
+    pointer: Phaser.Input.Pointer
+  ) => void;
 }
 
 export interface GridItem extends Container {
@@ -476,7 +552,7 @@ export interface TabItem {
   title?: string;
   texture?: string;
 }
-export interface ImageConfig extends BaseConfig {
+export interface ImageConfig extends BaseButtonConfig {
   id?: string;
   x?: number;
   y?: number;
@@ -487,12 +563,26 @@ export interface ImageConfig extends BaseConfig {
   key?: string;
   frame?: string;
   isCircle?: boolean;
-  enableDrag?: boolean;
+  draggable?: boolean;
   borderWidth?: number;
   borderColor?: number;
-  enablePointer?: boolean;
   backgroundColor?: number;
   backgroundAlpha?: number;
 }
 
-export type SpriteConfig = Phaser.Types.GameObjects.Sprite.SpriteConfig & BaseConfig;
+export { Wallet };
+
+export interface SpriteAnimConfig {
+  key: string;
+  frameKey?: string;
+  frames?: number[];
+  keys?: string[];
+  frameRate: number;
+  repeat: number;
+}
+//export type SpriteConfig = Phaser.Types.GameObjects.Sprite.SpriteConfig & BaseConfig;
+export interface SpriteConfig
+  extends BaseButtonConfig,
+    Omit<Phaser.Types.GameObjects.Sprite.SpriteConfig, keyof BaseConfig> {
+  animConfigs?: SpriteAnimConfig[];
+}

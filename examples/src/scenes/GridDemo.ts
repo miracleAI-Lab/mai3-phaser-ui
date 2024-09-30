@@ -157,12 +157,12 @@ export class GridDemo extends BaseScene {
     // alignment: { horizontal: "center", vertical: "middle" },
     radius: 10,
     handleDragStart: (
-      child: Container,
+      child: Container | undefined,
       pointer: Phaser.Input.Pointer,
       dragX: number,
       dragY: number
     ) => {
-		if (child.Type === 'Sprite') {
+		if (child && child.Type === 'Sprite') {
 			const sprite = child as Sprite;
 			sprite.instance?.play("stop");
 		}
@@ -267,7 +267,6 @@ export class GridDemo extends BaseScene {
           this.scene.start("DemoScene");
         },
       },
-      enablePointer: true,
     });
   }
 

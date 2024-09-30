@@ -34,7 +34,6 @@ export class ToastDemo extends BaseScene {
                     this.scene.start('DemoScene');
                 }
             },
-            enablePointer: true,
         });
     }
 
@@ -48,8 +47,7 @@ export class ToastDemo extends BaseScene {
             duration: 3000,
             type: 'success',
             textAlign: 'center',
-            horizontalAlign: 'right',
-            verticalAlign: 'top',
+            alignment: {horizontal: 'right', vertical: 'top'},
             animationType: 'slide',
             backgroundColor: 0x008B00,
             textStyle: {
@@ -58,7 +56,6 @@ export class ToastDemo extends BaseScene {
                 color: '#000000',
             },
             margin: { all: 10 },
-            enablePointer: true,
         });
 
         // 创建一个按钮来触发Toast
@@ -79,7 +76,6 @@ export class ToastDemo extends BaseScene {
                     toast.show()
                 }
             },
-            enablePointer: true,
         });
     }
 

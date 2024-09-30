@@ -22,6 +22,8 @@ import * as Types from "./types";
 import Utils from "./utils";
 import { ListView } from "./ui/ListView";
 import { Sprite } from "./ui/Sprite";
+import { ConnectButton } from "./ui/ConnectButton";
+import { ConnectWalletButton } from "./ui/ConnectWalletButton";
 
 export {
   BaseScene,
@@ -45,10 +47,12 @@ export {
   VolumeSlider,
   ListView,
   Sprite,
+  ConnectButton,
+  ConnectWalletButton,
   Mai3Plugin,
   Mai3Game,
   Types,
-  Utils
+  Utils,
 };
 
 const Mai3 = {
@@ -73,10 +77,12 @@ const Mai3 = {
   VolumeSlider: VolumeSlider,
   ListView: ListView,
   Sprite: Sprite,
+  ConnectButton: ConnectButton,
+  ConnectWalletButton: ConnectWalletButton,
   Mai3Plugin: Mai3Plugin,
   Mai3Game: Mai3Game,
   Types: Types,
-  Utils: Utils
+  Utils: Utils,
 };
 
 export default Mai3;

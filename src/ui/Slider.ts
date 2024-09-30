@@ -1,9 +1,9 @@
-import Phaser from 'phaser';
-import { ProgressBar } from './ProgressBar';
-import { RoundedButtonConfig, SliderConfig } from '../types';
+import Phaser from "phaser";
+import { ProgressBar } from "./ProgressBar";
+import { RoundedButtonConfig, SliderConfig } from "../types";
 import { BaseScene } from "../game";
-import Memory from '../utils/Memory';
-import { RoundedButton } from './RoundedButton';
+import Memory from "../utils/Memory";
+import { RoundedButton } from "./RoundedButton";
 export class Slider extends ProgressBar {
   min?: number;
   max?: number;
@@ -18,7 +18,7 @@ export class Slider extends ProgressBar {
     super(scene, config);
 
     this._config = config;
-    this.Type = 'Slider';
+    this.Type = "Slider";
     this.draw(config);
   }
 
@@ -49,14 +49,22 @@ export class Slider extends ProgressBar {
 
     let dragXRangeLeft = -btnRadius;
     let dragXRangeRight = this._config?.width! - btnRadius;
-    this.sliderBtn.on('drag', (_pointer: Phaser.Input.Pointer, dragX: number, _dragY: number) => {
-      dragX = Phaser.Math.Clamp(dragX, dragXRangeLeft, dragXRangeRight);
-      this.sliderBtn!.x = dragX;
-      let realBtnCenterPosX = Phaser.Math.Clamp(dragX + btnRadius, 0, this._config?.width!);
-      this.refreshProgress(realBtnCenterPosX);
-      this.fixSliderBtnPosY();
-      this.sliderBtn?.updateMaskShapePos();
-    }, this);
+    this.sliderBtn.on(
+      "drag",
+      (_pointer: Phaser.Input.Pointer, dragX: number, _dragY: number) => {
+        dragX = Phaser.Math.Clamp(dragX, dragXRangeLeft, dragXRangeRight);
+        this.sliderBtn!.x = dragX;
+        let realBtnCenterPosX = Phaser.Math.Clamp(
+          dragX + btnRadius,
+          0,
+          this._config?.width!
+        );
+        this.refreshProgress(realBtnCenterPosX);
+        this.fixSliderBtnPosY();
+        this.sliderBtn?.updateMaskShapePos();
+      },
+      this
+    );
 
     this.RefreshBounds();
   }
@@ -80,11 +88,12 @@ export class Slider extends ProgressBar {
 
   transformForRoundedButtonConfig(): RoundedButtonConfig {
     const handleRadius = this.getHandleRadius();
-    const { btnLeftTopX, btnLeftTopY } = this.computedSliderBtnLeftTopPosition();
+    const { btnLeftTopX, btnLeftTopY } =
+      this.computedSliderBtnLeftTopPosition();
     const config: RoundedButtonConfig = {
       x: btnLeftTopX,
       y: btnLeftTopY,
-      enableDrag: true,
+      draggable: true,
       radius: handleRadius,
       borderWidth: this._config?.handleBorderWidth,
       borderColor: this._config?.handleBorderColor,
@@ -92,7 +101,7 @@ export class Slider extends ProgressBar {
       backgroundAlpha: this._config?.handleBackgroundAlpha,
       geomType: this._config?.handleGeomType,
       texture: this._config?.handleTexture,
-    }
+    };
 
     return config;
   }
@@ -130,8 +139,8 @@ export class Slider extends ProgressBar {
 
     return {
       btnLeftTopX,
-      btnLeftTopY
-    }
+      btnLeftTopY,
+    };
   }
 
   private refreshProgress(pointerX: number) {
@@ -143,7 +152,11 @@ export class Slider extends ProgressBar {
     if (this.progressPercent < 0) this.progressPercent = 0;
 
     const rawValue = this.min! + this.progressPercent * (this.max! - this.min!);
-    this._value = Phaser.Math.Clamp(Math.round(rawValue / this.step!) * this.step!, this.min!, this.max!);
+    this._value = Phaser.Math.Clamp(
+      Math.round(rawValue / this.step!) * this.step!,
+      this.min!,
+      this.max!
+    );
     this._updateProgress();
   }
 
@@ -164,6 +177,10 @@ export class Slider extends ProgressBar {
 
   get value(): number {
     return this._value;
+  }
+
+  get config(): SliderConfig {
+    return this._config!;
   }
 
   destroy(fromScene?: boolean): void {

@@ -314,17 +314,22 @@ export class Grid extends Panel {
         );
     }
 
-    destroy(fromScene?: boolean): void {
-        super.destroy(fromScene);
-        this._content?.destroy(fromScene);
-        this._gridLines?.destroy(fromScene);
-        this.positionSlotMap.clear();
-    }
-
+    
     public removeChild(child: Container): void {
         const key = `${child.x}-${child.y}`;
         this.positionSlotMap.set(key, 0);
         this._content?.remove(child);
         child.destroy();
+    }
+    
+    get config(): GridConfig {
+        return this._config!;
+    }
+    
+    destroy(fromScene?: boolean): void {
+        super.destroy(fromScene);
+        this._content?.destroy(fromScene);
+        this._gridLines?.destroy(fromScene);
+        this.positionSlotMap.clear();
     }
 }

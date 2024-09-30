@@ -303,6 +303,10 @@ export class TextBox extends Container {
         return worldPoint;
     }
 
+    get config(): TextBoxConfig {
+        return this._config!;
+    }
+    
     destroy(fromScene?: boolean): void {
         this.label.destroy(fromScene);
         this.cursor.destroy(fromScene);

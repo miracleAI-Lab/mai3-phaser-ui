@@ -35,7 +35,6 @@ export class TextBoxDemo extends BaseScene {
                     this.scene.start('DemoScene');
                 }
             },
-            enablePointer: true,
         });
     }
 

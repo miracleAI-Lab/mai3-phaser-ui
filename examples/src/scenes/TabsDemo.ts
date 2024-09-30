@@ -36,7 +36,6 @@ export class TabsDemo extends BaseScene {
           this.scene.start('DemoScene');
         }
       },
-      enablePointer: true,
     });
   }
 

@@ -22,6 +22,7 @@ export class Preloader extends BaseScene {
         //this.load.pack('loadsprites', 'assets/json/assetsprites.json');
 
         this.load.image("mainMenuBg", "assets/images/mainMenuBg.png");
+        this.load.image("btn001", "assets/images/btn001.png");
         this.load.image('StartGameButton', 'assets/images/StartGameButton.png');
         this.load.image('StartGameButtonDown', 'assets/images/StartGameButtonDown.png');
         this.load.image('StartGameButtonHover', 'assets/images/StartGameButtonHover.png');

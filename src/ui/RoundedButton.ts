@@ -1,9 +1,9 @@
-import { Container } from './Container';
 import { RoundedButtonConfig } from '../types';
 import Utils from '../utils';
 import { BaseScene } from '../game';
+import { BaseButton } from './BaseButton';
 
-export class RoundedButton extends Container {
+export class RoundedButton extends BaseButton {
     private _config: RoundedButtonConfig;
     protected bg?: Phaser.GameObjects.RenderTexture | null;
     protected image?: Phaser.GameObjects.Image;
@@ -78,5 +78,9 @@ export class RoundedButton extends Container {
         const btnRadius = radius + borderWidth;
         let bgLeftTopPos = Utils.getWorldPosition(this.bg!);
         this.maskShape!.setPosition(bgLeftTopPos.x + btnRadius, bgLeftTopPos.y + btnRadius);
+    }
+
+    get config(): RoundedButtonConfig {
+        return this._config!;
     }
 }

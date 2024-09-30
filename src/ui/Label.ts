@@ -134,6 +134,10 @@ export class Label extends Panel {
     return this.label!;
   }
 
+  get config(): LabelConfig {
+    return this._config!;
+  }
+
   destroy(fromScene?: boolean) {
     if (this.label) {
       this.label.destroy();

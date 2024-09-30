@@ -142,4 +142,8 @@ export class LinearLayout extends Container {
         this.scene.input.enableDebug(this._content);
         this.RefreshBounds();
     }
+
+    get config(): LinearLayoutConfig {
+        return this._config!;
+    }
 }

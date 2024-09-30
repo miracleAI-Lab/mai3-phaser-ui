@@ -29,7 +29,7 @@ export class SpriteDemo extends BaseScene {
       width: 64,
       height: 100,
       key: "fight96",
-      frame: 0
+      frame: 0,      
     });
 
     this.anims.create({
@@ -45,17 +45,32 @@ export class SpriteDemo extends BaseScene {
       width: 64,
       height: 100,
       key: "fight96",
-      anims: "fight"
+      anims: "fight",
+      enableSmoothScaleAnim: true,
     });
   }
 
   private createAnimsSprite() {
-    this.anims.create({
-      key: "walk",
-      frames: [{ key: "cat0" }, { key: "cat1" }],
-      frameRate: 10,
-      repeat: -1,
+    const sprite = this.mai3.add.sprite({
+      x: 200,
+      y: 200,
+      width: 64,
+      height: 100,
+      key: "cat0",
+      animConfigs: [
+        {
+          key: "walk",
+          keys: ["cat0", "cat1"],
+          frameRate: 10,
+          repeat: -1,
+        },
+      ],
+      enableSmoothScaleAnim: true,
+      // enablePointer: true,
     });
+      
+    //play walk
+    sprite.playAnims("walk");
 
     const cat = this.mai3.add.sprite({
       x: 100,
@@ -89,7 +104,6 @@ export class SpriteDemo extends BaseScene {
           this.scene.start("DemoScene");
         },
       },
-      enablePointer: true,
     });
   }
 

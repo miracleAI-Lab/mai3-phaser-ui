@@ -34,7 +34,6 @@ export class SliderDemo extends BaseScene {
           this.scene.start('DemoScene');
         }
       },
-      enablePointer: true,
     });
   }
 

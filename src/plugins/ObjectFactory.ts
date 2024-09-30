@@ -12,7 +12,7 @@ import { Container } from "../ui/Container";
 import { RoundedButton } from "../ui/RoundedButton";
 import { TextButton } from "../ui/TextButton";
 import { ImageButton } from "../ui/ImageButton";
-import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig, PanelConfig, ImageProgressConfig, GridConfig, SpriteConfig } from '../types';
+import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig, PanelConfig, ImageProgressConfig, GridConfig, SpriteConfig, ConnectWalletButtonConfig } from '../types';
 import { BaseScene } from "../game";
 import { TextBox } from "../ui/TextBox";
 import { Tabs } from "../ui/Tabs";
@@ -24,6 +24,7 @@ import { Panel } from "../ui/Panel";
 import { ImageProgressBar } from "../ui/ImageProgressBar";
 import { Grid } from "../ui/Grid";
 import { Sprite } from "../ui/Sprite";
+import { ConnectWalletButton } from "../ui/ConnectWalletButton";
 
 type Constructor<T extends Phaser.GameObjects.GameObject> = new (...args: any[]) => T;
 
@@ -149,6 +150,10 @@ class ObjectFactory {
 
   sprite(config: SpriteConfig): Sprite {
     return this.createGameObject(Sprite, this.scene, config);
+  }
+
+  connectWalletButton(config: ConnectWalletButtonConfig): ConnectWalletButton {
+    return this.createGameObject(ConnectWalletButton, this.scene, config);
   }
 };
 export default ObjectFactory;

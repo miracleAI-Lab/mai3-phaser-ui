@@ -187,6 +187,10 @@ export class TextArea extends TextBox {
         }
     }
 
+    get config(): TextBoxConfig {
+        return this._config!;
+    }
+    
     destroy(fromScene?: boolean): void {
         if (this.hiddenTextArea) {
             document.body.removeChild(this.hiddenTextArea);

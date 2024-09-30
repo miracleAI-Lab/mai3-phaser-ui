@@ -1,9 +1,9 @@
-import { Container } from './Container';
 import { ButtonConfig, GridItem } from '../types';
 import Utils from '../utils';
 import { BaseScene } from "../game";
+import { BaseButton } from './BaseButton';
 
-export class TextButton extends Container implements GridItem {
+export class TextButton extends BaseButton implements GridItem {
     private _config: ButtonConfig;
 
     bg?: Phaser.GameObjects.RenderTexture;

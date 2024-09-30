@@ -147,7 +147,6 @@ export class ProgressBarDemo extends BaseScene {
           this.scene.start('DemoScene');
         }
       },
-      enablePointer: true,
     });
   }
 }

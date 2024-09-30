@@ -1,4 +1,5 @@
 import { RoundedRectRadius } from "../types";
+import {Address} from '../common/external';
 
 const Horizontal = [0, 'x', 'h', 'horizontal', 'left-to-right'];
 const Vertical = [1, 'y', 'v', 'vertical', 'top-to-bottom'];
@@ -28,6 +29,33 @@ const Utils = {
     return '#' + hex;
   },
 
+  hexToNumber(hex: string) {
+    return parseInt(hex.replace('#', '0x'), 16);
+  },
+
+  rawAddressToFriendly(address: string, shorten = false) {
+    const result = Address.parseRaw(address).toString();
+    if (!shorten) {
+      return result;
+    }
+
+    return result.substring(0, 4) + '...' + result.substring(result.length - 4);
+  },
+
+  smoothScale(
+    manager: Phaser.Tweens.TweenManager,
+    obj: object | object[],
+    scaleValue: number,
+    duration: number
+  ) {
+    manager.add({
+      targets: obj,
+      scaleX: scaleValue,
+      scaleY: scaleValue,
+      duration: duration
+    });
+  },
+
   drawRoundedRectRenderTexture(scene: Phaser.Scene, x: number = 0, y: number = 0, width: number = 100, height: number = 100, borderWidth: number = 0, radius: RoundedRectRadius = 0, borderColor: number = 0x000000, fillColor: number = 0xffffff, backgroundAlpha: number = 1) {
     // 检查宽高是否有效
     if (width <= 0 || height <= 0) {
@@ -45,16 +73,16 @@ const Utils = {
   },
 
   reDrawRoundedRectRenderTexture(
-    scene: Phaser.Scene, 
-    rt: Phaser.GameObjects.RenderTexture, 
-    x: number = 0, 
-    y: number = 0, 
-    width: number = 100, 
-    height: number = 100, 
-    borderWidth: number = 0, 
-    radius: RoundedRectRadius = 0, 
-    borderColor: number = 0x000000, 
-    fillColor: number = 0xffffff, 
+    scene: Phaser.Scene,
+    rt: Phaser.GameObjects.RenderTexture,
+    x: number = 0,
+    y: number = 0,
+    width: number = 100,
+    height: number = 100,
+    borderWidth: number = 0,
+    radius: RoundedRectRadius = 0,
+    borderColor: number = 0x000000,
+    fillColor: number = 0xffffff,
     backgroundAlpha: number = 1
   ) {
     // 参数有效性检查
