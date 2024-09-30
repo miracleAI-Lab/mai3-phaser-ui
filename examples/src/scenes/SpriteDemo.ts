@@ -66,11 +66,10 @@ export class SpriteDemo extends BaseScene {
         },
       ],
       enableSmoothScaleAnim: true,
-      // enablePointer: true,
     });
       
     //play walk
-    sprite.playAnims("walk");
+    sprite.play("walk");
 
     const cat = this.mai3.add.sprite({
       x: 100,
@@ -80,7 +79,7 @@ export class SpriteDemo extends BaseScene {
       key: "cat0",
     });
 
-    cat.instance?.play("walk");
+    cat.play("walk");
   }
 
   private createReturnButton() {

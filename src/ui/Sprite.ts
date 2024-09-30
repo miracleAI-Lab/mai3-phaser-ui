@@ -52,7 +52,7 @@ export class Sprite extends BaseButton {
     }
   }
 
-  public playAnims(
+  public play(
     key:
       | string
       | Phaser.Animations.Animation
@@ -61,6 +61,7 @@ export class Sprite extends BaseButton {
   ) {
     this.instance?.play(key, ignoreIfPlaying);
   }
+
   get config(): SpriteConfig {
     return this._config!;
   }

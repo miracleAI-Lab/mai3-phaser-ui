@@ -125,7 +125,6 @@ export class ButtonDemo extends BaseScene {
           // Add action for handleUp if needed
         }
       },
-      enablePointer: true,
     });
   }
 
@@ -174,7 +173,6 @@ export class ButtonDemo extends BaseScene {
           // Add action for handleDown if needed
         }
       },
-      enablePointer: true,
     });
   }
 
@@ -206,7 +204,6 @@ export class ButtonDemo extends BaseScene {
           console.log("Button released");
         }
       },
-      enablePointer: true,
     });
   }
 }

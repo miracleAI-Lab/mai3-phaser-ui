@@ -1,15 +1,6 @@
 import { defineConfig } from 'vite';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
-
-// export default defineConfig({
-//   resolve: {
-//     alias: {
-//       '@': '/src',
-//     },
-//   },
-// })
-
 export default defineConfig({
   resolve: {
     alias: {
