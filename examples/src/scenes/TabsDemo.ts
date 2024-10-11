@@ -43,11 +43,11 @@ export class TabsDemo extends BaseScene {
     this.tabs = this.mai3.add.tabs({
       x: 10,
       y: 500,
-      height: 180,
-      padding: 5,
+      height: 120,
+      padding: 10,
       background: 0x000,
       items: [
-        { title: 'tab1', texture: 'tabs1' },
+        { title: 'ta123b1', texture: 'tabs1' },
         { title: 'tab2', texture: 'tabs2' },
         { title: 'tab3', texture: 'tabs3' },
         { title: 'tab4', texture: 'tabs4' },

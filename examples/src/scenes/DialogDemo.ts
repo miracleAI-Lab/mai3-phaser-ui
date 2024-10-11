@@ -68,15 +68,27 @@ export class DialogDemo extends BaseScene {
 
     private createDialog() {
         const dialogConfig: DialogConfig = {
-            x: 10,
-            y: 580,
-            width: 580,
-            height: 700,
-            itemSpace: 20,
-            padding: {all: 20},
-            texture: 'dialog_bg',
-            radius: 20,
-            // closeButton: {xxxxx}
+            width: 694,
+            height: 606,
+            frame: 0,
+            leftWidth: 20,
+            rightWidth: 20,
+            topHeight: 60,
+            bottomHeight: 60,
+            texture: 'dialog-bg',
+            closeButton: {
+                type: 'ImageButton',
+                x: 30,
+                y: 30,
+                width: 60,
+                height: 70,
+                texture: "dialog-close",
+                handleUp: {
+                    handleFn: () => {
+                        this.dialog.hide();
+                    }
+                },
+            }
         };
 
         this.dialog = this.mai3.add.dialog(dialogConfig);
@@ -91,64 +103,39 @@ export class DialogDemo extends BaseScene {
 
         // 添加标题
         items.push({
-            type: 'Label',
-            x: 20,
-            y: 20,
-            text: '我是Dialog',
+            type: 'Text',
+            x: 280,
+            y: 18,
+            text: '更新信息',
+            autoWidth: true,
+            autoHeight: true,
+            isWordWrap: true,
             textStyle: {
                 fontFamily: 'Arial',
-                fontSize: '24px',
-                color: '#FFFFFF',
-            },
+                fontSize: '30px',
+                color: '#F9D59D',
+            }
         });
 
         // 添加文本框
         items.push({
-            type: 'TextBox',
-            x: 20,
-            y: 80,
-            width: 300,
-            height: 60,
-            placeholder: '请输入账号...',
-            text: "一个文本输入框",
-            borderWidth: 4,
-            borderColor: 0xFFD700,
-            backgroundColor: 0xffffff,
+            type: 'Label',
+            x: 70,
+            y: 130,
+            width: 500,
+            height: 250,
+            text: "Phaser is a fast free, and fun open source HTML5 game framework",
+            borderWidth: 6,
+            borderColor: 0xCEBBA3,
+            backgroundColor: 0xA78E6B,
+            backgroundAlpha: 1,
             textStyle: {
                 fontFamily: 'Arial',
-                fontSize: '24px',
-                color: '#000',
+                fontSize: '30px',
+                color: '#fff',
             },
-            padding: {all: 10}
-        });
-
-        // 添加复选框
-        items.push({
-            type: 'Checkbox',
-            x: 20,
-            y: 160,
-            width: 30,
-            height: 30,
-            text: '记住密码',
-            textStyle: {
-                fontFamily: 'Arial',
-                fontSize: '18px',
-                color: '#FFFFFF',
-            },
-            markBgRadius: 5,
-            markFillRadius: 3
-        });
-
-        // 添加滑动条
-        items.push({
-            type: 'Slider',
-            x: 20,
-            y: 220,
-            width: 300,
-            height: 30,
-            min: 0,
-            max: 100,
-            value: 50,
+            isWordWrap: true,
+            padding: { all: 20 }
         });
 
         // 添加按钮
@@ -161,21 +148,21 @@ export class DialogDemo extends BaseScene {
     private createFooterButtonConfig() {
         return {
             type: 'ImageButton',
-            x: 20,
-            y: 280,
-            width: 160,
-            height: 60,
-            texture: "StartGameButton",
+            x: 80,
+            y: 460,
+            width: 214,
+            height: 76,
+            texture: "dialog-start-btn",
             handleHover: {
                 audio: "sfx-hover",
-                texture: "StartGameButtonHover",
+                texture: "dialog-start-btn",
             },
             handleOut: {
-                texture: "StartGameButton",
+                texture: "dialog-start-btn",
             },
             handleDown: {
                 audio: "sfx-press",
-                texture: "StartGameButtonDown",
+                texture: "dialog-start-btn",
                 handleFn: () => {
                     console.log("handleDown");
                 }
@@ -190,25 +177,25 @@ export class DialogDemo extends BaseScene {
 
     private createFooterCloseButtonConfig() {
         return {
-            type: 'TextButton',
-            x: 200,
-            y: 280,
-            width: 100,
-            height: 60,
-            borderColor: 0x2f4e59,
-            backgroundColor: 0x23fe32,
-            text: "关闭窗口",
-            radius: 20,
-            textStyle: {
-                fontFamily: 'Arial',
-                fontSize: '24px',
-                color: '#000',
-            },
+            type: 'ImageButton',
+            x: 400,
+            y: 460,
+            width: 214,
+            height: 76,
+            texture: "dialog-close-btn",
             handleHover: {
                 audio: "sfx-hover",
+                texture: "dialog-close-btn",
+            },
+            handleOut: {
+                texture: "dialog-close-btn",
             },
             handleDown: {
                 audio: "sfx-press",
+                texture: "dialog-close-btn",
+                handleFn: () => {
+                    console.log("handleDown");
+                }
             },
             handleUp: {
                 handleFn: () => {

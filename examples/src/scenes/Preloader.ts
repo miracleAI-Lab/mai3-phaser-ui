@@ -52,6 +52,11 @@ export class Preloader extends BaseScene {
         this.load.image("main-btn", "assets/images/main-btn.png");
         this.load.image("money", "assets/images/money.png");
 
+        // dialog
+        this.load.image("dialog-bg", "assets/images/dialog/bg.png");
+        this.load.image("dialog-close", "assets/images/dialog/close.png");
+        this.load.image("dialog-start-btn", "assets/images/dialog/start-btn.png");
+        this.load.image("dialog-close-btn", "assets/images/dialog/close-btn.png");
 
         this.load.audio('sfx-hover', 'assets/audio/sfx-hover.wav');
         this.load.audio('sfx-press', 'assets/audio/sfx-press.wav');

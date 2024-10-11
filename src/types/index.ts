@@ -448,7 +448,8 @@ export interface DialogConfig extends PanelConfig {
   // body?: DialogBody;
   // footer?: DialogFooter;
   itemSpace?: number;
-  padding: Padding;
+  padding?: Padding;
+  closeButton?: ImageButtonConfig;
 }
 
 export interface LinearLayoutConfig extends BaseConfig {

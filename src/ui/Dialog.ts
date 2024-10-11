@@ -24,11 +24,32 @@ export class Dialog extends Container {
     }
 
     private _createRoot(): void {
-        const { x = 0, y = 0, width = 0, height = 0, texture = '', frame } = this._dialogConfig!;
-        this._root = this.scene.mai3.add.panel({x, y, width, height, texture, frame});
+        const {
+            x = 0, 
+            y = 0, 
+            width = 0, 
+            height = 0, 
+            texture = '', 
+            frame,
+            leftWidth = 0,
+            rightWidth = 0,
+            topHeight = 0,
+            bottomHeight = 0,
+            radius = 0,
+            borderWidth = 0,
+            borderColor = 0
+        } = this._dialogConfig!;
+        this._root = new Panel(this.scene, {x, y, width, height, texture, frame, leftWidth, rightWidth, topHeight, bottomHeight, radius, borderWidth, borderColor});
         this._root.setName("root");
         this._root.drawBackground();
         this.addAt(this._root, 1);
+        if (this._dialogConfig?.closeButton) {
+            let closeBtnConfig = this._dialogConfig.closeButton;
+            closeBtnConfig.x = (this._dialogConfig.width ?? 0) - (closeBtnConfig.width ?? 0) - (closeBtnConfig.x ?? 0);
+            const child = this.createChildFromConfig(closeBtnConfig);
+            this._root!.addChild(child);
+            this._childComponents.push(child);
+        }
     }
 
     private _positionDialog(): void {
