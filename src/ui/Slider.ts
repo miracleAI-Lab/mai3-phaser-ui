@@ -1,10 +1,10 @@
 import Phaser from "phaser";
-import { ProgressBar } from "./ProgressBar";
 import { RoundedButtonConfig, SliderConfig } from "../types";
 import { BaseScene } from "../game";
 import Memory from "../utils/Memory";
 import { RoundedButton } from "./RoundedButton";
-export class Slider extends ProgressBar {
+import { BaseBar } from "./BaseBar";
+export class Slider extends BaseBar {
   min?: number;
   max?: number;
   step?: number;

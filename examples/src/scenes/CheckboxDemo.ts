@@ -1,4 +1,4 @@
-import { BaseScene } from '../../../dist';
+import { BaseScene, Checkbox } from '../../../dist';
 
 export class CheckboxDemo extends BaseScene {
     constructor() {
@@ -10,18 +10,17 @@ export class CheckboxDemo extends BaseScene {
     }
 
     async create() {
-        //无图
-        this.createCheckboxWithNoImages();
         //有图
         this.createCheckboxWithImages();
         this.createCheckboxGroup();
+        this.createMultiSelectCheckboxGroup();
         this.createReturnButton();
     }
 
     private createReturnButton() {
         this.mai3.add.textButton({
             x: 10,
-            y: 10,
+            y: 40,
             width: 150,
             height: 50,
             text: "返回DemoScene",
@@ -45,14 +44,10 @@ export class CheckboxDemo extends BaseScene {
     //有图
     private createCheckboxWithImages() {
         const ckbConfig = {
-            x: 10, y: 350,
-            width: 100,
-            height: 40,
-            checkColor: 0xFFD700,
-            uncheckColor: 0xcf4b00,
-            text: "Mai3",
-            isChecked: true,
-            borderWidth: 6,
+            x: 10,
+            y: 350,
+            text: "Mai3333332",
+            isChecked: false,
             labelSpace: 10,
             textStyle: {
                 fontFamily: 'Arial',
@@ -60,88 +55,72 @@ export class CheckboxDemo extends BaseScene {
                 color: '#fff',
                 fontStyle: '',//bold or 100-1200
             },
-            handleSelect() {
-                console.log('checked: ', this.isChecked);
+            handleSelect(ckb: Checkbox) {
+                console.log('checked: ', ckb.isChecked);
             },
-            markBgRadius: 15,
-            markBgBorderWidth: 3,
-            markBgBorderColor: 0xff0,
-            markBgColor: 0x1f1,
-            markBgAlpha: 1,
-            markBgTexture: "logo",
-
-            markFillRadius: 12,
-            markFillBorderWidth: 3,
-            markFillBorderColor: 0xffeeff,
-            markFillColor: 0xff00ff,
-            markFillAlpha: 1,
-            markFillTexture: "logo3",
+            iconWidth: 50,
+            iconHeight: 50,
+            unCheckedTexture: "unChecked",
+            checkedTexture: "checked",
         };
 
         const ckb = this.mai3.add.checkbox(ckbConfig);
-        ckb.debugDrawBorderLine();
-    }
-
-    //无图
-    private createCheckboxWithNoImages() {
-        const ckbConfig = {
-            x: 10, y: 450,
-            width: 100,
-            height: 40,
-            checkColor: 0xFFD700,
-            uncheckColor: 0xcf4b00,
-            text: "Mai3",
-            isChecked: true,
-            borderWidth: 6,
-            labelSpace: 10,
-            textStyle: {
-                fontFamily: 'Arial',
-                fontSize: '24px',
-                color: '#fff',
-                fontStyle: '',//bold or 100-1200
-            },
-            handleSelect() {
-                console.log('checked: ', this.isChecked);
-            },
-            markBgRadius: 15,
-            markBgBorderWidth: 3,
-            markBgBorderColor: 0xff0,
-            markBgColor: 0x1f1,
-            markBgAlpha: 1,
-            markBgTexture: "",
-
-            markFillRadius: 12,
-            markFillBorderWidth: 3,
-            markFillBorderColor: 0xffeeff,
-            markFillColor: 0xff00ff,
-            markFillAlpha: 1,
-            markFillTexture: "",
-        };
-
-        const ckb = this.mai3.add.checkbox(ckbConfig);
-        ckb.debugDrawBorderLine();
+        // ckb.debugDrawBorderLine();
+        // ckb.debugHitArea();
+        // ckb.setEventInteractive();
     }
 
     private createCheckboxGroup() {
         const checkboxGroup = this.mai3.add.checkboxGroup({
             x: 10,
-            y: 650,
-            width: 300,
-            height: 150,
-            orientation: 'vertical',
+            y: 500,
+            orientation: 'horizontal',
+            labelSpace: 10,
             items: [
-                { text: '选项1', value: 'option1' },
+                { text: '选项1---单选', value: 'option1' },
                 { text: '选项2', value: 'option2' },
                 { text: '选项3', value: 'option3' }
             ],
             textStyle: {
                 fontFamily: 'Arial',
-                fontSize: '18px',
-                color: '#000000',
+                fontSize: '24px',
+                color: '#fff',
+                fontStyle: '',//bold or 100-1200
             },
-            checkColor: 0x00FF00,
-            uncheckColor: 0xFF0000,
-            borderWidth: 2,
+            iconWidth: 50,
+            iconHeight: 50,
+            unCheckedTexture: "unChecked",
+            checkedTexture: "checked",
+        });
+
+        checkboxGroup.on('change', (selectedItems: string[]) => {
+            console.log('选中的项目:', selectedItems);
+        });
+    }
+
+    createMultiSelectCheckboxGroup() {
+        const checkboxGroup = this.mai3.add.checkboxGroup({
+            x: 10,
+            y: 600,
+            orientation: 'vertical',
+            multiSelect: true,
+            labelSpace: 10,
+            isCircle: true,
+            items: [
+                { text: '选项1---多选', value: 'option1' },
+                { text: '选项2', value: 'option2' },
+                { text: '选项3', value: 'option3' }
+            ],
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '24px',
+                color: '#fff',
+                fontStyle: '',//bold or 100-1200
+            },
+            iconWidth: 50,
+            iconHeight: 50,
+            unCheckedTexture: "rectangle",
+            checkedTexture: "circle",
         });
 
         checkboxGroup.on('change', (selectedItems: string[]) => {

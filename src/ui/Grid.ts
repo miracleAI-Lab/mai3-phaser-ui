@@ -32,6 +32,7 @@ export class Grid extends Panel {
         this._config = config;
         this.setupContent();
         this.setupGridLayout();
+        this.updateConfig(config);
     }
 
     private setupContent(): void {
@@ -39,7 +40,7 @@ export class Grid extends Panel {
         const left = padding.all ?? padding.left;
         const top = padding.all ?? padding.top;
 
-        this.drawBg();
+        this.drawBackground();
         this._content = new Container(this.scene);
         this._content.setPosition(left, top);
         this.addChildAt(this._content, 1);
@@ -143,7 +144,7 @@ export class Grid extends Panel {
     private addItemsToCell(itemConfigs: any[], emptyCell: { x: number; y: number }, cellIndex: number): void {
         itemConfigs.forEach((cfg, i) => {
             const { width, height } = this.calculateChildDimensions(cfg);
-            const { x, y } = this.calculateChildPosition(cfg,emptyCell, width, height);
+            const { x, y } = this.calculateChildPosition(cfg, emptyCell, width, height);
             
             const mergedConfig = { ...cfg, x, y, width, height };
             const child = this.createChildFromConfig(mergedConfig);

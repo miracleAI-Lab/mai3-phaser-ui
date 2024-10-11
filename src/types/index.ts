@@ -130,7 +130,7 @@ export interface FlexLayoutConfig extends BaseConfig {
   contents?: Container[];
 }
 
-export interface ProgressConfig extends BaseConfig {
+export interface BaseBarConfig extends BaseConfig {
   bgColor?: number;
   fillColor?: number;
   bgTexture?: string;
@@ -157,13 +157,13 @@ export interface progressTextrureConfig {
   bottomHeight?: number;
 }
 
-export interface ImageProgressConfig extends BaseConfig {
+export interface ProgressBarConfig extends BaseConfig {
   barTexture?: progressTextrureConfig;
   fillTexture?: progressTextrureConfig;
   value?: number;
 }
 
-export interface SliderConfig extends ProgressConfig {
+export interface SliderConfig extends BaseBarConfig {
   min?: number;
   max?: number;
   step?: number;
@@ -231,19 +231,11 @@ export interface BaseContainerConfig {
 export interface CheckboxConfig extends BaseConfig {
   x?: number;
   y?: number;
-  markBgRadius: number;
-  markBgBorderWidth?: number;
-  markBgBorderColor?: number;
-  markBgColor?: number;
-  markBgAlpha?: number;
-  markBgTexture?: string;
-
-  markFillRadius: number;
-  markFillBorderWidth?: number;
-  markFillBorderColor?: number;
-  markFillColor?: number;
-  markFillAlpha?: number;
-  markFillTexture?: string;
+  iconWidth: number;
+  iconHeight: number;
+  unCheckedTexture: string;
+  checkedTexture: string;
+  isCircle?: boolean;
   isChecked?: boolean;
   text?: string;
   value?: string;
@@ -276,18 +268,19 @@ export interface ListViewItemConfig extends BaseConfig {
 }
 
 export interface CheckboxGroupConfig extends BaseConfig {
-  itemWidth?: number;
-  itemHeight?: number;
-  borderWidth?: number;
-  space?: number;
-  checkColor?: number;
-  uncheckColor?: number;
-  borderColorAlpha?: number;
+  x?: number;
+  y?: number;
+  labelSpace?: number;
   multiSelect?: boolean;
   defaultSelectedIndex?: number;
   textStyle?: TextStyle;
   items?: CheckboxGroupItem[];
   handleSelect?: Function;
+  iconWidth: number;
+  iconHeight: number;
+  unCheckedTexture: string;
+  checkedTexture: string;
+  isCircle?: boolean;
 }
 
 export interface ImageButtonConfig extends NinePatchConfig {
@@ -419,7 +412,7 @@ export type DialogHeader = {
   radius?: number;
   alignment?: Alignment;
   children?: Container[];
-  padding?: number;
+  padding?: Padding;
 };
 
 export type DialogBody = {
@@ -431,7 +424,7 @@ export type DialogBody = {
   radius?: number;
   alignment?: Alignment;
   children?: Container[];
-  padding?: number;
+  padding?: Padding;
 };
 
 export type DialogFooter = {
@@ -443,19 +436,19 @@ export type DialogFooter = {
   radius?: number;
   alignment?: Alignment;
   children?: Container[];
-  padding?: number;
+  padding?: Padding;
 };
 
-export interface DialogConfig extends BaseConfig {
+export interface DialogConfig extends PanelConfig {
   borderWidth?: number;
   borderColor?: number;
   radius?: number;
   background?: string | number;
-  header?: DialogHeader;
-  body?: DialogBody;
-  footer?: DialogFooter;
+  // header?: DialogHeader;
+  // body?: DialogBody;
+  // footer?: DialogFooter;
   itemSpace?: number;
-  padding?: number;
+  padding: Padding;
 }
 
 export interface LinearLayoutConfig extends BaseConfig {
@@ -466,7 +459,7 @@ export interface LinearLayoutConfig extends BaseConfig {
   children?: Container[];
   alignment?: Alignment;
   itemSpace?: number;
-  padding?: number;
+  padding?: Padding;
 }
 
 export interface FlexLayoutConfig extends BaseConfig {

@@ -1,4 +1,4 @@
-import { RoundedRectRadius } from "../types";
+import { Padding, PhaserTextPadding, RoundedRectRadius } from "../types";
 import {Address} from '../common/external';
 
 const Horizontal = [0, 'x', 'h', 'horizontal', 'left-to-right'];
@@ -213,6 +213,17 @@ const Utils = {
     });
 
     return timer;
+  },
+
+  getPadding(padding?: Padding) {
+    const left =  padding?.all ?? padding?.x ?? padding?.left ?? 0;
+    const right =  padding?.all ?? padding?.x ?? padding?.right ?? 0;
+    const top =  padding?.all ?? padding?.y ?? padding?.top ?? 0;
+    const bottom = padding?.all ?? padding?.y ?? padding?.bottom ?? 0;
+    const x = left;
+    const y = top;
+    
+    return { x, y, left, right, top, bottom}
   }
 }
 

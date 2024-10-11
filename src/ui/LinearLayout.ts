@@ -1,5 +1,5 @@
 import { Container } from './Container';
-import { Alignment, LinearLayoutConfig } from '../types';
+import { Alignment, LinearLayoutConfig, Padding } from '../types';
 import Utils from '../utils';
 import { BaseScene } from "../game";
 
@@ -18,10 +18,12 @@ export class LinearLayout extends Container {
     }
 
     private initLayout(): void {
-        this._bg = this.createBackground();
-        this.addChildAt(this._bg, 0);
-        this.addChildAt(this._content, 1);
+        if (this._config.background) {
+            this._bg = this.createBackground();
+            this.addChild(this._bg);
+        }
 
+        this.addChild(this._content);
         if (this._config.children && this._config.children.length > 0) {
             this.addChildren(this._config.children);
         }
@@ -64,7 +66,7 @@ export class LinearLayout extends Container {
 
     public addChildren(children: Container[]): void {
         this._config.children = children;
-        const { width = 0, height = 0, padding = 0, space = 0,
+        const { width = 0, height = 0, padding, space = 0,
             alignment = { horizontal: 'center', vertical: 'top' },
             orientation = 'x'
         } = this._config;
@@ -82,36 +84,40 @@ export class LinearLayout extends Container {
             nextY = isHorizontal ? nextY : RealHeight + space;
         });
 
-        this.alignContent(width, height, padding, alignment, isHorizontal);
-        this.updateBackground();
+        this.alignContent(width, height, alignment, isHorizontal);
+        // this.updateBackground();
     }
 
-    private alignContent(width: number, height: number, padding: number, alignment: Alignment, isHorizontal: boolean): void {
+    private alignContent(width: number, height: number, alignment: Alignment, isHorizontal: boolean): void {
         const { RealWidth = 0, RealHeight = 0 } = this._content;
-        const contentHeight = height - padding * 2;
 
-        let contentX = this.calculateContentX(alignment.horizontal, RealWidth, width, padding);
-        let contentY = this.calculateContentY(alignment.vertical, contentHeight, RealHeight, padding);
+        const padding = Utils.getPadding(this._config.padding);
+        const contentHeight = height - padding.left - padding.right;
+
+        let contentX = this.calculateContentX(alignment.horizontal, RealWidth, width);
+        let contentY = this.calculateContentY(alignment.vertical, contentHeight, RealHeight);
 
         this.repositionChildren(isHorizontal, RealHeight);
 
         this._content.setPosition(contentX, contentY);
     }
 
-    private calculateContentX(align: string, realWidth: number, totalWidth: number, padding: number): number {
+    private calculateContentX(align: string, realWidth: number, totalWidth: number): number {
+        const padding = Utils.getPadding(this._config.padding);
         switch (align) {
-            case 'left': return padding;
+            case 'left': return padding.left;
             case 'center': return (totalWidth - realWidth) / 2;
-            case 'right': return totalWidth - padding - realWidth;
+            case 'right': return totalWidth - padding.left - realWidth;
             default: return 0;
         }
     }
 
-    private calculateContentY(align: string, totalHeight: number, contentHeight: number, padding: number): number {
+    private calculateContentY(align: string, totalHeight: number, contentHeight: number): number {
+        const padding = Utils.getPadding(this._config.padding);
         switch (align) {
-            case 'bottom': return Math.max(totalHeight - padding - contentHeight, contentHeight - padding);
+            case 'bottom': return Math.max(totalHeight - padding.top - contentHeight, contentHeight - padding.top);
             case 'middle': return Math.max((totalHeight - contentHeight) / 2, 0);
-            default: return padding;
+            default: return padding.top;
         }
     }
 

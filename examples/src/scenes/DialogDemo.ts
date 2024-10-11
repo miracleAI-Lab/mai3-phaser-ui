@@ -1,5 +1,5 @@
 import { BaseScene, Dialog } from '../../../dist'
-import { DialogBody, DialogFooter, DialogHeader, Mai3Component } from "../../../dist/types";
+import { DialogConfig } from "../../../dist/types";
 
 export class DialogDemo extends BaseScene {
     private dialog!: Dialog;
@@ -67,67 +67,102 @@ export class DialogDemo extends BaseScene {
     }
 
     private createDialog() {
-        this.dialog = this.mai3.add.dialog({
+        const dialogConfig: DialogConfig = {
             x: 10,
             y: 580,
             width: 580,
             height: 700,
             itemSpace: 20,
-            padding: 0,
-            background: '#D3D3D3',
+            padding: {all: 20},
+            texture: 'dialog_bg',
             radius: 20,
-            header: this.createDialogHeader(),
-            body: this.createDialogBody(),
-            footer: this.createDialogFooter(),
-        });
+            // closeButton: {xxxxx}
+        };
+
+        this.dialog = this.mai3.add.dialog(dialogConfig);
         this.dialog.hide();
 
-        const footerItems = this.createFooterItems();
-        const bodyItems = this.createBodyItems();
-        this.dialog.addFooterItems(footerItems as Mai3Component[]);
-        this.dialog.addBodyItems(bodyItems);
+        const items = this.createDialogItems();
+        this.dialog.addItems(items);
     }
 
-    private createDialogHeader(): DialogHeader {
-        return {
+    private createDialogItems() {
+        const items: any[] = [];
+
+        // 添加标题
+        items.push({
+            type: 'Label',
+            x: 20,
+            y: 20,
+            text: '我是Dialog',
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '24px',
+                color: '#FFFFFF',
+            },
+        });
+
+        // 添加文本框
+        items.push({
+            type: 'TextBox',
+            x: 20,
+            y: 80,
+            width: 300,
             height: 60,
-            title: '我是Dialog',
-            background: '#000080',
-            alignment: { horizontal: 'left', vertical: 'top' },
-            orientation: 'vertical',
-        };
+            placeholder: '请输入账号...',
+            text: "一个文本输入框",
+            borderWidth: 4,
+            borderColor: 0xFFD700,
+            backgroundColor: 0xffffff,
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '24px',
+                color: '#000',
+            },
+            padding: {all: 10}
+        });
+
+        // 添加复选框
+        items.push({
+            type: 'Checkbox',
+            x: 20,
+            y: 160,
+            width: 30,
+            height: 30,
+            text: '记住密码',
+            textStyle: {
+                fontFamily: 'Arial',
+                fontSize: '18px',
+                color: '#FFFFFF',
+            },
+            markBgRadius: 5,
+            markFillRadius: 3
+        });
+
+        // 添加滑动条
+        items.push({
+            type: 'Slider',
+            x: 20,
+            y: 220,
+            width: 300,
+            height: 30,
+            min: 0,
+            max: 100,
+            value: 50,
+        });
+
+        // 添加按钮
+        items.push(this.createFooterButtonConfig());
+        items.push(this.createFooterCloseButtonConfig());
+
+        return items;
     }
 
-    private createDialogBody(): DialogBody {
+    private createFooterButtonConfig() {
         return {
-            background: '#104E8B',
-            alignment: { horizontal: 'left', vertical: 'top' },
-            orientation: 'vertical',
-            padding: 20,
-            children: []
-        };
-    }
-
-    private createDialogFooter(): DialogFooter {
-        return {
-            height: 80,
-            background: '#FF1493',
-            alignment: { horizontal: 'left', vertical: 'top' },
-            orientation: 'horizontal',
-            padding: 5,
-            children: [],
-        };
-    }
-
-    private createFooterItems() {
-        const footerBtn = this.createFooterButton();
-        const footerBtn1 = this.createFooterCloseButton();
-        return [footerBtn, footerBtn1];
-    }
-
-    private createFooterButton() {
-        const footerBtn = this.mai3.make.imageButton({
-            id: 'footerBtn',
+            type: 'ImageButton',
+            x: 20,
+            y: 280,
             width: 160,
             height: 60,
             texture: "StartGameButton",
@@ -150,14 +185,14 @@ export class DialogDemo extends BaseScene {
                     this.dialog.hide();
                 }
             },
-        });
-        footerBtn.debugHitArea();
-        return footerBtn;
+        };
     }
 
-    private createFooterCloseButton() {
-        const footerBtn1 = this.mai3.make.textButton({
-            id: 'footerBtn1',
+    private createFooterCloseButtonConfig() {
+        return {
+            type: 'TextButton',
+            x: 200,
+            y: 280,
             width: 100,
             height: 60,
             borderColor: 0x2f4e59,
@@ -180,29 +215,7 @@ export class DialogDemo extends BaseScene {
                     this.dialog.hide();
                 }
             },
-        });
-        footerBtn1.debugHitArea();
-        return footerBtn1;
-    }
-
-    private createBodyItems() {
-        const textBox = this.mai3.make.textBox({
-            width: 300,
-            height: 60,
-            placeholder: '请输入账号...',
-            text: "一个文本输入框半成品",
-            borderWidth: 4,
-            borderColor: 0xFFD700,
-            backgroundColor: 0xffffff,
-            textStyle: {
-                fontFamily: 'Arial',
-                fontSize: '24px',
-                color: '#000',
-            },
-            padding: {}
-        });
-
-        return [textBox];
+        };
     }
 
     update() { }

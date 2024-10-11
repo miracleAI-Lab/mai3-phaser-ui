@@ -11,6 +11,7 @@ export class ImageDemo extends BaseScene {
   create() {
     this.createImages();
     this.createReturnButton();
+    this.createDecorations();
   }
 
   private createReturnButton() {
@@ -39,8 +40,8 @@ export class ImageDemo extends BaseScene {
 
   private createImages() {
     this.mai3.add.image({
-      x: 10,
-      y: 450,
+      x: 500,
+      y: 380,
       width: 200,
       height: 100,
       key: "cangshu",
@@ -63,6 +64,69 @@ export class ImageDemo extends BaseScene {
       borderColor: 0xFFD700,
       backgroundColor: 0x32CD32,
     });
+
+    this.mai3.add.image({
+      x: 240,
+      y: 550,
+      width: 150,
+      height: 150,
+      key: "avatar1",
+    });
+
+    this.mai3.add.image({
+      x: 500,
+      y: 550,
+      isCircle: true,
+      width: 150,
+      height: 150,
+      key: "avatar2",
+    });
+
+    this.mai3.add.image({
+      x: 240,
+      y: 740,
+      width: 150,
+      height: 150,
+      key: "circle",
+    });
+
+    this.mai3.add.image({
+      x: 500,
+      y: 740,
+      width: 150,
+      height: 150,
+      key: "rectangle",
+    });
+
+    this.mai3.add.image({
+      x: 270,
+      y: 920,
+      width: 52,
+      height: 64,
+      key: "startIcon",
+    });
+
+    this.mai3.add.image({
+      x: 360,
+      y: 920,
+      width: 39,
+      height: 55,
+      key: "pauseIcon",
+    });
+  }
+
+  private createDecorations() {
+    let y = 450;
+    for (let i = 1; i < 7; i++) {
+      y += 80;
+      this.mai3.add.image({
+        x: 740,
+        y: y,
+        width: 113,
+        height: 57,
+        key: "decoration" + i,
+      });
+    }
   }
 
   update() { }

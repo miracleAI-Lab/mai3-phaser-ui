@@ -43,13 +43,15 @@ export class TabsDemo extends BaseScene {
     this.tabs = this.mai3.add.tabs({
       x: 10,
       y: 500,
-      height: 80,
-      padding: 10,
-      background: 0x191970,
+      height: 180,
+      padding: 5,
+      background: 0x000,
       items: [
-        { title: 'tab1', texture: 'StartGameButton' },
-        { title: 'tab2', texture: 'StartGameButtonDown' },
-        { title: 'tab3', texture: 'StartGameButtonHover' }
+        { title: 'tab1', texture: 'tabs1' },
+        { title: 'tab2', texture: 'tabs2' },
+        { title: 'tab3', texture: 'tabs3' },
+        { title: 'tab4', texture: 'tabs4' },
+        { title: 'tab5', texture: 'tabs5' }
       ]
     });
 

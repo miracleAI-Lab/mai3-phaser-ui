@@ -1,73 +1,106 @@
+import { Container } from ".";
 import { BaseScene } from "../game";
 import { ImageConfig } from "../types";
 import Utils from "../utils";
-import { BaseButton } from "./BaseButton";
 
-export class Image extends BaseButton {
+export class Image extends Container {
   private _config: ImageConfig;
-  public image: Phaser.GameObjects.Image;
+  protected image?: Phaser.GameObjects.Image;
+  protected maskShape?: Phaser.GameObjects.Graphics;
 
   constructor(scene: BaseScene, config: ImageConfig) {
     super(scene, config);
     this._config = config;
     this.Type = "Image";
+    this.reDraw(this._config);
+  }
 
-    const width = config.width ?? 200;
-    const height = config.height ?? 60;
-    const radius = config.radius ?? 0;
+  reDraw(config: ImageConfig): void {
+    this._config = config;
+    this.clear();
+
+    const width = config.width ?? 0;
+    const height = config.height ?? 0;
     const borderWidth = config.borderWidth ?? 0;
-    const circleHeight = config.isCircle ? width : height;
-    const circleRadius = config.isCircle ? width / 2 : height;
-    const circleRadiusMax = config.isCircle ? width / 2 + borderWidth : height;
+    const radius = config.radius ?? 0;
+    const isCircle = config.isCircle ?? false;
 
-    this.image = scene.make.image({
-      x: borderWidth,
-      y: borderWidth,
-      key: config.key!,
-    });
-    this.image.setDisplaySize(width, circleHeight);
-    this.image.setOrigin(0);
-    this.addAt(this.image, 0);
+    if (!this.maskShape) this.maskShape = this.scene.add.graphics();
+    if (!this.image) this.image = this.scene.make.image({});
 
-    if (radius > 0) {
-      const shape = scene.make.graphics();
-      shape.fillStyle(0xffffff);
-      if (config.isCircle) {
-        shape.fillCircle(
-          this.x + circleRadiusMax,
-          this.y + circleRadiusMax,
-          circleRadius
-        );
+    if (isCircle) {
+      const btnRadius = Math.min(width, height) / 2;
+      this.reDrawImage(config.key!, borderWidth, borderWidth, btnRadius * 2 - borderWidth * 2, btnRadius * 2 - borderWidth * 2);
+      this.reDrawMaskShape(btnRadius - borderWidth, 0xffffff, true);
+    } else {
+      this.reDrawImage(config.key!, 0, 0, width, height);
+      if (radius > 0) {
+        this.reDrawMaskShape(radius, 0xffffff, false);
       } else {
-        shape.fillRoundedRect(this.x, this.y, width, height, radius);
+        this.image.clearMask();
       }
-
-      shape.setVisible(false);
-      const mask = shape.createGeometryMask();
-      this.image.setMask(mask);
     }
+    
+    this.RefreshBounds();
+    this.updateMaskShapePos();
+  }
 
-    if (borderWidth > 0) {
-      const borderColor = config.borderColor ?? 0;
-      const border = scene.make.graphics();
-      this.addAt(border, 1);
+  private reDrawImage(textureKey: string, x: number, y: number, w: number, h: number) {
+    this.image?.setTexture(textureKey);
+    this.image?.setPosition(x, y);
+    this.image?.setDisplaySize(w, h);
+    this.image?.setOrigin(0);
+    this.addChildAt(this.image!, 0);
+  }
 
-      border.lineStyle(borderWidth, borderColor);
-      if (config.isCircle) {
-        border.strokeCircle(circleRadiusMax, circleRadiusMax, circleRadiusMax);
-      } else {
-        border.strokeRoundedRect(
-          0,
-          0,
-          width + borderWidth * 2,
-          height + borderWidth * 2,
-          radius
-        );
-      }
+  private reDrawMaskShape(radius: number, fillColor: number, isCircle: boolean) {
+    this.maskShape!.clear();
+    this.maskShape!.fillStyle(fillColor);
+    
+    if (isCircle) {
+      this.maskShape!.fillCircle(0, 0, radius);
+    } else {
+      const width = this._config.width ?? 0;
+      const height = this._config.height ?? 0;
+      this.maskShape!.fillRoundedRect(0, 0, width, height, radius);
+    }
+    
+    let mask = this.maskShape!.createGeometryMask();
+    this.maskShape!.setVisible(false);
+    this.image!.setMask(mask);
+    this.addChildAt(this.maskShape!, 1);
+  }
+
+  public updateMaskShapePos() {
+    const isCircle = this._config.isCircle ?? false;
+    // const borderWidth = this._config.borderWidth ?? 0;
+    let imageLeftTopPos = Utils.getWorldPosition(this.image!);
+    
+    if (isCircle) {
+      const radius = Math.min(this._config.width ?? 0, this._config.height ?? 0) / 2;
+      this.maskShape!.setPosition(imageLeftTopPos.x + radius, imageLeftTopPos.y + radius);
+    } else {
+      this.maskShape!.setPosition(imageLeftTopPos.x, imageLeftTopPos.y);
+    }
+  }
+
+  private clear(): void {
+    if (this.image) {
+      this.image.destroy();
+      this.image = undefined;
+    }
+    if (this.maskShape) {
+      this.maskShape.destroy();
+      this.maskShape = undefined;
     }
   }
 
   get config(): ImageConfig {
     return this._config!;
+  }
+
+  destroy(fromScene?: boolean): void {
+    this.clear();
+    super.destroy(fromScene);
   }
 }

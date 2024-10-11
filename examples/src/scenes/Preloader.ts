@@ -1,7 +1,7 @@
-import { BaseScene, ProgressBar, Utils } from "../../../dist";
-import { ImageProgressConfig, ProgressConfig } from "../../../dist/types";
+import { BaseScene, ProgressBar } from "../../../dist";
+import { ProgressBarConfig } from "../../../dist/types";
 export class Preloader extends BaseScene {
-    config?: ProgressConfig;
+    config?: ProgressBarConfig;
     progressBar1?: ProgressBar;
 
     nextScene?: string
@@ -12,6 +12,7 @@ export class Preloader extends BaseScene {
         super.preload();
 
         this.loadskill()
+        this.loadDecorations();
         this.add.image(0, 0, "preloader");
         this.load.image('logo', 'assets/images/logo.jpg');
         this.load.image('logo2', 'assets/images/logo2.jpg');
@@ -30,6 +31,20 @@ export class Preloader extends BaseScene {
         this.load.image('restBtn', 'assets/images/restBtn.png');
         this.load.image('scoreBox', 'assets/images/scoreBox.png');
         this.load.image('cangshu', 'assets/images/cangshu.png');
+        this.load.image('dialog_bg', 'assets/images/dialog_bg.png');
+
+        this.load.image('playButton', 'assets/images/playButton.png');
+        this.load.image('startButton', 'assets/images/startButton.png');
+        this.load.image('checked', 'assets/images/checked.png');
+        this.load.image('unChecked', 'assets/images/unChecked.png');
+        this.load.image('avatar1', 'assets/images/avatar1.png');
+        this.load.image('avatar2', 'assets/images/avatar2.png');
+        this.load.image('rectangle', 'assets/images/rectangle.png');
+        this.load.image('circle', 'assets/images/circle.png');
+        this.load.image('startIcon', 'assets/images/startIcon.png');
+        this.load.image('pauseIcon', 'assets/images/pauseIcon.png');
+        this.load.image('checkbox_mul_checked', 'assets/images/checkbox_mul_checked.png');
+        this.load.image('checkbox_mul_unChecked', 'assets/images/checkbox_mul_unChecked.png');
 
         this.load.image("avatar", "assets/images/avatar.png");
         this.load.image("energy", "assets/images/energy.png");
@@ -48,6 +63,19 @@ export class Preloader extends BaseScene {
 
         //slider
         this.load.image('RoundedButtonFillBg', 'assets/images/RoundedButtonFillBg.png');
+
+        // tabs
+        this.load.image('tabs1', 'assets/images/tabs/tabs1.png');
+        // this.load.image('tabs1-hover', 'assets/images/tabs/tabs1-hover.png');
+        this.load.image('tabs2', 'assets/images/tabs/tabs2.png');
+        // this.load.image('tabs2-hover', 'assets/images/tabs/tabs2-hover.png');
+        this.load.image('tabs3', 'assets/images/tabs/tabs3.png');
+        // this.load.image('tabs3-hover', 'assets/images/tabs/tabs3-hover.png');
+        this.load.image('tabs4', 'assets/images/tabs/tabs4.png');
+        // this.load.image('tabs4-hover', 'assets/images/tabs/tabs4-hover.png');
+        this.load.image('tabs5', 'assets/images/tabs/tabs5.png');
+        // this.load.image('tabs5-hover', 'assets/images/tabs/tabs5-hover.png');
+
 
         // let progressBar: ProgressBar;
         // this.load.on('filecomplete-json-config', (key: string) => {
@@ -114,7 +142,7 @@ export class Preloader extends BaseScene {
         //     // fill: 0xff8221,
         // });
 
-        const config: ImageProgressConfig = {
+        const config: ProgressBarConfig = {
             x: (this.sys.scale.width - 500) / 2,
             y: 300,
             barTexture: {
@@ -133,7 +161,7 @@ export class Preloader extends BaseScene {
             }
         };
 
-        const p1 = this.mai3.add.imageProgressBar(config);
+        const p1 = this.mai3.add.progressBar(config);
         this.load.on("progress", async (progress: number) => {
             // console.log('progress: ', progress);
             // this.progressBar1?.updateProgress(progress);
@@ -182,6 +210,11 @@ export class Preloader extends BaseScene {
         //this.scene.start('MyGameScene');
         // this.scene.start('MyGameScene');
         // this.scene.start('VolumeSliderScene');
+    }
+    loadDecorations() {
+        for (let i = 1; i < 7; i++) {
+            this.load.image("decoration" + i, "assets/images/decorations/" + i + ".png")
+        }
     }
     loadskill() {
         for (let i = 1; i < 6; i++) {

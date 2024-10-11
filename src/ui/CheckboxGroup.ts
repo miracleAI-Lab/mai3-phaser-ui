@@ -1,12 +1,13 @@
 import { BaseScene } from "../game";
 import { Checkbox } from './Checkbox';
-import { CheckboxGroupConfig } from '../types';
+import { CheckboxGroupConfig, CheckboxConfig } from '../types';
 import { BaseButton } from "./BaseButton";
 
 export class CheckboxGroup extends BaseButton {
     private _checkboxes: Checkbox[] = [];
     private _selectedValues: string[] = [];
     private _selectedIndexes: number[] = [];
+    private _checkboxConfigs: CheckboxConfig[] = [];
     private _config: CheckboxGroupConfig;
 
     constructor(scene: BaseScene, config: CheckboxGroupConfig) {
@@ -24,13 +25,8 @@ export class CheckboxGroup extends BaseButton {
 
     private _setDefaultConfig(): void {
         this._config.orientation = this._config.orientation ?? 'horizontal';
-        this._config.itemWidth = this._config.itemWidth ?? 200;
-        this._config.itemHeight = this._config.itemHeight ?? 40;
-        this._config.checkColor = this._config.checkColor ?? 0xFFD700;
-        this._config.uncheckColor = this._config.uncheckColor ?? 0xff8221;
-        this._config.borderWidth = this._config.borderWidth ?? 4;
         this._config.defaultSelectedIndex = this._config.defaultSelectedIndex ?? -1;
-        this._config.space = this._config.space ?? 20;
+        this._config.labelSpace = this._config.labelSpace ?? 20;
     }
 
     private _createCheckboxes(): void {
@@ -40,8 +36,13 @@ export class CheckboxGroup extends BaseButton {
 
         items.forEach((item, index) => {
             const checkbox = this._createCheckbox(item, index, nextX, nextY);
-            this.add(checkbox);
+            this.addChild(checkbox);
             this._checkboxes.push(checkbox);
+
+            // const config = this._checkboxConfigs[index];
+            // config.x = checkbox.x;
+            // config.y = checkbox.y;
+            // checkbox.reDraw(config);
 
             [nextX, nextY] = this._updateNextPosition(checkbox);
             this._updateGroupSize(checkbox);
@@ -49,43 +50,28 @@ export class CheckboxGroup extends BaseButton {
     }
 
     private _createCheckbox(item: any, index: number, x: number, y: number): Checkbox {
-        return new Checkbox(this.scene, {
+        let ckbConfig = {
             x, y,
-            width: this._config.itemWidth,
-            height: this._config.itemHeight,
-            // checkColor: this._config.checkColor,
-            // uncheckColor: this._config.uncheckColor,
             text: item.text,
             value: item.value,
             isChecked: this._config.defaultSelectedIndex === index,
-            borderWidth: this._config.borderWidth,
-            textStyle: {
-                fontFamily: 'Arial',
-                fontSize: '24px',
-                color: '#fff',
-                fontStyle: this._config.textStyle?.fontStyle
-            },
+            labelSpace: this._config.labelSpace,
+            textStyle: this._config.textStyle,
             handleSelect: this._handleCheckClick.bind(this),
-            markBgRadius: 15,
-            markBgBorderWidth: 3,
-            markBgBorderColor: 0xff0,
-            markBgColor: 0x1f1,
-            markBgAlpha: 1,
-            markBgTexture: "logo",
-
-            markFillRadius: 12,
-            markFillBorderWidth: 3,
-            markFillBorderColor: 0xffeeff,
-            markFillColor: 0xff00ff,
-            markFillAlpha: 1,
-            markFillTexture: "logo3",
-        });
+            iconWidth: this._config.iconWidth,
+            iconHeight: this._config.iconHeight,
+            unCheckedTexture: this._config.unCheckedTexture,
+            checkedTexture: this._config.checkedTexture,
+            isCircle: this._config.isCircle,
+        };
+        this._checkboxConfigs.push(ckbConfig);
+        return new Checkbox(this.scene, ckbConfig);
     }
 
     private _updateNextPosition(checkbox: Checkbox): [number, number] {
         return this._config.orientation === 'horizontal'
-            ? [checkbox.Right + this._config.space!, checkbox.y]
-            : [checkbox.x, checkbox.Bottom + this._config.space!];
+            ? [checkbox.Right + this._config.labelSpace!, checkbox.y]
+            : [checkbox.x, checkbox.Bottom + this._config.labelSpace!];
     }
 
     private _updateGroupSize(checkbox: Checkbox): void {
@@ -107,12 +93,16 @@ export class CheckboxGroup extends BaseButton {
         if (this._config.handleSelect) {
             this._config.handleSelect(this, this._selectedValues, this._selectedIndexes);
         }
+        this.emit('change', this._selectedValues);
     }
 
     private _handleSingleSelect(ckb: Checkbox): void {
         this._checkboxes.forEach((checkbox, index) => {
             if (checkbox.isChecked && checkbox.value !== ckb.value) {
                 checkbox.isChecked = false;
+                let ckbItem: CheckboxConfig = this._checkboxConfigs[index];
+                ckbItem.isChecked = false;
+                checkbox.reDraw(ckbItem);
             } else if (checkbox.isChecked && checkbox.value === ckb.value) {
                 this._selectedIndexes.push(index);
                 this._selectedValues.push(ckb.value);

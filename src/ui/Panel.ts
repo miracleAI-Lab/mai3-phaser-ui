@@ -13,60 +13,86 @@ export class Panel extends Container {
     this.Type = 'Panel';
   }
 
-  public render() {
-    this.drawBg();
+  public render(): void {
+    this.drawBackground();
   }
 
-  public reDraw(config: PanelConfig) {
+  public reDraw(config: PanelConfig): void {
     this._config = config;
-    this.drawBg();
+    this.drawBackground();
   }
 
-  protected drawBg() {
+  public drawBackground(): void {
     this.RefreshBounds();
-    this._config!.width = Utils.GetOrDefaultValue(this._config?.width, this.RealWidth);
-    this._config!.height = Utils.GetOrDefaultValue(this._config?.height, this.RealHeight);
-    const radius = this._config?.radius ?? 10;
-    const borderWidth = this._config?.borderWidth ?? 4;
-    const borderColor = this._config?.borderColor ?? 0xff8221;
-    const paddingLeft = this._config?.padding?.x ?? this._config?.padding?.left ?? 0;
-    const paddingRight = this._config?.padding?.x ?? this._config?.padding?.right ?? 0;
-    const paddingTop = this._config?.padding?.y ?? this._config?.padding?.top ?? 0;
-    const paddingBottom = this._config?.padding?.y ?? this._config?.padding?.bottom ?? 0;
-    this._config!.width! += (paddingLeft + paddingRight);
-    this._config!.height! += (paddingTop + paddingBottom);
-
-    if (Utils.isNullOrZeroOrEmpty(this._config?.texture)) {
-      if (this.bg && !(this.bg instanceof Phaser.GameObjects.RenderTexture)) {
-        this.bg?.destroy();
-        this.bg = undefined;
-      }
-      
-      const newBg = Utils.reDrawRoundedRectRenderTexture(this.scene, this.bg as Phaser.GameObjects.RenderTexture, 0, 0, this._config?.width, this._config?.height, borderWidth, radius, borderColor, this._config?.backgroundColor, this._config?.backgroundAlpha);
-      if (newBg) {
-        this.bg = newBg;
-      }
+    this.updateConfigDimensions();
+    
+    if (this.shouldUseRenderTexture()) {
+      this.createOrUpdateRenderTexture();
     } else {
-      if (this.bg && !(this.bg instanceof Phaser.GameObjects.NineSlice)) {
-        this.bg?.destroy();
-        this.bg = undefined;
-      }
-
-      if (!this.bg) {
-        const cfg = { key: this._config?.texture ?? '', frame: this._config?.frame };
-        this.bg = this.scene.make.nineslice(cfg);
-      }
-
-      const bg = (this.bg as Phaser.GameObjects.NineSlice);
-      bg.setTexture(this._config?.texture ?? '', this._config?.frame);
-      bg.setDisplaySize(this._config?.width ?? 0, this._config?.height ?? 0);
-      bg.setOrigin(0);
+      this.createOrUpdateNineSlice();
     }
 
     this.addChildAt(this.bg!, 0);
   }
 
-  reSize(width: number, height: number) {
+  private updateConfigDimensions(): void {
+    this._config!.width = Utils.GetOrDefaultValue(this._config?.width, this.RealWidth);
+    this._config!.height = Utils.GetOrDefaultValue(this._config?.height, this.RealHeight);
+  }
+
+  private shouldUseRenderTexture(): boolean {
+    return Utils.isNullOrZeroOrEmpty(this._config?.texture);
+  }
+
+  private createOrUpdateRenderTexture(): void {
+    if (this.bg && !(this.bg instanceof Phaser.GameObjects.RenderTexture)) {
+      this.bg.destroy();
+      this.bg = undefined;
+    }
+
+    const { width, height, borderWidth = 4, radius = 10, borderColor = 0xff8221, backgroundColor, backgroundAlpha } = this._config!;
+    
+    this.bg = Utils.reDrawRoundedRectRenderTexture(
+      this.scene,
+      this.bg as Phaser.GameObjects.RenderTexture,
+      0, 0, width, height,
+      borderWidth, radius, borderColor,
+      backgroundColor, backgroundAlpha
+    ) || this.bg;
+  }
+
+  private createOrUpdateNineSlice(): void {
+    if (this.bg && !(this.bg instanceof Phaser.GameObjects.NineSlice)) {
+      this.bg.destroy();
+      this.bg = undefined;
+    }
+
+    if (!this.bg) {
+      this.createNineSlice();
+    }
+
+    this.updateNineSlice();
+  }
+
+  private createNineSlice(): void {
+    const { texture = "", frame, width = 0, height = 0, leftWidth, rightWidth, topHeight, bottomHeight } = this._config!;
+    
+    this.bg = this.scene.add.nineslice(
+      0, 0, texture, frame, width, height,
+      leftWidth, rightWidth, topHeight, bottomHeight
+    );
+  }
+
+  private updateNineSlice(): void {
+    const bg = this.bg as Phaser.GameObjects.NineSlice;
+    const { texture = "", frame, width = 0, height = 0 } = this._config!;
+    
+    bg.setTexture(texture, frame);
+    bg.setDisplaySize(width, height);
+    bg.setOrigin(0);
+  }
+
+  public reSize(width: number, height: number): void {
     this._config!.width = width;
     this._config!.height = height;
     this.reDraw(this._config!);
@@ -76,12 +102,11 @@ export class Panel extends Container {
     return this._config!;
   }
 
-  destroy(fromScene?: boolean) {
+  destroy(fromScene?: boolean): void {
     if (this.bg) {
       this.bg.destroy();
       this.bg = undefined;
     }
     super.destroy(fromScene);
   }
-
 }

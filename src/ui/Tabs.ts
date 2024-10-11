@@ -41,8 +41,12 @@ export class Tabs extends Container {
                 x: padding,
                 y: (this._config.height || 40) * 0.6 + padding,
                 width: itemWidth - padding * 2,
-                height: (this._config.height || 40) * 0.4 - padding * 2,
+                height: (this._config.height || 40) * 0.4 - padding * 4,
                 text: item.title,
+                textStyle: {
+                    color: '#000', // 颜色
+                    fontSize: '26px'
+                },
                 textAlign: 'center',
             });
             itemRoot.addAt(text, 1);
@@ -70,7 +74,7 @@ export class Tabs extends Container {
         }
         this.emit('tabChange', index);
     }
-    
+
     get config(): TabsConfig {
         return this._config!;
     }

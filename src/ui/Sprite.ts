@@ -61,7 +61,6 @@ export class Sprite extends BaseButton {
   ) {
     this.instance?.play(key, ignoreIfPlaying);
   }
-
   get config(): SpriteConfig {
     return this._config!;
   }

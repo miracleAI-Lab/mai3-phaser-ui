@@ -1,5 +1,5 @@
-import {ConnectWalletButtonConfig, HandleError, Locale, Locales, Styles, Wallet, WalletApp} from '../types';
-import { DropdownMenu, DropdownMenuItem } from './dropdown';
+import {ConnectWalletButtonConfig, HandleError, Locale, Wallet, WalletApp} from '../types';
+import { DropdownMenu, DropdownMenuItem } from './DropdownMenu';
 import {
   buttonDesign,
   locales,
@@ -128,7 +128,7 @@ export class ConnectWalletButton extends BaseButton {
     });
   }
 
-  private async loadAssets(scene: Phaser.Scene): Promise<void> {
+  private async loadAssets(scene: BaseScene): Promise<void> {
     await loadIcons(scene.textures);
 
     const icon = scene.add.image(0, 0, this.currentIcon);
@@ -140,9 +140,9 @@ export class ConnectWalletButton extends BaseButton {
 
     this.dropdownMenu = new DropdownMenu(
       scene,
-      0,
-      this.buttonHeight + buttonDesign.dropDown.topMargin,
       {
+        x: 0, 
+        y: this.buttonHeight + buttonDesign.dropDown.topMargin,
         style: this._config.style ?? 'light',
         items: [
           {

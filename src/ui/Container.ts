@@ -201,6 +201,7 @@ export class Container extends Phaser.GameObjects.Container {
   public addChild(child: Phaser.GameObjects.GameObject): void {
     if (!this.exists(child)) {
       this.add(child);
+      // this.scene.events.emit('addChildGameObject', child, this);
     }
   }
 

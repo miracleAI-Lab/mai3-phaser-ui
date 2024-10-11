@@ -1,6 +1,6 @@
 // import { loadConfig } from "@/config";
 import { BaseScene } from "../../../dist";
-import { Wallet } from "../../../dist/game";
+import { GameFi, GameFiInitializationParams, Wallet } from "../../../dist/game";
 export class ButtonDemo extends BaseScene {
   constructor() {
     super("ButtonDemo");
@@ -25,6 +25,10 @@ export class ButtonDemo extends BaseScene {
     this.createDraggableButton();
     this.createRoundedButton();
     this.createStartGameButton();
+    this.createPlayButton();
+    this.createStartButton();
+    this.createPauseIcon();
+    this.createTextButton();
     this.ton_sdk();
   }
 
@@ -77,13 +81,16 @@ export class ButtonDemo extends BaseScene {
         },
       })
       .debugHitArea();
-
-    // gameFi.createConnectButton({
-    //   scene: this,
-    //   positionX: 200,
-    //   positionY: 200,
-    //   button: connectorParams
-    // })
+    
+    // const cfg: GameFiInitializationParams = {
+    //   network?: 'testnet',
+    //   connector?: WalletConnector | WalletConnectorParams;
+    //   client?: TonClient4 | TonClient4Parameters;
+    //   contentResolver?: ContentResolverParams;
+    //   merchant?: MerchantParams;
+    // };
+        
+    // GameFi.create(cfg);
   }
 
   private createReturnButton() {
@@ -242,5 +249,96 @@ export class ButtonDemo extends BaseScene {
     });
 
     btn.debugHitArea();
+  }
+
+  private createPlayButton() {
+    this.mai3.add.imageButton({
+      x: 50,
+      y: 600,
+      width: 152.95,
+      height: 71.58,
+      texture: "playButton",
+      handleDown: {
+        audio: "sfx-press",
+        handleFn: () => {
+          console.log("handleDown");
+        },
+      },
+      handleUp: {
+        handleFn: () => {
+          console.log("handleUp");
+        },
+      },
+    })
+  }
+
+  private createStartButton() {
+    this.mai3.add.imageButton({
+      x: 50,
+      y: 700,
+      width: 152.95,
+      height: 66.27,
+      texture: "startButton",
+      handleDown: {
+        audio: "sfx-press",
+        handleFn: () => {
+          console.log("handleDown");
+        },
+      },
+      handleUp: {
+        handleFn: () => {
+          console.log("handleUp");
+        },
+      },
+    })
+  }
+
+  private createPauseIcon() {
+    this.mai3.add.imageButton({
+      x: 50,
+      y: 830,
+      width: 40,
+      height: 60,
+      texture: "pauseIcon",
+      handleDown: {
+        audio: "sfx-press",
+        handleFn: () => {
+          console.log("handleDown");
+        },
+      },
+      handleUp: {
+        handleFn: () => {
+          console.log("handleUp");
+        },
+      },
+    })
+  }
+
+  private createTextButton() {
+    this.mai3.add.textButton({
+      x: 220,
+      y: 600,
+      width: 203.55,
+      height: 65.86,
+      borderColor: 0x3F2806,
+      borderWidth: 6,
+      backgroundColor: 0xF2CB26,
+      text: "TextButton",
+      radius: 10,
+      textStyle: {
+        fontFamily: "Arial",
+        fontSize: "30px",
+        color: "#FFFFFF",
+      },
+      handleHover: {
+        audio: "sfx-hover",
+      },
+      handleDown: {
+        audio: "sfx-press",
+      },
+      handleUp: {
+        handleFn: () => {},
+      },
+    });
   }
 }

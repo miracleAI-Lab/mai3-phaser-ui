@@ -1,5 +1,4 @@
 import { GameObjects, Scene } from "phaser";
-import { ProgressBar } from "../ui/ProgressBar";
 import { Label } from "../ui/Label";
 import { Checkbox } from "../ui/Checkbox";
 import { Slider } from "../ui/Slider";
@@ -12,7 +11,7 @@ import { Container } from "../ui/Container";
 import { RoundedButton } from "../ui/RoundedButton";
 import { TextButton } from "../ui/TextButton";
 import { ImageButton } from "../ui/ImageButton";
-import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, ProgressConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig, PanelConfig, ImageProgressConfig, GridConfig, SpriteConfig, ConnectWalletButtonConfig } from '../types';
+import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig, PanelConfig, GridConfig, SpriteConfig, ConnectWalletButtonConfig, ProgressBarConfig } from '../types';
 import { BaseScene } from "../game";
 import { TextBox } from "../ui/TextBox";
 import { Tabs } from "../ui/Tabs";
@@ -21,10 +20,12 @@ import { Toast } from "../ui/Toast";
 import { LinearLayout } from "../ui/LinearLayout";
 import { ListView } from "../ui/ListView";
 import { Panel } from "../ui/Panel";
-import { ImageProgressBar } from "../ui/ImageProgressBar";
+import { ProgressBar } from "../ui/ProgressBar";
 import { Grid } from "../ui/Grid";
 import { Sprite } from "../ui/Sprite";
+import { DropdownMenu } from "../ui/DropdownMenu";
 import { ConnectWalletButton } from "../ui/ConnectWalletButton";
+import { DropdownMenuConfig } from "../ui/DropdownMenu";
 
 type Constructor<T extends Phaser.GameObjects.GameObject> = new (...args: any[]) => T;
 
@@ -96,7 +97,7 @@ class ObjectFactory {
     return this.createGameObject(CheckboxGroup, this.scene, config);
   }
 
-  progressBar(config: ProgressConfig): ProgressBar {
+  progressBar(config: ProgressBarConfig): ProgressBar {
     return this.createGameObject(ProgressBar, this.scene, config);
   }
 
@@ -144,16 +145,16 @@ class ObjectFactory {
     return this.createGameObject(ListView, this.scene, config);
   }
 
-  imageProgressBar(config: ImageProgressConfig): ImageProgressBar {
-    return this.createGameObject(ImageProgressBar, this.scene, config);
-  }
-
   sprite(config: SpriteConfig): Sprite {
     return this.createGameObject(Sprite, this.scene, config);
   }
 
   connectWalletButton(config: ConnectWalletButtonConfig): ConnectWalletButton {
     return this.createGameObject(ConnectWalletButton, this.scene, config);
+  }
+
+  dropdownMenu(config: DropdownMenuConfig): DropdownMenu {
+    return this.createGameObject(DropdownMenu, this.scene, config);
   }
 };
 export default ObjectFactory;

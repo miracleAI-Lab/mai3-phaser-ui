@@ -1,167 +1,116 @@
-import { CheckboxConfig, RoundedButtonConfig } from "../types";
+import { CheckboxConfig } from "../types";
 import { BaseScene } from "../game";
-import { RoundedButton } from "./RoundedButton";
-import Memory from "../utils/Memory";
+import { Image } from "./Image";
+import { Container } from "./Container";
 import { BaseButton } from "./BaseButton";
 
 export class Checkbox extends BaseButton {
-  private _value?: string;
-  private _config?: CheckboxConfig;
-
-  public isChecked?: boolean;
-
-  label?: Phaser.GameObjects.Text;
-  checkmark?: Phaser.GameObjects.Container;
+  private _value: string = "";
+  private _config: CheckboxConfig;
+  public isChecked: boolean = false;
+  private label?: Phaser.GameObjects.Text;
+  private checkboxButton?: Container;
 
   constructor(scene: BaseScene, config: CheckboxConfig) {
     super(scene, config);
     this.Type = "Checkbox";
-    this.reDraw(config);
+    this._config = config;
+    this.init();
   }
 
-  // override
-  protected handleDown() {
+  private init(): void {
+    this.reDraw();
+    this.setEventInteractive();
+  }
+
+  protected handleDown(): void {
     super.handleDown();
-    this.isChecked = !this.isChecked;
-    this.reDrawCheckmark();
-    if (this._config?.handleSelect) {
-      this._config?.handleSelect(this);
-    }
+    this.toggle();
+    this._config.handleSelect?.(this);
     this.blendMode = "add";
   }
 
-  public reDraw(config: CheckboxConfig) {
-    this._config = config;
+  private toggle(): void {
+    this.isChecked = !this.isChecked;
+    this.reDrawCheckboxButton();
+  }
+
+  public reDraw(config?: CheckboxConfig): void {
+    if (config) this._config = config;
+    this._value = this._config.value ?? "";
     this.isChecked = this._config.isChecked ?? false;
-    this.reDrawCheckmark();
+    this.reDrawCheckboxButton();
     this.reDrawLabel();
     this.RefreshBounds();
   }
 
-  public reDrawLabel() {
-    const text = this._config!.text ?? "MiracleAI";
-    const style = this._config!.textStyle ?? {};
+  private reDrawLabel(): void {
+    const text = this._config.text ?? "MiracleAI";
+    const style = this._config.textStyle ?? {};
+    
     if (!this.label) {
       this.label = this.scene.make.text({ text, style });
     } else {
-      this.label.setText(text);
-      this.label.setStyle(style);
-      this.label.setFontStyle(this._config!.textStyle?.fontStyle!);
+      this.label.setText(text).setStyle(style);
+      this.label.setFontStyle(this._config.textStyle?.fontStyle ?? '');
     }
-    this.aligningCenterBetweenLabelAndCheckMark();
+    
+    this.alignLabelWithCheckboxButton();
     this.addChild(this.label);
   }
 
-  private aligningCenterBetweenLabelAndCheckMark() {
-    const labelSpace = this._config!.labelSpace ?? 10;
-    let checkmarkBounds = this.checkmark!.getBounds();
-    let fontSize = this.getLabelFontSize();
-    let fill = this.checkmark?.getByName("fill") as RoundedButton;
-    if (fill.x > 0) {
-      this.label!.x = checkmarkBounds.width + labelSpace;
-      this.label!.y = (checkmarkBounds.height - fontSize) / 2;
-    } else {
-      this.label!.x = fill.x + checkmarkBounds.width + labelSpace;
-      this.label!.y = fill.y + (checkmarkBounds.height - fontSize) / 2;
-    }
+  private alignLabelWithCheckboxButton(): void {
+    if (!this.label || !this.checkboxButton) return;
+
+    const labelSpace = this._config.labelSpace ?? 10;
+    const fontSize = this.getLabelFontSize();
+    this.label.x = this.checkboxButton.Right + labelSpace;
+    this.label.y = this.checkboxButton.Top + (this.checkboxButton.RealHeight - fontSize) / 2;
   }
 
   private getLabelFontSize(): number {
-    let fontSize = 16;
-    if (typeof this._config!.textStyle?.fontSize === "string") {
-      fontSize = Number(this._config!.textStyle?.fontSize.replace("px", ""));
-    } else {
-      fontSize = this._config!.textStyle?.fontSize ?? 16;
+    const fontSize = this._config.textStyle?.fontSize;
+    if (typeof fontSize === "string") {
+      return Number(fontSize.replace("px", ""));
     }
-    return fontSize;
+    return fontSize ?? 16;
   }
 
-  private reDrawCheckmark() {
-    if (this.checkmark) {
-      this.checkmark.destroy(true);
-    }
-    this.checkmark = this.drawCheckmark();
-    Memory.DelEventsBeforeDestory(this.checkmark);
-    this.addChild(this.checkmark!);
-    this.updateMaskPos();
+  private reDrawCheckboxButton(): void {
+    this.createCheckboxButton();
+    
+    // 延迟更新遮罩位置，确保Image组件已完全初始化
+    this.scene.time.delayedCall(0, () => {
+      const bg = this.checkboxButton?.getByName("bg") as Image;
+      bg?.updateMaskShapePos();
+
+      const fill = this.checkboxButton?.getByName("fill") as Image;
+      fill?.updateMaskShapePos();
+    });
   }
 
-  protected drawCheckmark(): Phaser.GameObjects.Container {
-    const bgConfig = this.transformForRoundedButtonConfig(
-      "bg",
-      this._config!.markBgRadius
-    );
-    let bg = this.scene.mai3.add.roundedButton(bgConfig).setName("bg");
-    const fillConfig = this.transformForRoundedButtonConfig(
-      "fill",
-      this._config!.markFillRadius
-    );
-    let fill = this.scene.mai3.add.roundedButton(fillConfig).setName("fill");
-
-    fill.setVisible(this.isChecked!);
-    let c = this.scene.mai3.add.container({});
-    c.add([bg, fill]);
-    c.RefreshBounds();
-    return c;
-  }
-
-  public updateMaskPos() {
-    for (let i = 0; i < this.checkmark!.getAll().length; i++) {
-      const btn = this.checkmark!.getAll()[i] as RoundedButton;
-      btn.updateMaskShapePos();
+  private createCheckboxButton() {
+    if (this.checkboxButton) {
+      this.checkboxButton.removeAll(true);
+      this.checkboxButton.destroy(true);
     }
-  }
 
-  private transformForRoundedButtonConfig(
-    isBgOrFill: string,
-    radius?: number
-  ): RoundedButtonConfig {
-    this._value = this._config!.value ?? "0";
-    let markBgRadius = 0;
-    let markFillRadius = 0;
-    let borderWidth = 0;
-    let borderColor = 0;
-    let backgroundColor = 0;
-    let backgroundAlpha = 0;
-    let texture: string | undefined = "";
-    let x = 0;
-    let y = 0;
-    if (isBgOrFill == "bg") {
-      this._config!.borderWidth = this._config!.markBgBorderWidth;
-      markBgRadius = this._config!.markBgRadius;
-      borderWidth = this._config!.markBgBorderWidth ?? 4;
-      borderColor = this._config!.markBgBorderColor ?? 0xffd700;
-      backgroundColor = this._config!.markBgColor ?? 0xff8221;
-      backgroundAlpha = this._config!.markBgAlpha ?? 1;
-      texture = this._config!.markBgTexture;
-    } else {
-      this._config!.borderWidth = this._config!.markFillBorderWidth;
-      markFillRadius = this._config!.markFillRadius;
-      borderWidth = this._config!.markFillBorderWidth ?? 4;
-      borderColor = this._config!.markFillBorderColor ?? 0xffd700;
-      backgroundColor = this._config!.markFillColor ?? 0xff8221;
-      backgroundAlpha = this._config!.markFillAlpha ?? 1;
-      texture = this._config!.markFillTexture;
-      x =
-        this._config!.markBgRadius! +
-        this._config!.markBgBorderWidth! -
-        (this._config!.markFillRadius! + this._config!.markFillBorderWidth!);
-      y = x;
-    }
-    const config: RoundedButtonConfig = {
-      x: x,
-      y: y,
-      radius: radius,
-      borderWidth: borderWidth,
-      borderColor: borderColor,
-      backgroundColor: backgroundColor,
-      backgroundAlpha: backgroundAlpha,
-      texture: texture,
-      geomType: "Circle",
-      draggable: false,
-    };
+    const { iconWidth = 30, iconHeight = 30, unCheckedTexture, checkedTexture, isCircle = false } = this._config;
+    const bgConfig = { x: 0, y: 0, width: iconWidth, height: iconHeight, key: unCheckedTexture, isCircle };
+    const fillConfig = { ...bgConfig, key: checkedTexture };
+    this.checkboxButton = this.scene.mai3.add.container({});
 
-    return config;
+    const bg = this.scene.mai3.add.image(bgConfig);
+    bg.setName("bg");
+    this.checkboxButton.add(bg);
+
+    const fill = this.scene.mai3.add.image(fillConfig);
+    fill.setName("fill");
+    fill.setVisible(this.isChecked);
+    this.checkboxButton.add(fill);
+    
+    this.checkboxButton.RefreshBounds();
+    this.add(this.checkboxButton);
   }
 
   set value(v: string) {
@@ -169,16 +118,23 @@ export class Checkbox extends BaseButton {
   }
 
   get value(): string {
-    return this._value ?? "";
+    return this._value;
   }
 
   get config(): CheckboxConfig {
-    return this._config!;
+    return this._config;
   }
 
   destroy(fromScene?: boolean): void {
+    if (this.label) {
+      this.label.destroy(fromScene);
+      this.label = undefined;
+    }
+    if (this.checkboxButton) {
+      this.checkboxButton.removeAll(true);
+      this.checkboxButton.destroy(fromScene);
+      this.checkboxButton = undefined;
+    }
     super.destroy(fromScene);
-    this.label?.destroy(fromScene);
-    this.checkmark?.destroy(fromScene);
   }
 }

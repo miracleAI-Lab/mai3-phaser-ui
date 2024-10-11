@@ -35,6 +35,7 @@ export class BaseButton extends Container {
 
   protected handleOut(): void {
     this.handleEvent(this._baseConfig?.handleOut);
+    this.alpha = 1;
 
     if (this._baseConfig?.enableSmoothScaleAnim) {
       Utils.smoothScale(this.scene.tweens, this, 1, 125);

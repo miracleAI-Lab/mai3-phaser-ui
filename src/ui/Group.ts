@@ -1,14 +1,17 @@
+import { BaseScene } from "../game";
+import { Container } from "./Container";
+import { Panel } from "./Panel";
 
-class Group extends Phaser.GameObjects.Container {
-  parentContainer: Phaser.GameObjects.Container;
+class Group extends Panel {
+  parentContainer: Container;
   SORT_ASCENDING: number;
   SORT_DESCENDING: number;
   version: number;
   alignToMapping: Record<number, (gameObject: Phaser.GameObjects.GameObject, alignTo: Phaser.GameObjects.GameObject, offsetX?: number, offsetY?: number) => void>;
   worldPosition: { x: number; y: number };
 
-  constructor(scene: Phaser.Scene, x: number = 0, y: number = 0) {
-    super(scene, x, y);
+  constructor(scene: BaseScene, x: number = 0, y: number = 0) {
+    super(scene, { x, y });
     scene.add.existing(this);
 
     this.parentContainer = this;

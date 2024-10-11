@@ -1,30 +1,34 @@
 import {buttonDesign} from '../common/consts';
-import {Styles} from '../types';
+import { BaseScene } from '../game';
+import {BaseConfig, Styles} from '../types';
 import Utils from '../utils';
+import { Panel } from './Panel'; 
 
-export interface DropdownMenuItemParams {
+export interface DropdownMenuItemConfig extends BaseConfig {
+  x: number;
+  y: number;
   style: Styles;
   text: string;
   icon: string;
   onClick?: (item: DropdownMenuItem) => void;
 }
-export class DropdownMenuItem extends Phaser.GameObjects.Container {
+export class DropdownMenuItem extends Panel {
   public readonly button: Phaser.GameObjects.Graphics;
   public readonly buttonHeight: number;
   public readonly text: Phaser.GameObjects.Text;
   public readonly icon: Phaser.GameObjects.Image;
 
-  constructor(scene: Phaser.Scene, x: number = 0, y: number = 0, params: DropdownMenuItemParams) {
-    super(scene, x, y);
+  constructor(scene: BaseScene, config: DropdownMenuItemConfig) {
+    super(scene, config);
 
-    const styleSchema = params.style === 'dark' ? buttonDesign.dark : buttonDesign.light;
+    const styleSchema = config.style === 'dark' ? buttonDesign.dark : buttonDesign.light;
 
     const text = scene.add.text(
       buttonDesign.dropDownItem.horizontalPadding +
         buttonDesign.icon.width +
         buttonDesign.dropDownItem.horizontalPadding,
       buttonDesign.dropDownItem.verticalPadding,
-      params.text,
+      config.text,
       {
         color: styleSchema.fontColor,
         fontFamily: buttonDesign.fontFamily,
@@ -42,7 +46,7 @@ export class DropdownMenuItem extends Phaser.GameObjects.Container {
     const icon = scene.add.image(
       buttonDesign.dropDownItem.horizontalPadding + buttonDesign.icon.width * 0.5,
       buttonHeight * 0.5,
-      params.icon
+      config.icon
     );
     this.icon = icon;
 
@@ -83,10 +87,10 @@ export class DropdownMenuItem extends Phaser.GameObjects.Container {
     });
     this.button = button;
 
-    if (params.onClick) {
+    if (config.onClick) {
       button.setInteractive({useHandCursor: true});
       button.on('pointerdown', () => {
-        params.onClick && params.onClick(this);
+        config.onClick && config.onClick(this);
       });
     }
 
@@ -94,7 +98,7 @@ export class DropdownMenuItem extends Phaser.GameObjects.Container {
   }
 }
 
-export interface DropdownMenuParams {
+export interface DropdownMenuConfig extends BaseConfig {
   items: {
     text: string;
     icon: string;
@@ -103,24 +107,25 @@ export interface DropdownMenuParams {
   style: Styles;
 }
 
-export class DropdownMenu extends Phaser.GameObjects.Container {
+export class DropdownMenu extends Panel {
   // private readonly container: Phaser.GameObjects.Graphics;
   // private readonly containerHeight: number;
   // private readonly items: DropdownMenuItem[];
 
-  constructor(scene: Phaser.Scene, x: number = 0, y: number = 0, params: DropdownMenuParams) {
-    super(scene, x, y);
+  constructor(scene: BaseScene, config: DropdownMenuConfig) {
+    super(scene, config);
 
-    const styleSchema = params.style === 'dark' ? buttonDesign.dark : buttonDesign.light;
+    const styleSchema = config.style === 'dark' ? buttonDesign.dark : buttonDesign.light;
     const itemsContainers: DropdownMenuItem[] = [];
-    let totalHeight = buttonDesign.dropDown.verticalPadding;
-    params.items.forEach((item) => {
+    config.x = buttonDesign.dropDown.horizontalPadding ?? 0;
+    config.y = buttonDesign.dropDown.verticalPadding ?? 0;
+    let totalHeight = buttonDesign.dropDown.verticalPadding ?? 0;
+    config.items.forEach((item) => {
       const itemContainer = new DropdownMenuItem(
         scene,
-        buttonDesign.dropDown.horizontalPadding,
-        totalHeight,
-        {...item, style: params.style}
+        {...item, style: config.style, x: config.x ?? 0, y: config.y ?? 0},
       );
+
       totalHeight += itemContainer.buttonHeight;
       itemsContainers.push(itemContainer);
     });
