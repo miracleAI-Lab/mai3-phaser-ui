@@ -45,7 +45,8 @@ export class TabsDemo extends BaseScene {
       y: 500,
       height: 120,
       padding: 10,
-      background: 0x000,
+      background: 0xff0000,
+      texture: 'tabsBg',
       items: [
         { title: 'ta123b1', texture: 'tabs1' },
         { title: 'tab2', texture: 'tabs2' },

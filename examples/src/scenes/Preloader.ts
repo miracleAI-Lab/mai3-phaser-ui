@@ -81,6 +81,8 @@ export class Preloader extends BaseScene {
         this.load.image('tabs5', 'assets/images/tabs/tabs5.png');
         // this.load.image('tabs5-hover', 'assets/images/tabs/tabs5-hover.png');
 
+        this.load.image('tabsBg', 'assets/images/preloader.png');
+
 
         // let progressBar: ProgressBar;
         // this.load.on('filecomplete-json-config', (key: string) => {

@@ -1,6 +1,6 @@
 // import { loadConfig } from "@/config";
 import { BaseScene } from "../../../dist";
-import { GameFi, GameFiInitializationParams, Wallet } from "../../../dist/game";
+import { Wallet } from "../../../dist/game";
 export class ButtonDemo extends BaseScene {
   constructor() {
     super("ButtonDemo");
@@ -26,42 +26,20 @@ export class ButtonDemo extends BaseScene {
     this.createRoundedButton();
     this.createStartGameButton();
     this.createPlayButton();
-    this.createStartButton();
+    // this.createStartButton();
     this.createPauseIcon();
     this.createTextButton();
     this.ton_sdk();
   }
 
   private async ton_sdk() {
-    // const config = await loadConfig();
-    // const gameFiParams: GameFiInitializationParams = {
-    //   network: config.NETWORK,
-    //   connector: {
-    //     manifestUrl: config.APP_MANIFEST_URL,
-    //     actionsConfiguration: {}
-    //   },
-    //   // contentResolver: {
-    //   //     // use urlProxy if you you are going to use methods like:
-    //   //     // getNftCollection, getNftItem, etc.
-    //   //     urlProxy: `${config.ENDPOINT}/fix-cors?url=%URL%`
-    //   // },
-    //   // merchant: {
-    //   //     // in-game jetton purchases come to this address
-    //   //     jettonAddress: config.TOKEN_MASTER,
-    //   //     // in-game TON purchases come to this address
-    //   //     tonAddress: config.TOKEN_RECIPIENT
-    //   // }
-    // }
-
-    // const gameFi = await GameFi.create(gameFiParams);
-
     this.mai3.add
       .connectWalletButton({
-        x: 200,
-        y: 200,
-        width: 160,
-        height: 60,
-        style: "dark",
+        x: 50,
+        y: 700,
+        width: 152.95,
+        height: 66.27,
+        texture: "startButton",
         language: "en",
         walletApp: "telegram-wallet",
         onWalletChange: (wallet: Wallet | null) => {
@@ -70,27 +48,15 @@ export class ButtonDemo extends BaseScene {
         handleUp: {
           handleFn: () => {
             console.log("handleUp");
-            // this.scene.start("DemoScene");
           },
         },
         handleDown: {
           handleFn: () => {
             console.log("handleDown");
-            // this.scene.start("DemoScene");
           },
         },
       })
-      .debugHitArea();
-    
-    // const cfg: GameFiInitializationParams = {
-    //   network?: 'testnet',
-    //   connector?: WalletConnector | WalletConnectorParams;
-    //   client?: TonClient4 | TonClient4Parameters;
-    //   contentResolver?: ContentResolverParams;
-    //   merchant?: MerchantParams;
-    // };
-        
-    // GameFi.create(cfg);
+    // .debugHitArea();
   }
 
   private createReturnButton() {
@@ -140,7 +106,7 @@ export class ButtonDemo extends BaseScene {
         audio: "sfx-press",
       },
       handleUp: {
-        handleFn: () => {},
+        handleFn: () => { },
       },
     });
   }
@@ -191,7 +157,7 @@ export class ButtonDemo extends BaseScene {
       },
       handleDown: {
         audio: "sfx-press",
-        handleFn: () => {},
+        handleFn: () => { },
       },
     });
 
@@ -213,7 +179,7 @@ export class ButtonDemo extends BaseScene {
       },
       handleDown: {
         audio: "sfx-press",
-        handleFn: () => {},
+        handleFn: () => { },
       },
     });
   }
@@ -337,7 +303,7 @@ export class ButtonDemo extends BaseScene {
         audio: "sfx-press",
       },
       handleUp: {
-        handleFn: () => {},
+        handleFn: () => { },
       },
     });
   }

@@ -4,10 +4,13 @@ import { TabsConfig } from '../types';
 import { LinearLayout } from './LinearLayout';
 import { BaseScene } from "../game";
 import { Label } from './Label';
+import { Text } from './Text';
+import { Panel } from './Panel';
 
 export class Tabs extends Container {
     private _items?: LinearLayout;
     private _config: TabsConfig;
+    private _root?: Panel;
     public image?: Phaser.GameObjects.Image;
 
     constructor(scene: BaseScene, config: TabsConfig) {
@@ -17,6 +20,19 @@ export class Tabs extends Container {
 
         this.createTabItems();
         this.setPosition(0, scene.scale.height - (this._config.height || 0));
+    }
+
+    createBg() {
+        const tabsWidth = this._config.width || this.scene.scale.width;
+        const {
+            height = 0,
+            texture = '',
+        } = this._config!;
+        this._root = new Panel(this.scene, { x: 0, y: 0, width: tabsWidth, height, texture });
+
+        this._root.setName("root");
+        this._root.drawBackground();
+        this.addAt(this._root, 1);
     }
 
     createTabItems() {
@@ -32,9 +48,13 @@ export class Tabs extends Container {
         this._config.items?.forEach((item, index) => {
             const itemRoot = new Container(this.scene);
 
-            const background = this.scene.add.rectangle(0, 0, itemWidth, configHeight, this._config.background);
-            background.setOrigin(0);
-            itemRoot.addAt(background, 0);
+            if (this._config.texture) {
+                this.createBg()
+            } else {
+                const background = this.scene.add.rectangle(0, 0, itemWidth, configHeight, this._config.background);
+                background.setOrigin(0);
+                itemRoot.addAt(background, 0);
+            }
 
             const image = this.scene.add.image(padding, padding, item.texture ?? '');
             image.setOrigin(0);
@@ -55,12 +75,12 @@ export class Tabs extends Container {
                     fontSize: (configHeight - configHeight * multiple) * multiple + 'px'
                 },
                 textAlign: 'center',
-                borderColor: 0x00000,
-                backgroundColor: 0x00000,
+                backgroundColor: 0,
+                borderColor: 0
             });
             itemRoot.addAt(text, 1);
 
-            const hitArea = new Phaser.Geom.Rectangle(0, 0, itemWidth, this._config.height || 40);
+            const hitArea = new Phaser.Geom.Rectangle(0, 0, itemWidth, configHeight);
             itemRoot.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains)
                 .on('pointerup', () => this.onTabClick(index));
 

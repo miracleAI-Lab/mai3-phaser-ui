@@ -96,6 +96,12 @@ export class ImageDemo extends BaseScene {
       width: 150,
       height: 150,
       key: "rectangle",
+      text: '居中',
+      textStyle: {
+        fontFamily: "Arial",
+        fontSize: "50px",
+        color: "#FFFFFF",
+      },
     });
 
     this.mai3.add.image({

@@ -291,11 +291,6 @@ export interface ImageButtonConfig extends NinePatchConfig {
 }
 
 export interface ConnectWalletButtonConfig extends NinePatchConfig {
-  text?: string;
-  frame?: string;
-  texture?: string;
-  textStyle?: TextStyle;
-  style?: Styles;
   language?: Locales;
   walletApp?: WalletApp;
   onWalletChange?: (wallet: Wallet | null) => void;
@@ -352,12 +347,12 @@ export interface ToastConfig extends LabelConfig {
   alignment?: Alignment;
   type?: "success" | "warn" | "error" | "info";
   animationType?:
-    | "fade"
-    | "slide"
-    | "slideDown"
-    | "slideUp"
-    | "scale"
-    | "bounce";
+  | "fade"
+  | "slide"
+  | "slideDown"
+  | "slideUp"
+  | "scale"
+  | "bounce";
   duration?: number;
   margin?: Margin;
 }
@@ -539,6 +534,7 @@ export interface TabsConfig extends BaseConfig {
   alignment?: Alignment;
   itemSpace?: number;
   padding?: number;
+  texture?: string;
   onTabClick?: (index: number) => void;
 }
 
@@ -562,6 +558,10 @@ export interface ImageConfig extends BaseButtonConfig {
   borderColor?: number;
   backgroundColor?: number;
   backgroundAlpha?: number;
+  text?: string;
+  textStyle?: TextStyle;
+  textX?: number;
+  textY?: number;
 }
 
 export { Wallet };
@@ -577,6 +577,6 @@ export interface SpriteAnimConfig {
 //export type SpriteConfig = Phaser.Types.GameObjects.Sprite.SpriteConfig & BaseConfig;
 export interface SpriteConfig
   extends BaseButtonConfig,
-    Omit<Phaser.Types.GameObjects.Sprite.SpriteConfig, keyof BaseConfig> {
+  Omit<Phaser.Types.GameObjects.Sprite.SpriteConfig, keyof BaseConfig> {
   animConfigs?: SpriteAnimConfig[];
 }

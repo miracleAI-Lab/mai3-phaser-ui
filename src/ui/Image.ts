@@ -1,4 +1,4 @@
-import { Container } from ".";
+import { Container, Text } from ".";
 import { BaseScene } from "../game";
 import { ImageConfig } from "../types";
 import Utils from "../utils";
@@ -7,6 +7,7 @@ export class Image extends Container {
   private _config: ImageConfig;
   protected image?: Phaser.GameObjects.Image;
   protected maskShape?: Phaser.GameObjects.Graphics;
+  protected text?: Text;
 
   constructor(scene: BaseScene, config: ImageConfig) {
     super(scene, config);
@@ -43,6 +44,10 @@ export class Image extends Container {
     
     this.RefreshBounds();
     this.updateMaskShapePos();
+
+    if (config?.text) {
+      this.reDrawText();
+    }
   }
 
   private reDrawImage(textureKey: string, x: number, y: number, w: number, h: number) {
@@ -71,6 +76,26 @@ export class Image extends Container {
     this.addChildAt(this.maskShape!, 1);
   }
 
+  private reDrawText() {
+    const imageBounds = this.image?.getBounds();
+    let isCenter: boolean = false;
+    if (this._config.textX === undefined && this._config.textY === undefined) {
+      isCenter = true;
+    }
+    const textConfig = {
+      x: isCenter ? imageBounds!.width / 2 : (this._config.textX ?? 0),
+      y: isCenter ? imageBounds!.height / 2 : (this._config.textY ?? 0),
+      text: this._config.text ?? '',
+      textStyle: this._config.textStyle ?? {}
+    }
+    this.text = new Text(this.scene, textConfig);
+    if (isCenter) {
+      this.text.text.setOrigin(0.5, 0.5);
+    }
+    this.add(this.text);
+    this.RefreshBounds();
+  }
+
   public updateMaskShapePos() {
     const isCircle = this._config.isCircle ?? false;
     // const borderWidth = this._config.borderWidth ?? 0;
@@ -92,6 +117,10 @@ export class Image extends Container {
     if (this.maskShape) {
       this.maskShape.destroy();
       this.maskShape = undefined;
+    }
+    if (this.text) {
+      this.text.destroy();
+      this.text = undefined;
     }
   }
 

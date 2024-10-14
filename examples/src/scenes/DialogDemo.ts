@@ -78,8 +78,6 @@ export class DialogDemo extends BaseScene {
             texture: 'dialog-bg',
             closeButton: {
                 type: 'ImageButton',
-                x: 30,
-                y: 30,
                 width: 60,
                 height: 70,
                 texture: "dialog-close",

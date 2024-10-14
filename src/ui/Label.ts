@@ -21,7 +21,7 @@ export class Label extends Panel {
     const width = padding.left + padding.right + (config.width ?? 0);
     const height = padding.top + padding.bottom + (config.height ?? 0);
 
-    super(scene, { ...config, width, height});
+    super(scene, { ...config, width, height });
     this._config = config;
     this.Type = 'Label';
 
@@ -30,7 +30,6 @@ export class Label extends Panel {
 
   public reDraw(config: LabelConfig) {
     this._config = config;
-
     this.drawText();
     this.drawBackground();
     this.RefreshBounds();
@@ -89,7 +88,7 @@ export class Label extends Panel {
     const textStyle = config.textStyle ?? defaultStyle;
     const autoWidth = this._config.autoWidth ? true : (this._config.width ? false : true);
     this._width = autoWidth ? (this.scene.scale.width - 20) : (config.width ?? 150);
-    
+
     const padding = Utils.getPadding(this._config.padding);
     const style = Object.assign({}, textStyle, {
       wordWrap: {},

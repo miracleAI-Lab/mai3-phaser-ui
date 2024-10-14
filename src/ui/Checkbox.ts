@@ -107,6 +107,7 @@ export class Checkbox extends BaseButton {
     const fill = this.scene.mai3.add.image(fillConfig);
     fill.setName("fill");
     fill.setVisible(this.isChecked);
+    bg.setVisible(!this.isChecked);
     this.checkboxButton.add(fill);
     
     this.checkboxButton.RefreshBounds();

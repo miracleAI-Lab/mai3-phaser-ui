@@ -105,7 +105,7 @@ export class CheckboxDemo extends BaseScene {
             orientation: 'vertical',
             multiSelect: true,
             labelSpace: 10,
-            isCircle: true,
+            isCircle: false,
             items: [
                 { text: '选项1---多选', value: 'option1' },
                 { text: '选项2', value: 'option2' },
