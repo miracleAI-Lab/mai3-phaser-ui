@@ -47,12 +47,13 @@ export class TabsDemo extends BaseScene {
       padding: 10,
       background: 0xff0000,
       texture: 'tabsBg',
+      fontColor: '#000',
       items: [
-        { title: 'ta123b1', texture: 'tabs1' },
-        { title: 'tab2', texture: 'tabs2' },
-        { title: 'tab3', texture: 'tabs3' },
-        { title: 'tab4', texture: 'tabs4' },
-        { title: 'tab5', texture: 'tabs5' }
+        { title: 'ta123b1', texture: 'tabs1', activeImg: 'tabs1-hover' },
+        { title: 'tab2', texture: 'tabs2', activeImg: 'tabs2-hover' },
+        { title: 'tab3', texture: 'tabs3', activeImg: 'tabs3-hover' },
+        { title: 'tab4', texture: 'tabs4', activeImg: 'tabs4-hover' },
+        { title: 'tab5', texture: 'tabs5', activeImg: 'tabs5-hover' }
       ]
     });
 
@@ -66,8 +67,6 @@ export class TabsDemo extends BaseScene {
         text: `切换到标签 ${index + 1}`,
         type: 'info',
         textAlign: 'center',
-        horizontalAlign: 'center',
-        verticalAlign: 'middle',
         animationType: 'fade',
         backgroundColor: 0x008B00,
         textStyle: {

@@ -535,12 +535,14 @@ export interface TabsConfig extends BaseConfig {
   itemSpace?: number;
   padding?: number;
   texture?: string;
+  fontColor: string,
   onTabClick?: (index: number) => void;
 }
 
 export interface TabItem {
   title?: string;
   texture?: string;
+  activeImg: string
 }
 export interface ImageConfig extends BaseButtonConfig {
   id?: string;

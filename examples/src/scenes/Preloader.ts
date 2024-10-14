@@ -71,15 +71,15 @@ export class Preloader extends BaseScene {
 
         // tabs
         this.load.image('tabs1', 'assets/images/tabs/tabs1.png');
-        // this.load.image('tabs1-hover', 'assets/images/tabs/tabs1-hover.png');
+        this.load.image('tabs1-hover', 'assets/images/tabs/tabs1-hover.png');
         this.load.image('tabs2', 'assets/images/tabs/tabs2.png');
-        // this.load.image('tabs2-hover', 'assets/images/tabs/tabs2-hover.png');
+        this.load.image('tabs2-hover', 'assets/images/tabs/tabs2-hover.png');
         this.load.image('tabs3', 'assets/images/tabs/tabs3.png');
-        // this.load.image('tabs3-hover', 'assets/images/tabs/tabs3-hover.png');
+        this.load.image('tabs3-hover', 'assets/images/tabs/tabs3-hover.png');
         this.load.image('tabs4', 'assets/images/tabs/tabs4.png');
-        // this.load.image('tabs4-hover', 'assets/images/tabs/tabs4-hover.png');
+        this.load.image('tabs4-hover', 'assets/images/tabs/tabs4-hover.png');
         this.load.image('tabs5', 'assets/images/tabs/tabs5.png');
-        // this.load.image('tabs5-hover', 'assets/images/tabs/tabs5-hover.png');
+        this.load.image('tabs5-hover', 'assets/images/tabs/tabs5-hover.png');
 
         this.load.image('tabsBg', 'assets/images/preloader.png');
 

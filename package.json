@@ -1,6 +1,6 @@
 {
   "name": "mai3-phaser-ui",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
@@ -14,7 +14,8 @@
     "phaser",
     "phaser-ui",
     "mai3",
-    "MAI3",
+    "TON",
+    "Telegram",
     "MiracleAI"
   ],
   "author": "William.Wang",

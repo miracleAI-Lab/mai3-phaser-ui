@@ -1,4 +1,3 @@
-import { Image } from './Image';
 import { Container } from './Container';
 import { TabsConfig } from '../types';
 import { LinearLayout } from './LinearLayout';
@@ -18,24 +17,46 @@ export class Tabs extends Container {
         this._config = config;
         this.Type = 'Tabs';
 
+        this.createBg()
         this.createTabItems();
         this.setPosition(0, scene.scale.height - (this._config.height || 0));
     }
 
     createBg() {
-        const tabsWidth = this._config.width || this.scene.scale.width;
-        const {
-            height = 0,
-            texture = '',
-        } = this._config!;
-        this._root = new Panel(this.scene, { x: 0, y: 0, width: tabsWidth, height, texture });
 
+        const {
+            width,
+            height = 0,
+            texture = '', background = 0x000000
+        } = this._config!;
+
+        const tabsWidth = width || this.scene.scale.width;
+
+        if (texture) {
+            this._root = new Panel(this.scene, {
+                x: 0, y: 0,
+                width: tabsWidth,
+                height,
+                texture
+            });
+        } else {
+            this._root = new Panel(this.scene, {
+                x: 0, y: 0,
+                width: tabsWidth,
+                height,
+                backgroundColor: background,
+                borderWidth: 0,
+                radius: 0
+            });
+        }
         this._root.setName("root");
         this._root.drawBackground();
         this.addAt(this._root, 1);
     }
 
-    createTabItems() {
+    createTabItems(tabIndex = 0) {
+        // this._items?.destroy()
+
         const children: Container[] = [];
         const itemCount = this._config.items?.length || 0;
         const tabsWidth = this._config.width || this.scene.scale.width;
@@ -46,18 +67,22 @@ export class Tabs extends Container {
         const multiple = 0.8;
 
         this._config.items?.forEach((item, index) => {
+
             const itemRoot = new Container(this.scene);
 
-            if (this._config.texture) {
-                this.createBg()
-            } else {
-                const background = this.scene.add.rectangle(0, 0, itemWidth, configHeight, this._config.background);
-                background.setOrigin(0);
-                itemRoot.addAt(background, 0);
-            }
+            const rectangle = this.scene.add.rectangle(0, 0, itemWidth, configHeight);
+            rectangle.setOrigin(0);
+            itemRoot.addAt(rectangle, 0);
 
-            const image = this.scene.add.image(padding, padding, item.texture ?? '');
-            image.setOrigin(0);
+            let image;
+            if (tabIndex == index) {
+                image = this.scene.add.image(padding, padding, item.activeImg ?? item.texture ?? '');
+                image.setOrigin(0);
+            }
+            else {
+                image = this.scene.add.image(padding, padding, item.texture ?? '');
+                image.setOrigin(0);
+            }
 
             // 以高度等比缩放，默认显示0.8倍
             const imgSize = configHeight * multiple - padding * 2;
@@ -65,20 +90,22 @@ export class Tabs extends Container {
             image.x = (itemWidth - imgSize) / 2;
             itemRoot.addAt(image, 1);
 
-            const text = new Label(this.scene, {
-                x: 0,
-                y: configHeight * multiple - padding,
-                width: itemWidth,
-                text: item.title,
-                textStyle: {
-                    color: '#fff', // 颜色
-                    fontSize: (configHeight - configHeight * multiple) * multiple + 'px'
-                },
-                textAlign: 'center',
-                backgroundColor: 0,
-                borderColor: 0
-            });
-            itemRoot.addAt(text, 1);
+            if (tabIndex == index) {
+                image.setTexture(item.activeImg ?? item.texture ?? '')
+            }
+
+            // const text = new Text(this.scene, {
+            //     x: 0,
+            //     y: configHeight * multiple - padding,
+            //     width: itemWidth,
+            //     text: item.title,
+            //     textStyle: {
+            //         color: this._config.fontColor, // 颜色
+            //         fontSize: (configHeight - configHeight * multiple) * multiple + 'px'
+            //     },
+            //     textAlign: 'center',
+            // });
+            // itemRoot.addAt(text, 1);
 
             const hitArea = new Phaser.Geom.Rectangle(0, 0, itemWidth, configHeight);
             itemRoot.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains)
@@ -86,6 +113,7 @@ export class Tabs extends Container {
 
             children.push(itemRoot);
         });
+
 
         this._items = new LinearLayout(this.scene, {
             width: tabsWidth,
@@ -103,7 +131,9 @@ export class Tabs extends Container {
             this._config.onTabClick(index);
         }
         this.emit('tabChange', index);
+        this.createTabItems(index)
     }
+
 
     get config(): TabsConfig {
         return this._config!;
