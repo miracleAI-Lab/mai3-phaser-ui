@@ -55,7 +55,7 @@ export class Tabs extends Container {
     }
 
     createTabItems(tabIndex = 0) {
-        // this._items?.destroy()
+        this._items?.destroy()
 
         const children: Container[] = [];
         const itemCount = this._config.items?.length || 0;
@@ -90,28 +90,25 @@ export class Tabs extends Container {
             image.x = (itemWidth - imgSize) / 2;
             itemRoot.addAt(image, 1);
 
-            if (tabIndex == index) {
-                image.setTexture(item.activeImg ?? item.texture ?? '')
-            }
-
-            // const text = new Text(this.scene, {
-            //     x: 0,
-            //     y: configHeight * multiple - padding,
-            //     width: itemWidth,
-            //     text: item.title,
-            //     textStyle: {
-            //         color: this._config.fontColor, // 颜色
-            //         fontSize: (configHeight - configHeight * multiple) * multiple + 'px'
-            //     },
-            //     textAlign: 'center',
-            // });
-            // itemRoot.addAt(text, 1);
+            const text = new Text(this.scene, {
+                x: 0,
+                y: configHeight * multiple - padding,
+                width: itemWidth,
+                text: item.title,
+                textStyle: {
+                    color: this._config.fontColor, // 颜色
+                    fontSize: (configHeight - configHeight * multiple) * multiple + 'px'
+                },
+                textAlign: 'center',
+            });
+            itemRoot.addAt(text, 1);
 
             const hitArea = new Phaser.Geom.Rectangle(0, 0, itemWidth, configHeight);
             itemRoot.setInteractive(hitArea, Phaser.Geom.Rectangle.Contains)
                 .on('pointerup', () => this.onTabClick(index));
 
             children.push(itemRoot);
+
         });
 
 
