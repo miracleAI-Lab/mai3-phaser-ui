@@ -4,6 +4,8 @@ import { TextButton, Text, TextBox, ImageButton, RoundedButton, Checkbox, Checkb
 import { GridConfig } from '../types';
 import { Panel } from './Panel';
 
+const CellIndex = "cellIndex";
+
 export class Grid extends Panel {
     private _content?: Container;
     private _gridLines?: Phaser.GameObjects.Graphics;
@@ -72,9 +74,19 @@ export class Grid extends Panel {
                 this.positionSlotMap.set(`${x}-${y}`, 0);
                 this.positionToIndexMap.set(`${x}-${y}`, index);
                 this.indexToItemMap.set(index, []);
+                const item = new Container(this.scene, {x, y, id: index.toString()});
+                item.setName(item.id);
+                this.addItemPlaceholder(item);
+                this._content?.addChild(item);
                 index++;
             }
         }
+    }
+
+    private addItemPlaceholder(item: Container) {
+      const placeholder = this.scene.add.rectangle(0, 0, this._cellWidth, this._cellHeight, 0xff0000);
+      placeholder.setVisible(false).setOrigin(0);
+      item.add(placeholder);
     }
 
     public reDraw(config: GridConfig): void {
@@ -102,9 +114,8 @@ export class Grid extends Panel {
 
     private addItemToCell(childConfig: any, emptyCell: { x: number; y: number }, index: number): void {
         const { width, height } = this.calculateChildDimensions(childConfig);
-        const { x, y } = this.calculateChildPosition(childConfig, emptyCell, width, height);
         
-        const mergedConfig = { ...childConfig, x, y, width, height };
+        const mergedConfig = { ...childConfig, width, height };
         const child = this.createChildFromConfig(mergedConfig);
         
         this.setupChild(child, emptyCell, index);
@@ -124,10 +135,13 @@ export class Grid extends Panel {
     }
 
     private setupChild(child: Container, emptyCell: { x: number; y: number }, index: number): void {
+        const container = (this._content!.getAll<Container>()).find(c => c.getAll().length === 1);
+
         child.setName(`item_0`);
+        child.setData(CellIndex, container?.name);
         child.setEventInteractive();
         this.setupDraggable(child);
-        this._content!.addChild(child);
+        container?.addChild(child);
 
         this.positionSlotMap.set(`${emptyCell.x}-${emptyCell.y}`, 1);
         this.indexToItemMap.get(index)?.push(child);
@@ -144,9 +158,7 @@ export class Grid extends Panel {
     private addItemsToCell(itemConfigs: any[], emptyCell: { x: number; y: number }, cellIndex: number): void {
         itemConfigs.forEach((cfg, i) => {
             const { width, height } = this.calculateChildDimensions(cfg);
-            const { x, y } = this.calculateChildPosition(cfg, emptyCell, width, height);
-            
-            const mergedConfig = { ...cfg, x, y, width, height };
+            const mergedConfig = { ...cfg, width, height };
             const child = this.createChildFromConfig(mergedConfig);
             
             this.setupCellChild(child, emptyCell, cellIndex, i, cfg.draggable);
@@ -155,14 +167,19 @@ export class Grid extends Panel {
 
     private setupCellChild(child: Container, emptyCell: { x: number; y: number }, cellIndex: number, itemIndex: number, draggable?: boolean): void {
         child.setName(`item_${itemIndex}`);
+        child.setData(CellIndex, cellIndex);
         child.setEventInteractive();
-        this._content!.addChildAt(child, itemIndex);
+        this.getItemByIndex(cellIndex)?.addChildAt(child, itemIndex);
         if (draggable) {
             this.setupDraggable(child);
         }
 
         this.positionSlotMap.set(`${emptyCell.x}-${emptyCell.y}`, 1);
         this.indexToItemMap.get(cellIndex)?.push(child);
+    }
+
+    getItemByIndex(index: any): Container | undefined {
+      return this._content?.getByName(index + "");
     }
 
     public getCellItemsAtIndex(index: number): Container[] {
@@ -212,9 +229,10 @@ export class Grid extends Panel {
     private handleDragStart(child: Container, pointer: Phaser.Input.Pointer, dragX: number, dragY: number): void {
         this._draggingChild = child;
         this._originalPosition = { x: child.x, y: child.y };
-        this._originalIndex = this._content!.getIndex(child);
-        this._content!.bringToTop(child);
-
+        const cellIndex = child.getData(CellIndex);
+        this._originalIndex = cellIndex;
+        this._content?.bringToTop(this.getItemByIndex(cellIndex)!);
+    
         this._config?.handleDragStart?.(child, pointer, dragX, dragY);
     }
 
@@ -230,20 +248,19 @@ export class Grid extends Panel {
     private handleDragEnd(pointer: Phaser.Input.Pointer): void {
         if (!this._draggingChild) return;
 
-        const localPoint = this._content!.getLocalPoint(pointer.x, pointer.y);
-        let targetChild = this.getChildAtPosition(localPoint.x, localPoint.y);
-        
-        if (targetChild && targetChild !== this._draggingChild) {
-            this.swapChildren(this._draggingChild, targetChild);
-        } else {
-            const emptyCell = this.findNearestEmptyCell(localPoint.x, localPoint.y);
-            if (emptyCell) {
-                this.moveChildToEmptyCell(this._draggingChild, emptyCell);
-            } else {
-                this.resetDraggedChild();
-            }
+        const draggingCellIndex = this._draggingChild.getData(CellIndex) + "";
+        const targetChild = this.getChildAtPosition(draggingCellIndex, pointer);
+    
+        // resetPostion
+        this._draggingChild.setPosition(
+            this._originalPosition!.x,
+            this._originalPosition!.y
+        );
+    
+        if (targetChild) {
+            this.swapChildren(this.getItemByIndex(draggingCellIndex)!, targetChild);
         }
-
+    
         this._config?.handleDragEnd?.(this._draggingChild, targetChild, pointer);
         this.cleanupDragState();
     }
@@ -274,15 +291,17 @@ export class Grid extends Panel {
 
     private swapChildren(child1: Container, child2: Container): void {
         const targetIndex = this._content!.getIndex(child2);
-        const pos1 = { x: this._originalPosition!.x, y: this._originalPosition!.y };
+        const originalIndex = this._content!.getIndex(child1);
+        
+        const pos1 = { x: child1.x, y: child1.y };
         const pos2 = { x: child2.x, y: child2.y };
-
+    
         child1.setPosition(pos2.x, pos2.y);
         child2.setPosition(pos1.x, pos1.y);
-
+    
         this._content!.moveTo(child1, targetIndex);
-        this._content!.moveTo(child2, this._originalIndex!);
-
+        this._content!.moveTo(child2, originalIndex);
+    
         this.updateGridItemsMap(child1, child2);
     }
 
@@ -306,21 +325,20 @@ export class Grid extends Panel {
         this.positionSlotMap.set(`${child2.x}-${child2.y}`, 1);
     }
 
-    private getChildAtPosition(x: number, y: number): Container | undefined {
-        return (this._content!.getAll() as Container[]).find(child =>
-            child !== this._draggingChild && 
-            child.name === this._draggingChild!.name &&
-            x >= child.x && x <= child.x + child.RealWidth &&
-            y >= child.y && y <= child.y + child.RealHeight
-        );
+    private getChildAtPosition(draggingCellIndex: string, pointer: Phaser.Input.Pointer): Container | undefined {
+      return (this._content!.getAll() as Container[]).find(
+        (child) =>
+          child.name != draggingCellIndex &&
+          Phaser.Geom.Rectangle.ContainsPoint(child.getBounds(), new Phaser.Geom.Point(pointer.x, pointer.y)
+        )
+      );
     }
-
     
-    public removeChild(child: Container): void {
-        const key = `${child.x}-${child.y}`;
+    public removeChild(container: Container): void {
+        const key = `${container.x}-${container.y}`;
         this.positionSlotMap.set(key, 0);
-        this._content?.remove(child);
-        child.destroy();
+        container.removeAll(true);
+        this.addItemPlaceholder(container);
     }
     
     get config(): GridConfig {

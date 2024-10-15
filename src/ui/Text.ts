@@ -41,6 +41,7 @@ export class Text extends Container {
     this.text.setStyle(style);
     this.text.setFontStyle(config.textStyle?.fontStyle!);
     this.layout();
+    this.updateConfig(config);
   }
 
   private layout() {
