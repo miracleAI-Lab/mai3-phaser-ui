@@ -49,7 +49,7 @@ export class TabsDemo extends BaseScene {
       texture: 'tabsBg',
       fontColor: '#000',
       items: [
-        { title: 'ta123b1', texture: 'tabs1', activeImg: 'tabs1-hover' },
+        { title: 'tab1', texture: 'tabs1', activeImg: 'tabs1-hover' },
         { title: 'tab2', texture: 'tabs2', activeImg: 'tabs2-hover' },
         { title: 'tab3', texture: 'tabs3', activeImg: 'tabs3-hover' },
         { title: 'tab4', texture: 'tabs4', activeImg: 'tabs4-hover' },

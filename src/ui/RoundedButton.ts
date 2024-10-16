@@ -2,6 +2,7 @@ import { RoundedButtonConfig } from '../types';
 import Utils from '../utils';
 import { BaseScene } from '../game';
 import { BaseButton } from './BaseButton';
+import { Text } from './Text';
 
 export class RoundedButton extends BaseButton {
     private _config: RoundedButtonConfig;
@@ -13,7 +14,6 @@ export class RoundedButton extends BaseButton {
         config.geomType = 'Circle';
         super(scene, config, 'RoundedButton');
         this._config = config;
-
         this.reDraw(this._config);
     }
 
@@ -51,6 +51,30 @@ export class RoundedButton extends BaseButton {
         this.addChildAt(this.bg, 1);
     }
 
+    reDrawText() {
+        const config = this._config
+        const radius = config.radius ?? 0;
+        const borderWidth = config.borderWidth ?? 0;
+        const btnRadius = radius + borderWidth;
+        const FSize = config.fontSize ?? 18
+
+        if (!config.text) return
+        // 绘制文字
+        const text = new Text(this.scene, {
+            y: btnRadius - FSize / 2,
+            width: btnRadius * 2,
+            text: config.text,
+            textStyle: {
+                color: config.fontColor, // 颜色
+                fontSize: FSize + 'px'
+            },
+            textAlign: 'center',
+        });
+
+        this.addChildAt(text, 3);
+    }
+
+
     reDrawImage(textureKey: string, x: number, y: number, w: number, h: number, visible = true) {
         this.image?.setTexture(textureKey);
         this.image?.setPosition(x, y);
@@ -58,6 +82,7 @@ export class RoundedButton extends BaseButton {
         this.image?.setOrigin(0);
         this.image!.setVisible(visible);
         this.addChildAt(this.image!, 2);
+        this.reDrawText();
     }
 
     reDrawMaskShap(radius: number, fillColor: number) {
@@ -69,6 +94,8 @@ export class RoundedButton extends BaseButton {
         this.image!.setMask(mask);
         this.addChildAt(this.maskShape!, 0);
         this.updateMaskShapePos();
+
+
     }
 
     //根据按钮的位置来更新mask的位置但不重绘
