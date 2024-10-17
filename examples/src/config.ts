@@ -1,3 +1,4 @@
+import { TonConfig } from "../../dist/game/TonConfig";
 
 export function getGameConfig() {
   const config: Phaser.Types.Core.GameConfig = {
@@ -42,40 +43,36 @@ export type BackendConfig =
         }
     }
 
+export async function loadTonConfig(): Promise<TonConfig> {
+  if (import.meta.env.VITE_NETWORK == null) {
+    throw new Error('NETWORK is not set.');
+  }
+  if (import.meta.env.VITE_API_URL == null) {
+    throw new Error('API_URL is not set.');
+  }
+  if (import.meta.env.VITE_MINI_APP_URL == null) {
+    throw new Error('MINI_APP_URL is not set.');
+  }
+  if (import.meta.env.VITE_TOKEN_MASTER == null) {
+    throw new Error('TOKEN_MASTER is not set.');
+  }
+  if (import.meta.env.VITE_TOKEN_RECIPIENT == null) {
+    throw new Error('TOKEN_RECIPIENT is not set.');
+  }
 
-export interface Config {
-    ENDPOINT: string;
-    APP_URL: Url;
-    APP_MANIFEST_URL: string;
-    NETWORK: Network;
-    TOKEN_MASTER: string;
-    TOKEN_RECIPIENT: string;
-}
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const miniAppUrl = import.meta.env.VITE_MINI_APP_URL;
+  const network = import.meta.env.VITE_NETWORK;
+  const tokenMaster = import.meta.env.VITE_TOKEN_MASTER;
+  const tokenRecipient = import.meta.env.VITE_TOKEN_RECIPIENT;
 
-export async function loadConfig(): Promise<Config> {
-    if (import.meta.env.VITE_API_URL == null) {
-        throw new Error('API_URL is not set.');
-    }
-    if (import.meta.env.VITE_MINI_APP_URL == null) {
-        throw new Error('MINI_APP_URL is not set.');
-    }
-
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const miniAppUrl = import.meta.env.VITE_MINI_APP_URL;
-
-    // const configRequest = await fetch(apiUrl + '/config');
-    // const configResponse: BackendConfig = await configRequest.json();
-    
-    // if (!configResponse.ok) {
-    //     throw new Error('Failed to load config.');
-    // }
-
-    return {
-        ENDPOINT: apiUrl,
-        APP_URL: miniAppUrl as Url,
-        APP_MANIFEST_URL: 'https://raw.githubusercontent.com/ton-defi-org/tonconnect-manifest-temp/main/tonconnect-manifest.json',
-        NETWORK: 'testnet', // configResponse.config.network,
-        TOKEN_MASTER: '', // configResponse.config.tokenMinter,
-        TOKEN_RECIPIENT: '', // configResponse.config.tokenRecipient,
-    }
+  return {
+    ENDPOINT: apiUrl,
+    APP_URL: miniAppUrl as Url,
+    APP_MANIFEST_URL: 'https://raw.githubusercontent.com/ton-defi-org/tonconnect-manifest-temp/main/tonconnect-manifest.json',
+    NETWORK: network,
+    TOKEN_MASTER: tokenMaster,
+    TOKEN_RECIPIENT: tokenRecipient,
+    connectWalletButtonConfig: undefined
+  }
 }

@@ -3,14 +3,13 @@ import {
   locales,
 } from '../common/consts';
 import Utils from '../utils';
-import { BaseScene, TonConnectUI } from "../game";
+import { BaseScene, WalletConnectorParams } from "../game";
 import { BaseButton } from './BaseButton';
 import { ImageButton } from './ImageButton';
 import { TonConnector } from '../game/TonConnetor';
 
 export class ConnectWalletButton extends BaseButton {
   wallet: Wallet | null = null;
-  connector?: TonConnectUI;
   connectionSourceName: WalletApp;
   unsubscribeFromConnector?: () => void;
   locale: Locale;
@@ -22,8 +21,18 @@ export class ConnectWalletButton extends BaseButton {
     super(scene, config, 'ConnectWalletButton');
     this._config = config;
 
+    const connectorParams: WalletConnectorParams = {
+      manifestUrl: config.manifestUrl,
+      actionsConfiguration: {
+        twaReturnUrl: config.appUrl
+      }
+    };
+
     this.connectionSourceName = config.walletApp || 'telegram-wallet';
-    this.connector = TonConnector.getInstance();
+    TonConnector.init(connectorParams).then(() => {
+      this._unsubscribeFromConnector();
+    });
+    
     this.onError = config.onError
       ? config.onError
       : (error) => {
@@ -41,7 +50,9 @@ export class ConnectWalletButton extends BaseButton {
     this.RefreshBounds();
     this.initializeEvents();
     this.updateConfig(this._config);
+  }
 
+  private _unsubscribeFromConnector() {
     const walletChanged = (wallet: Wallet | null) => {
       this.wallet = wallet;
       if (wallet) {
@@ -50,13 +61,14 @@ export class ConnectWalletButton extends BaseButton {
 
       }
 
-      if (config.onWalletChange) {
-        config.onWalletChange(wallet);
+      if (this._config.onWalletChange) {
+        this._config.onWalletChange(wallet);
       }
     };
+  
 
-    this.unsubscribeFromConnector = this.connector?.onStatusChange(walletChanged);
-    this.connector?.connectionRestored.then((connected: boolean) => {
+    this.unsubscribeFromConnector = TonConnector.connector.onStatusChange(walletChanged);
+    TonConnector.connector.connectionRestored.then((connected: boolean) => {
       if (!connected) {
         walletChanged(null);
       }
@@ -85,10 +97,10 @@ export class ConnectWalletButton extends BaseButton {
 
   connectWallet = async () => {
     try {
-      if (this.connector?.connected) {
+      if (TonConnector.connector?.connected) {
         await this.disconnectWallet();
       }
-      await this.connector?.openModal();
+      await TonConnector.connector?.openModal();
     } catch (error: any) {
       console.log("connectWallet error", error);
       this.onError(error);
@@ -99,7 +111,7 @@ export class ConnectWalletButton extends BaseButton {
 
   disconnectWallet = async () => {
     try {
-      await this.connector?.disconnect();
+      await TonConnector.connector?.disconnect();
     } catch (error: any) {
       console.log("disconnect error", error);
       this.onError(error);
@@ -109,7 +121,6 @@ export class ConnectWalletButton extends BaseButton {
   }
 
   public destroy(fromScene?: boolean): void {
-    this.unsubscribeFromConnector!();
     if (this.button) {
       this.button.destroy(true);
     }

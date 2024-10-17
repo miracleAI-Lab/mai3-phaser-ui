@@ -1,24 +1,69 @@
-import type Phaser from 'phaser';
-import { ConnectWalletButton } from '../ui/ConnectWalletButton';
 import { GameFiBase as GameFiBase, GameFiInitializationParams } from '../common/game-fi';
 import { ConnectWalletButtonConfig } from '../types';
 import BaseScene from './BaseScene';
-
+import { TonConfig } from './TonConfig';
+import { WalletConnectorParams } from '../common/interfaces';
+import { ConnectWalletButton } from '../ui';
+import { TonConnector } from './TonConnetor';
 export class GameFi extends GameFiBase {
-  /**
-   * Setups and creates GameFi instance.
-   * The instance provides all the needed functionality via various methods.
-   */
-  public static async create(params: GameFiInitializationParams = {}): Promise<GameFi> {
-    return new GameFi(await GameFi.createDependencies(params));
+  static config: TonConfig;
+  static connectWalletButton: ConnectWalletButton;
+
+  public static async create(scene: BaseScene, config: TonConfig): Promise<GameFi> {
+    if (!config || !config.NETWORK) {
+      throw new Error('TonConfig is not defined');
+    }
+
+    this.config = config;
+    const connectorParams: WalletConnectorParams = {
+      manifestUrl: config.APP_MANIFEST_URL,
+      actionsConfiguration: {
+        // twaReturnUrl is for Telegram Mini Apps
+        // use returnStrategy: 'https://yourapp.com' otherwise
+        twaReturnUrl: config.APP_URL
+      }
+    };
+
+    const gameFiParams: GameFiInitializationParams = {
+      network: config.NETWORK,
+      contentResolver: {
+        // use urlProxy if you you are going to use methods like:
+        // getNftCollection, getNftItem, etc.
+        urlProxy: `${config.ENDPOINT}/fix-cors?url=%URL%`
+      },
+      merchant: {
+        // in-game jetton purchases come to this address
+        jettonAddress: config.TOKEN_MASTER,
+        // in-game TON purchases come to this address
+        tonAddress: config.TOKEN_RECIPIENT
+      }
+    }
+
+    const connector = await TonConnector.init(connectorParams);
+    const params = {
+      ...gameFiParams,
+      connector: connector
+    }
+
+    let gameFi = new GameFi(await GameFi.createDependencies(params));
+    if (scene && config.connectWalletButtonConfig) {
+      this._createConnectButton(scene, config.connectWalletButtonConfig);
+    }
+
+    return gameFi;
   }
 
-  /**
-   * Creates the connect button as `ConnectWalletButton` instance and adds it to the passed scene.
-   * `ConnectWalletButton` is child class of `Phaser.GameObjects.Container`.
-   * It's possible to interact with the button using Container API, like changing position `setPosition`.
-   */
-  public createConnectButton(scene: BaseScene, config: ConnectWalletButtonConfig) {
-    return new ConnectWalletButton(scene, config);
+  private static _createConnectButton(scene: BaseScene, config: ConnectWalletButtonConfig): ConnectWalletButton {
+    if (!this.connectWalletButton) {
+      config.manifestUrl = this.config.APP_MANIFEST_URL;
+      config.appUrl = this.config.APP_URL;
+      this.connectWalletButton = scene.mai3.add.connectWalletButton(config);
+    }
+
+    return this.connectWalletButton;
+  }
+
+  public createConnectButton(scene: BaseScene, config: ConnectWalletButtonConfig): ConnectWalletButton {
+    return GameFi._createConnectButton(scene, config);
   }
 }

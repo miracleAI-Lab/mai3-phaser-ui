@@ -293,6 +293,8 @@ export interface ImageButtonConfig extends NinePatchConfig {
 export interface ConnectWalletButtonConfig extends NinePatchConfig {
   language?: Locales;
   walletApp?: WalletApp;
+  manifestUrl?: string;
+  appUrl?: `${string}://${string}` | undefined;
   onWalletChange?: (wallet: Wallet | null) => void;
   onError?: HandleError;
 }

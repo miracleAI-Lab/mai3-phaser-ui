@@ -1,47 +1,58 @@
 import { TonConnectUI } from "@tonconnect/ui";
+import { TonConfig } from "./TonConfig";
+import { WalletConnectorParams } from "../common/interfaces";
 
 export class TonConnector {
-  private static instance: TonConnectUI;
+  private static config: WalletConnectorParams;
+  public static connector: TonConnectUI;
 
-  public static getInstance(): TonConnectUI {
-    if (!this.instance) {
-      this.instance = new TonConnectUI({
-        manifestUrl: 'https://raw.githubusercontent.com/ton-defi-org/tonconnect-manifest-temp/main/tonconnect-manifest.json',
-        uiPreferences: {
-          borderRadius: 's'
-        }
+  public static async init(config: WalletConnectorParams) : Promise<TonConnectUI> {
+    this.config = config;
+    return this.getInstance();
+  }
+
+  public static async getInstance(): Promise<TonConnectUI> {
+    if (!this.config) {
+      throw new Error("TonConfig is not initialized");
+    }
+
+    if (!this.connector) {
+      this.connector = new TonConnectUI({
+        manifestUrl: this.config.manifestUrl,
+        actionsConfiguration: this.config.actionsConfiguration
       });
     }
-    return this.instance;
+
+    return this.connector;
   }
 
   public static async openModal() {
-    const tonConnect = TonConnector.getInstance();
+    const tonConnect = await this.getInstance();
     await tonConnect.openModal()
   }
   
   public static async closeModal() {
-    const tonConnect = TonConnector.getInstance();
+    const tonConnect = await this.getInstance();
     await tonConnect.closeModal()
   }
 
   public static async disconnect() {
-    const tonConnect = TonConnector.getInstance();
+    const tonConnect = await this.getInstance();
     await tonConnect.disconnect();
   }
 
-  public static async getWallet() {
-    const tonConnect = TonConnector.getInstance();
+  public static async getWallets() {
+    const tonConnect = await this.getInstance();
     return tonConnect.getWallets();
   }
 
   public static async getAccount() {
-    const tonConnect = TonConnector.getInstance();
+    const tonConnect = await this.getInstance();
     return tonConnect.account;
   }
 
   public static async getAccountAddress() {
-    const tonConnect = TonConnector.getInstance();
+    const tonConnect = await this.getInstance();
     return tonConnect.account?.address;
   }
 }

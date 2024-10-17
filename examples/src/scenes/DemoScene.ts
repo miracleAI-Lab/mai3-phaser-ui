@@ -50,6 +50,7 @@ export class DemoScene extends BaseScene {
             { name: '调整大小演示', scene: 'ResizeDemo', color: 0xFF9800 },
             { name: '文本框演示', scene: 'TextBoxDemo', color: 0x8BC34A },
             { name: '精灵演示', scene: 'SpriteDemo', color: 0x4CA600 },
+            { name: 'TON演示', scene: 'TonDemo', color: 0x009688 },
         ];
 
         const rowButtons = [];

@@ -14,10 +14,11 @@ import { TextBoxDemo } from './TextBoxDemo';
 import { ToastDemo } from './ToastDemo';
 import { ProgressBarDemo } from './ProgressBarDemo';
 import { SpriteDemo } from './SpriteDemo';
+import { TonDemo } from './TonDemo';
 
 export {
   Boot, Preloader,
   DemoScene, ResizeDemo, ButtonDemo, CheckboxDemo, DialogDemo,
   GridDemo, ImageDemo, LabelDemo, SliderDemo, TabsDemo,
-  TextBoxDemo, ToastDemo, ProgressBarDemo, SpriteDemo
+  TextBoxDemo, ToastDemo, ProgressBarDemo, SpriteDemo, TonDemo
 };
