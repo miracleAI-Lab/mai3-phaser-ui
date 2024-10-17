@@ -1315,10 +1315,10 @@ pathfinding@^0.4.18:
   dependencies:
     heap "0.2.5"
 
-phaser@^3.85.2:
-  version "3.85.2"
-  resolved "https://registry.npmjs.org/phaser/-/phaser-3.85.2.tgz#cd29bb3d9ac3572407a9e129972781d6b6b3f58a"
-  integrity sha512-bD/58E1gvCsEH0Lftb2BiJ8FQ86kb8HHOS656lLXPwg8ZXkskZGsfdyQO21Y57+neGOUEaUthSFfDyVULy5B1g==
+phaser@^3.86.0:
+  version "3.86.0"
+  resolved "https://registry.npmjs.org/phaser/-/phaser-3.86.0.tgz#90f10cec5a0edf59341e021768bb0bc7edd01628"
+  integrity sha512-A7rog3GhXYcWsPimteQmudyY6W0fx0eviOoo9Cwpzae1RPeJBDkhmWv5IFrQO9dL+T907E4dprQPnd2D4WhoEw==
   dependencies:
     eventemitter3 "^5.0.1"
 
