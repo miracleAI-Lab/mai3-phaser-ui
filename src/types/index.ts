@@ -307,6 +307,9 @@ export interface RoundedButtonConfig extends BaseButtonConfig {
   borderColor?: number;
   backgroundColor?: number;
   backgroundAlpha?: number;
+  text?: string;
+  fontColor?: string
+  fontSize?: number
 }
 
 export interface NinePatchConfig extends BaseButtonConfig {
