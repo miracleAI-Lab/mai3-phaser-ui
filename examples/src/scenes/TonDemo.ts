@@ -22,37 +22,12 @@ export class TonDemo extends BaseScene {
 
   private async ton_sdk() {
     this.createConnectUi();
-    // this.mai3.add
-    //   .connectWalletButton({
-    //     x: 50,
-    //     y: 700,
-    //     width: 152.95,
-    //     height: 66.27,
-    //     texture: "startButton",
-    //     language: "en",
-    //     walletApp: "telegram-wallet",
-    //     onWalletChange: (wallet: Wallet | null) => {
-    //       console.log("wallet address: ", wallet?.account.address);
-    //     },
-    //     handleUp: {
-    //       handleFn: () => {
-    //         console.log("handleUp");
-    //       },
-    //     },
-    //     handleDown: {
-    //       handleFn: () => {
-    //         console.log("handleDown");
-    //       },
-    //     },
-    //   })
-    // .debugHitArea();
+    // this.createConnectWalletBtn();
   }
 
   async createConnectUi() {
     const config = await loadTonConfig();
-    console.log("config", config);
-
-    let gameFi = await GameFi.create(this, config);
+    const gameFi = await GameFi.create(this, config);
     gameFi.createConnectButton(this,
       {
         x: 200,
@@ -75,8 +50,32 @@ export class TonDemo extends BaseScene {
             console.log("handleDown");
           },
         },
-      }
-    )
+      });
+  }
+
+  private createConnectWalletBtn() {
+    this.mai3.add.connectWalletButton({
+        x: 200,
+        y: 400,
+        width: 153,
+        height: 67,
+        texture: "startButton",
+        language: "en",
+        walletApp: "telegram-wallet",
+        onWalletChange: (wallet: Wallet | null) => {
+          console.log("wallet address: ", wallet?.account.address);
+        },
+        handleUp: {
+          handleFn: () => {
+            console.log("handleUp");
+          },
+        },
+        handleDown: {
+          handleFn: () => {
+            console.log("handleDown");
+          },
+        },
+      })
   }
 
   private createReturnButton() {

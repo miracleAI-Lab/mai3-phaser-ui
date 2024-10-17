@@ -7,7 +7,7 @@ import { ConnectWalletButton } from '../ui';
 import { TonConnector } from './TonConnetor';
 export class GameFi extends GameFiBase {
   static config: TonConfig;
-  static connectWalletButton: ConnectWalletButton;
+  public connectWalletButton?: ConnectWalletButton;
 
   public static async create(scene: BaseScene, config: TonConfig): Promise<GameFi> {
     if (!config || !config.NETWORK) {
@@ -54,16 +54,13 @@ export class GameFi extends GameFiBase {
   }
 
   private static _createConnectButton(scene: BaseScene, config: ConnectWalletButtonConfig): ConnectWalletButton {
-    if (!this.connectWalletButton) {
-      config.manifestUrl = this.config.APP_MANIFEST_URL;
-      config.appUrl = this.config.APP_URL;
-      this.connectWalletButton = scene.mai3.add.connectWalletButton(config);
-    }
-
-    return this.connectWalletButton;
+    config.manifestUrl = this.config.APP_MANIFEST_URL;
+    config.appUrl = this.config.APP_URL;
+    return scene.mai3.add.connectWalletButton(config);
   }
 
   public createConnectButton(scene: BaseScene, config: ConnectWalletButtonConfig): ConnectWalletButton {
-    return GameFi._createConnectButton(scene, config);
+    this.connectWalletButton = GameFi._createConnectButton(scene, config);
+    return this.connectWalletButton;
   }
 }

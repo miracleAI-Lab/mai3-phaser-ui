@@ -21,6 +21,14 @@ export class ConnectWalletButton extends BaseButton {
     super(scene, config, 'ConnectWalletButton');
     this._config = config;
 
+    if (!config.manifestUrl) {
+      throw new Error('manifestUrl is required');
+    }
+
+    if (!config.appUrl) {
+      throw new Error('appUrl is required');
+    }
+
     const connectorParams: WalletConnectorParams = {
       manifestUrl: config.manifestUrl,
       actionsConfiguration: {

@@ -1,4 +1,5 @@
 // import { loadConfig } from "@/config";
+import { loadTonConfig } from "@/config";
 import { BaseScene } from "../../../dist";
 import { Wallet } from "../../../dist/game";
 export class ButtonDemo extends BaseScene {
@@ -182,8 +183,7 @@ export class ButtonDemo extends BaseScene {
 
           console.log(btn.config)
           btn.config.text = 'hhh'
-          btn.text = 'hhh'
-
+          // btn.text = 'hhh'
         },
       },
       draggable: true,// 是否拖动
@@ -313,59 +313,32 @@ export class ButtonDemo extends BaseScene {
 
   }
 
-  private createConnectWalletBtn() {
-    this.mai3.add
-      .connectWalletButton({
-        x: 20,
-        y: 780,
-        width: 153,
-        height: 67,
-        texture: "startButton",
-        language: "en",
-        walletApp: "telegram-wallet",
-        onWalletChange: (wallet: Wallet | null) => {
-          console.log("wallet address: ", wallet?.account.address);
+  private async createConnectWalletBtn() {
+    const config = await loadTonConfig();
+    this.mai3.add.connectWalletButton({
+      x: 20,
+      y: 780,
+      width: 153,
+      height: 67,
+      texture: "startButton",
+      language: "en",
+      walletApp: "telegram-wallet",
+      manifestUrl: config.APP_MANIFEST_URL,
+      appUrl: config.APP_URL,
+      onWalletChange: (wallet: Wallet | null) => {
+        console.log("wallet address: ", wallet?.account.address);
+      },
+      handleUp: {
+        handleFn: () => {
+          console.log("handleUp");
         },
-        handleUp: {
-          handleFn: () => {
-            console.log("handleUp");
-          },
+      },
+      handleDown: {
+        handleFn: () => {
+          console.log("handleDown");
         },
-        handleDown: {
-          handleFn: () => {
-            console.log("handleDown");
-          },
-        },
-      })
-  }
-
-
-
-  private async ton_sdk() {
-    this.mai3.add
-      .connectWalletButton({
-        x: 50,
-        y: 700,
-        width: 152.95,
-        height: 66.27,
-        texture: "startButton",
-        language: "en",
-        walletApp: "telegram-wallet",
-        onWalletChange: (wallet: Wallet | null) => {
-          console.log("wallet address: ", wallet?.account.address);
-        },
-        handleUp: {
-          handleFn: () => {
-            console.log("handleUp");
-          },
-        },
-        handleDown: {
-          handleFn: () => {
-            console.log("handleDown");
-          },
-        },
-      })
-    // .debugHitArea();
+      },
+    })
   }
 
   private createReturnButton() {
