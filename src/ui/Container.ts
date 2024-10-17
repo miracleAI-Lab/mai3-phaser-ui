@@ -106,6 +106,14 @@ export class Container extends Phaser.GameObjects.Container {
     console.log(pointer, dragX, dragY);
   }
 
+  public onDragEndUpdate(
+    pointer: Phaser.Input.Pointer,
+    dragX: number,
+    dragY: number
+  ): void {
+    console.log(pointer, dragX, dragY);
+  }
+
   get id(): string {
     return this._id ?? "";
   }

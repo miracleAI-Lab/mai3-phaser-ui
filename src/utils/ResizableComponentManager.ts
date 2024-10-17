@@ -4,13 +4,14 @@ import { BaseScene } from "../game";
 
 export default class ResizableComponentManager {
   private scene: BaseScene;
-  private components: Container[] = [];
   private resizeHandles: Phaser.GameObjects.Rectangle[] = [];
   private resizeContainers: Phaser.GameObjects.Container[] = [];
   private isResizing: boolean = false;
   private activeHandle: Phaser.GameObjects.Rectangle | null = null;
   private originalWidth: number = 0;
   private originalHeight: number = 0;
+
+  public components: Container[] = [];
 
   constructor(scene: BaseScene) {
     this.scene = scene;
@@ -179,7 +180,7 @@ export default class ResizableComponentManager {
     this.activeHandle = null;
   }
 
-  private updateResizeHandles(componentIndex: number) {
+  public updateResizeHandles(componentIndex: number) {
     const component = this.components[componentIndex];
     const resizeContainer = this.resizeContainers[componentIndex];
     const padding = 5;

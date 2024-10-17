@@ -18,19 +18,29 @@ export class ImageButton extends BaseButton {
 
   reDraw(config: ImageButtonConfig) {
     this._config = config;
+    this._config.width = config.width ?? 200;
+    this._config.height = config.height ?? 60;
+
+    if (this.image) {
+      this.image.destroy();
+      this.image = undefined;
+    }
+
     if (!this.image)
       this.image = this.scene.add.nineslice(
         0, 0,
         this._config.texture ?? "",
-        this._config.frame,
+        this._config.frame ?? 0,
         this._config.width,
         this._config.height,
-        this._config.leftWidth,
-        this._config.rightWidth,
-        this._config.topHeight,
-        this._config.bottomHeight
+        this._config.leftWidth ?? 0,
+        this._config.rightWidth ?? 0,
+        this._config.topHeight ?? 0,
+        this._config.bottomHeight ?? 0
       );
 
+    this.image?.setTexture((this._config.texture ?? '') as string, this._config.frame);
+    this.image?.setDisplaySize(this._config.width, this._config.height);
     this.image?.setOrigin(0);
     this.addChild(this.image!);
 

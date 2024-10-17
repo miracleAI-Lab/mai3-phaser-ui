@@ -34,7 +34,6 @@ export class Sprite extends BaseButton {
 
   public createAnimsSprite(animKey: string, config: SpriteAnimConfig) {
     if (Array.isArray(config.frames)) {
-      //
       this.scene.anims.create({
         key: animKey,
         frames: this.scene.anims.generateFrameNumbers(config.key, {

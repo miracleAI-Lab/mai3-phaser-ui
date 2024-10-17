@@ -41,7 +41,6 @@ export class Text extends Container {
     this.text.setStyle(style);
     this.text.setFontStyle(config.textStyle?.fontStyle!);
     this.layout();
-    this.updateConfig(config);
   }
 
   private layout() {
@@ -64,6 +63,7 @@ export class Text extends Container {
     }
 
     this.computedLabelSize();
+    this.updateConfig(this._config);
     this.RefreshBounds();
   }
 
@@ -73,6 +73,8 @@ export class Text extends Container {
     this._width = autoWidth ? (this.scene.scale.width - 20) : (this._config.width ?? 150);
     this._width = autoWidth ? this.text.displayWidth : this._width;
     this._height = autoHeight ? this.text.displayHeight : (this._config.height ?? this.text.displayHeight);
+    this._config.width = this._width;
+    this._config.height = this._height;
   }
 
   private getLabelStyle(config: LabelConfig) {

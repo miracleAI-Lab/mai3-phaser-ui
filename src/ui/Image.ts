@@ -5,7 +5,7 @@ import Utils from "../utils";
 
 export class Image extends Container {
   private _config: ImageConfig;
-  protected image?: Phaser.GameObjects.Image;
+  public image?: Phaser.GameObjects.Image;
   protected maskShape?: Phaser.GameObjects.Graphics;
   protected text?: Text;
 

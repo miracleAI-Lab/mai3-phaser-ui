@@ -5,7 +5,7 @@ import { Container } from "../ui/Container";
 
 class BaseScene extends Phaser.Scene {
   mai3!: Mai3Plugin;
-  private resizableManager: ResizableComponentManager;
+  public resizableManager: ResizableComponentManager;
   private printer?: Phaser.GameObjects.Text;
   private isDebugPrint: boolean = true;
 
@@ -42,22 +42,31 @@ class BaseScene extends Phaser.Scene {
     );
   }
 
-  protected switchDragResizeComponent(component: Container) {
+  public indexOfComponent(component: Container) {
+    return this.resizableManager.components.indexOf(component);
+  }
+
+  public reDrawDragResizeComponent(component: Container) {
+    const index = this.indexOfComponent(component);
+    this.resizableManager?.updateResizeHandles(index);
+  }
+
+  public switchDragResizeComponent(component: Container) {
     this.resizableManager?.clear();
     this.resizableManager?.addComponent(component);
   }
 
-  protected addDragResizeComponent(component: Container) {
+  public addDragResizeComponent(component: Container) {
     this.resizableManager?.addComponent(component);
   }
 
-  protected addDragResizeComponents(components: Container[]) {
+  public addDragResizeComponents(components: Container[]) {
     components.forEach((item) => {
       this.resizableManager?.addComponent(item);
     });
   }
 
-  protected clearDragResizeComponents() {
+  public clearDragResizeComponents() {
     this.resizableManager?.clear();
   }
 }
