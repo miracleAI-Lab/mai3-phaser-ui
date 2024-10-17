@@ -4,10 +4,10 @@ import Utils from '../utils';
 import { BaseScene } from "../game";
 import { Panel } from './Panel';
 
-const defaultStyle = {
-  fontFamily: 'Arial', // 字体
-  fontSize: '24px', // 字号
-  color: '#fff', // 颜色
+const defaultStyle: TextStyle = {
+  fontFamily: 'Arial',
+  fontSize: '24px',
+  color: '#fff',
 };
 
 export class Label extends Panel {
@@ -28,82 +28,84 @@ export class Label extends Panel {
     this.reDraw(config);
   }
 
-  public reDraw(config: LabelConfig) {
+  public reDraw(config: LabelConfig): void {
     this._config = config;
+    this.validateConfig();
     this.drawText();
-    this.drawBackground();
+    this.reDrawBackground(this._config);
     this.RefreshBounds();
-    this.updateConfig(config);
   }
 
-  public drawText() {
-    const text = this._config.text ?? "Welcome to MiracleAI";
-    const style = this.getLabelStyle(this._config);
+  private validateConfig(): void {
+    if (!this._config.autoWidth && !this._config.width) {
+      throw new Error('Label ERROR: Label width must be specified when autoWidth is false');
+    }
+    if (this._config.autoWidth && this._config.isWordWrap) {
+      throw new Error('Label ERROR: Label cannot be word wrapped when autoWidth is true');
+    }
+  }
+
+  public drawText(): void {
+    const { text = "Welcome to MiracleAI", textAlign = 'left' } = this._config;
+    const style = this.getLabelStyle();
     const padding = Utils.getPadding(this._config.padding);
 
+    this.createOrUpdateLabel(text, style);
+    this.computedLabelSize();
+    this.setLabelPosition(textAlign, padding);
+
+    console.log('config: ', this._config);
+  }
+
+  private createOrUpdateLabel(text: string, style: TextStyle): void {
     if (!this.label) {
       this.label = this.scene.make.text({});
-      this.addChildAt(this.label!, 1);
+      this.addChildAt(this.label, 1);
     }
-    this.label?.setText(text);
-    this.label?.setStyle(style);
-
-    this.label?.setFontStyle(this._config.textStyle?.fontStyle!);
-    this.computedLabelSize();
-
-    const textAlign = this._config.textAlign ?? 'left';
-    if (textAlign === 'left') {
-      const labelY = padding.top ? padding.top : (this._height! - this.label!.displayHeight) / 2;
-      this.label!.setPosition(padding.left, labelY);
-    }
-
-    if (textAlign === 'center') {
-      const labelX = (this._width! - this.label!.displayWidth) / 2;
-      const labelY = padding.top ? padding.top : (this._height! - this.label!.displayHeight) / 2;
-      this.label!.setPosition(labelX, labelY);
-    }
-
-    if (textAlign === 'right') {
-      const labelX = this._width! - this.label!.displayWidth - padding.right;
-      const labelY = padding.top ? padding.top : (this._height! - this.label!.displayHeight) / 2;
-      this.label!.setPosition(labelX, labelY);
-    }
+    this.label.setText(text).setStyle(style);
+    this.label.setFontStyle(this._config.textStyle?.fontStyle!);
   }
 
-  private computedLabelSize() {
-    const autoWidth = this._config.autoWidth ? true : (this._config.width ? false : true);
-    const autoHeight = this._config.autoHeight ? true : (this._config.height ? false : true);
-    this._width = autoWidth ? (this.scene.scale.width - 20) : (this._config.width ?? 150);
-
+  private computedLabelSize(): void {
+    const { autoWidth = false, autoHeight = false } = this._config;
     const padding = Utils.getPadding(this._config.padding);
-    this._width = autoWidth ? (this.label?.displayWidth ?? this._width) : this._width;
-    this._height = autoHeight ? (this.label?.displayHeight ?? 30) : (this._config.height ?? (this.label?.displayHeight ?? 30));
-    this._width! += padding.left + padding.right;
-    this._height! += padding.top + padding.bottom;
+
+    this._width = autoWidth ? (this.label?.displayWidth ?? 0) + padding.left + padding.right : this._config.width ?? 0;
+    this._height = autoHeight ? (this.label?.displayHeight ?? 30) + padding.top + padding.bottom : this._config.height ?? (this.label?.displayHeight ?? 30) + padding.top + padding.bottom;
+
     this._config.width = this._width;
     this._config.height = this._height;
+    
+    console.log(`this.label?.displayWidth: ${this.label?.displayWidth}, width: ${this._width}`);
   }
 
-  private getLabelStyle(config: LabelConfig) {
-    const textStyle = config.textStyle ?? defaultStyle;
-    const autoWidth = this._config.autoWidth ? true : (this._config.width ? false : true);
-    this._width = autoWidth ? (this.scene.scale.width - 20) : (config.width ?? 150);
+  private setLabelPosition(textAlign: string, padding: { top: number; left: number; right: number; }): void {
+    const labelY = padding.top || (this._height! - this.label!.displayHeight) / 2;
+    let labelX = padding.left;
 
+    switch (textAlign) {
+      case 'center':
+        labelX = (this._width! - this.label!.displayWidth) / 2;
+        break;
+      case 'right':
+        labelX = this._width! - this.label!.displayWidth - padding.right;
+        break;
+    }
+
+    this.label!.setPosition(labelX, labelY);
+  }
+
+  private getLabelStyle(): TextStyle {
+    const textStyle = this._config.textStyle ?? defaultStyle;
     const padding = Utils.getPadding(this._config.padding);
-    const style = Object.assign({}, textStyle, {
-      wordWrap: {},
-      padding: padding,
-    });
+    const style: TextStyle = { ...textStyle, wordWrap: {}, padding };
 
-    let wordWrapWidth = this._width;
-    wordWrapWidth = config.padding?.left ? (wordWrapWidth - config.padding.left) : wordWrapWidth;
-    wordWrapWidth = config.padding?.right ? (wordWrapWidth - config.padding.right) : wordWrapWidth;
-    wordWrapWidth = config.padding?.x ? (this._width - config.padding.x * 2) : wordWrapWidth;
-
-    style.wordWrap = config.isWordWrap ? {
-      width: wordWrapWidth !== this._width ? wordWrapWidth : this._width,
-      useAdvancedWrap: config.isWordWrap
-    } : {};
+    if (this._config.isWordWrap && !this._config.autoWidth) {
+      style.wordWrap = {
+        width: (this._config.width ?? 0) - padding.left - padding.right,
+        useAdvancedWrap: true
+      };
+    }
 
     return style;
   }
@@ -113,18 +115,15 @@ export class Label extends Panel {
   }
 
   set Text(text: string) {
-    this._config = Utils.MergeRight(this._config, { text }) as LabelConfig;
-    this.reDraw(this._config);
+    this.reDraw({ ...this._config, text });
   }
 
-  setWidth(width: number) {
-    this._config = Utils.MergeRight(this._config, { width }) as LabelConfig;
-    this.reDraw(this._config);
+  setWidth(width: number): void {
+    this.reDraw({ ...this._config, width });
   }
 
-  setStyle(textStyle: TextStyle) {
-    this._config = Utils.MergeRight(this._config, { textStyle }) as LabelConfig;
-    this.reDraw(this._config);
+  setStyle(textStyle: TextStyle): void {
+    this.reDraw({ ...this._config, textStyle });
   }
 
   get TextWidth(): number {
@@ -136,14 +135,12 @@ export class Label extends Panel {
   }
 
   get config(): LabelConfig {
-    return this._config!;
+    return this._config;
   }
 
-  destroy(fromScene?: boolean) {
-    if (this.label) {
-      this.label.destroy();
-      this.label = undefined;
-    }
+  destroy(fromScene?: boolean): void {
+    this.label?.destroy();
+    this.label = undefined;
     super.destroy(fromScene);
   }
 }

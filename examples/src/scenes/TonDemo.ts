@@ -1,8 +1,11 @@
 // import { loadConfig } from "@/config";
-import { BaseScene } from "../../../dist";
+import { BaseScene, Label } from "../../../dist";
 import { GameFi, Wallet } from "../../../dist/game";
 import { loadTonConfig } from "@/config";
+import { LabelConfig } from "../../../dist/types";
 export class TonDemo extends BaseScene {
+  label?: Label;
+
   constructor() {
     super("TonDemo");
   }
@@ -13,32 +16,33 @@ export class TonDemo extends BaseScene {
 
   create() {
     this.createButtons();
+    this.createLabel();
   }
 
   private createButtons() {
     this.createReturnButton();
-    this.ton_sdk();
+    this.createGameFiAndConnectWalletBtn();
+    this.createConnectWalletBtn();
   }
 
-  private async ton_sdk() {
-    this.createConnectUi();
-    // this.createConnectWalletBtn();
-  }
-
-  async createConnectUi() {
+  async createGameFiAndConnectWalletBtn() {
     const config = await loadTonConfig();
     const gameFi = await GameFi.create(this, config);
     gameFi.createConnectButton(this,
       {
         x: 200,
-        y: 200,
-        width: 152,
-        height: 66,
+        y: 180,
+        width: 200,
+        height: 70,
         texture: "startButton",
         language: "en",
         walletApp: "telegram-wallet",
         onWalletChange: (wallet: Wallet | null) => {
-          console.log("wallet address: ", wallet?.account.address);
+          console.log("shortAddress: ", gameFi.getShortAddress());
+          console.log("fullAddress: ", gameFi.getFullAddress());
+          if (wallet) {
+            this.label!.Text = `wallet: ${gameFi.getShortAddress() ?? ''}`;
+          }
         },
         handleUp: {
           handleFn: () => {
@@ -53,29 +57,61 @@ export class TonDemo extends BaseScene {
       });
   }
 
-  private createConnectWalletBtn() {
-    this.mai3.add.connectWalletButton({
-        x: 200,
-        y: 400,
-        width: 153,
-        height: 67,
-        texture: "startButton",
-        language: "en",
-        walletApp: "telegram-wallet",
-        onWalletChange: (wallet: Wallet | null) => {
-          console.log("wallet address: ", wallet?.account.address);
+  private async createConnectWalletBtn() {
+    const config = await loadTonConfig();
+    const btn = this.mai3.add.connectWalletButton({
+      x: 200,
+      y: 300,
+      width: 200,
+      height: 70,
+      texture: "imgBtn",
+      language: "en",
+      walletApp: "telegram-wallet",
+      appUrl: config.APP_URL,
+      manifestUrl: config.APP_MANIFEST_URL,
+      onWalletChange: (wallet: Wallet | null) => {
+        console.log("shortAddress: ", btn.getShortAddress());
+        console.log("fullAddress: ", btn.getFullAddress());
+        if (wallet) {
+          this.label!.Text = `wallet: ${btn.getShortAddress() ?? ''}`;
+        }
+      },
+      handleUp: {
+        handleFn: () => {
+          console.log("handleUp");
         },
-        handleUp: {
-          handleFn: () => {
-            console.log("handleUp");
-          },
+      },
+      handleDown: {
+        handleFn: () => {
+          console.log("handleDown");
         },
-        handleDown: {
-          handleFn: () => {
-            console.log("handleDown");
-          },
-        },
-      })
+      },
+    })
+  }
+
+  private createLabel() {
+    // const text = `Phaser is a fast free, and fun open source HTML5 game framework`;
+    const labelCfg: LabelConfig = {
+      x: 600, y: 10,
+      width: 280,
+      autoHeight: true,
+      text: 'Connect Wallet',
+      borderWidth: 4,
+      radius: 20,
+      borderColor: 0xFFD700,
+      backgroundColor: 0xcf4b00,
+      backgroundAlpha: 1,
+      textAlign: "center",
+      textStyle: {
+        fontFamily: 'Arial',
+        fontSize: '24px',
+        color: '#fff',
+      },
+      isWordWrap: true,
+      padding: { left: 20, right: 20, top: 10, bottom: 10 },
+    };
+
+    this.label = this.mai3.add.label(labelCfg);
   }
 
   private createReturnButton() {

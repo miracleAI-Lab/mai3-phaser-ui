@@ -51,9 +51,8 @@ export class LabelDemo extends BaseScene {
   private createTransparentLabel() {
     this.mai3.add.label({
       x: 10, y: 100,
-      width: 600,
+      width: 200,
       text: "背景透明的文字Label",
-      autoWidth: true,
       autoHeight: true,
       borderWidth: 4,
       borderColor: 0xFFD700,
@@ -74,7 +73,7 @@ export class LabelDemo extends BaseScene {
     const cfg = {
       x: 10, y: 200,
       text: text,
-      autoWidth: true,
+      width: 200,
       autoHeight: true,
       isWordWrap: true,
       borderWidth: 4,
@@ -96,7 +95,7 @@ export class LabelDemo extends BaseScene {
     const cfg: LabelConfig = {
       x: 10, y: 300,
       text: text,
-      autoWidth: true,
+      width: 200,
       autoHeight: true,
       isWordWrap: true,
       texture: 'StartGameButton',
@@ -130,7 +129,7 @@ export class LabelDemo extends BaseScene {
     const textCfg = {
       x: 300, y: 100,
       text: '这是一个纯文本的text组件',
-      autoWidth: true,
+      width: 300,
       autoHeight: true,
       isWordWrap: true,
       textStyle: {

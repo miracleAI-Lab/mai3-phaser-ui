@@ -17,7 +17,7 @@ export class Panel extends Container {
     this.drawBackground();
   }
 
-  public reDraw(config: PanelConfig): void {
+  public reDrawBackground(config: PanelConfig): void {
     this._config = config;
     this.drawBackground();
   }
@@ -95,7 +95,7 @@ export class Panel extends Container {
   public reSize(width: number, height: number): void {
     this._config!.width = width;
     this._config!.height = height;
-    this.reDraw(this._config!);
+    this.reDrawBackground(this._config!);
   }
   
   get config(): PanelConfig {

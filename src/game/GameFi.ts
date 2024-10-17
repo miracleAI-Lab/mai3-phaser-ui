@@ -63,4 +63,12 @@ export class GameFi extends GameFiBase {
     this.connectWalletButton = GameFi._createConnectButton(scene, config);
     return this.connectWalletButton;
   }
+
+  public getShortAddress() {
+    return this.connectWalletButton?.getShortAddress();
+  }
+
+  public getFullAddress() {
+    return this.connectWalletButton?.getFullAddress();
+  }
 }

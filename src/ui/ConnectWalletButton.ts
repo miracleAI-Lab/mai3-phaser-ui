@@ -64,16 +64,17 @@ export class ConnectWalletButton extends BaseButton {
     const walletChanged = (wallet: Wallet | null) => {
       this.wallet = wallet;
       if (wallet) {
-        let address = Utils.rawAddressToFriendly(wallet.account.address, true);
-      } else {
+        let shortAddress = Utils.rawAddressToFriendly(wallet.account.address, true);
+        let fullAddress = Utils.rawAddressToFriendly(wallet.account.address, false);
 
+        this.setData("shortAddress", shortAddress);
+        this.setData("fullAddress", fullAddress);
       }
-
+      
       if (this._config.onWalletChange) {
         this._config.onWalletChange(wallet);
       }
     };
-  
 
     this.unsubscribeFromConnector = TonConnector.connector.onStatusChange(walletChanged);
     TonConnector.connector.connectionRestored.then((connected: boolean) => {
@@ -126,6 +127,14 @@ export class ConnectWalletButton extends BaseButton {
     } finally {
 
     }
+  }
+
+  public getShortAddress(): string {
+    return this.getData("shortAddress") as string;
+  }
+
+  public getFullAddress() {
+    return this.getData("fullAddress") as string;
   }
 
   public destroy(fromScene?: boolean): void {
