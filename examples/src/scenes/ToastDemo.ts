@@ -9,17 +9,17 @@ export class ToastDemo extends BaseScene {
     }
 
     async create() {
-        this.createToast();
+        this.createToasts();
         this.createReturnButton();
     }
 
     private createReturnButton() {
         this.mai3.add.textButton({
             x: 10,
-            y: 10,
+            y: 30,
             width: 150,
             height: 50,
-            text: "返回DemoScene",
+            text: "Return",
             backgroundColor: 0x4CAF50,
             borderColor: 0x45A049,
             borderWidth: 2,
@@ -37,45 +37,50 @@ export class ToastDemo extends BaseScene {
         });
     }
 
-    private createToast() {
-        const toast = this.mai3.add.toast({
-            x: 400,
-            y: 300,
-            width: 200,
-            height: 60,
-            text: '这是一个Toast消息',
-            duration: 3000,
-            type: 'success',
-            textAlign: 'center',
-            alignment: {horizontal: 'right', vertical: 'top'},
-            animationType: 'slide',
-            backgroundColor: 0x008B00,
-            textStyle: {
-                fontFamily: 'Arial',
-                fontSize: '18px',
-                color: '#000000',
-            },
-            margin: { all: 10 },
-        });
+    private createToasts() {
+        const toastTypes = ['success', 'info', 'warning', 'error'];
+        const toastColors = [0x008B00, 0x0000FF, 0xFFA500, 0xFF0000];
+        const toastTexts = ['Success', 'Information', 'Warning', 'Error'];
 
-        // 创建一个按钮来触发Toast
-        this.mai3.add.textButton({
-            x: 400,
-            y: 400,
-            width: 150,
-            height: 50,
-            text: '显示Toast',
-            backgroundColor: 0x4CAF50,
-            textStyle: {
-                fontFamily: 'Arial',
-                fontSize: '16px',
-                color: '#FFFFFF',
-            },
-            handleUp: {
-                handleFn: () => {
-                    toast.show()
-                }
-            },
+        toastTypes.forEach((type: any, index) => {
+            const toast = this.mai3.add.toast({
+                x: 400,
+                y: 100 + index * 100,
+                width: 200,
+                height: 60,
+                text: toastTexts[index],
+                duration: 3000,
+                type: type,
+                textAlign: 'center',
+                alignment: {horizontal: 'right', vertical: 'top'},
+                animationType: 'slide',
+                backgroundColor: toastColors[index],
+                textStyle: {
+                    fontFamily: 'Arial',
+                    fontSize: '18px',
+                    color: '#FFFFFF',
+                },
+                margin: { all: 10 },
+            });
+
+            this.mai3.add.textButton({
+                x: 200,
+                y: 100 + index * 100,
+                width: 150,
+                height: 50,
+                text: `Show ${toastTexts[index]}`,
+                backgroundColor: toastColors[index],
+                textStyle: {
+                    fontFamily: 'Arial',
+                    fontSize: '16px',
+                    color: '#FFFFFF',
+                },
+                handleUp: {
+                    handleFn: () => {
+                        toast.show()
+                    }
+                },
+            });
         });
     }
 

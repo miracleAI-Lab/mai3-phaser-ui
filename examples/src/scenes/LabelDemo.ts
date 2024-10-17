@@ -27,10 +27,10 @@ export class LabelDemo extends BaseScene {
   private createReturnButton() {
     this.mai3.add.textButton({
       x: 10,
-      y: 10,
+      y: 30,
       width: 150,
       height: 50,
-      text: "返回DemoScene",
+      text: "Return",
       backgroundColor: 0x4CAF50,
       borderColor: 0x45A049,
       borderWidth: 2,
@@ -52,7 +52,7 @@ export class LabelDemo extends BaseScene {
     this.mai3.add.label({
       x: 10, y: 100,
       width: 200,
-      text: "背景透明的文字Label",
+      text: "Text Label with transparent background",
       autoHeight: true,
       borderWidth: 4,
       borderColor: 0xFFD700,
@@ -128,7 +128,7 @@ export class LabelDemo extends BaseScene {
   private createPureTextLabel() {
     const textCfg = {
       x: 300, y: 100,
-      text: '这是一个纯文本的text组件',
+      text: 'This is a pure text component',
       width: 300,
       autoHeight: true,
       isWordWrap: true,

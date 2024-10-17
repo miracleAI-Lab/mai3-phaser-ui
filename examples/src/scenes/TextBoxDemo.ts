@@ -17,10 +17,10 @@ export class TextBoxDemo extends BaseScene {
     private createReturnButton() {
         this.mai3.add.textButton({
             x: 10,
-            y: 10,
+            y: 30,
             width: 150,
             height: 50,
-            text: "返回DemoScene",
+            text: "Return",
             backgroundColor: 0x4CAF50,
             borderColor: 0x45A049,
             borderWidth: 2,
@@ -44,8 +44,8 @@ export class TextBoxDemo extends BaseScene {
             y: 450,
             width: 300,
             height: 200,
-            text: '这是一个多行文本输入框示例',
-            placeholder: '请输入多行文本...',
+            text: 'This is a multi-line text input example',
+            placeholder: 'Please enter multi-line text...',
             borderWidth: 2,
             borderColor: 0x000000,
             backgroundColor: 0xFFFFFF,
@@ -60,15 +60,15 @@ export class TextBoxDemo extends BaseScene {
         });
 
         textArea.on('input', (text: string) => {
-            console.log('文本输入:', text);
+            console.log('Text input:', text);
         });
 
         textArea.on('focus', () => {
-            console.log('文本框获得焦点');
+            console.log('Text area focused');
         });
 
         textArea.on('blur', () => {
-            console.log('文本框失去焦点');
+            console.log('Text area lost focus');
         });
     }
 
@@ -78,8 +78,8 @@ export class TextBoxDemo extends BaseScene {
             y: 680,
             width: 300,
             height: 60,
-            placeholder: '请输入账号...',
-            text: "一个文本输入框",
+            placeholder: 'Please enter account...',
+            text: "A text input box",
             borderWidth: 4,
             borderColor: 0xFFD700,
             backgroundColor: 0xffffff,

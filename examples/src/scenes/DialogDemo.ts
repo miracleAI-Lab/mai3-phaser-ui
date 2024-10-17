@@ -16,15 +16,16 @@ export class DialogDemo extends BaseScene {
         this.createDialog();
         this.createReturnButton();
         this.createShowDialogButton();
+        this.dialog.show();
     }
 
     private createReturnButton() {
         this.mai3.add.textButton({
             x: 10,
-            y: 10,
+            y: 30,
             width: 150,
             height: 50,
-            text: "返回DemoScene",
+            text: "Return",
             backgroundColor: 0x4CAF50,
             borderColor: 0x45A049,
             borderWidth: 2,
@@ -44,11 +45,11 @@ export class DialogDemo extends BaseScene {
 
     private createShowDialogButton() {
         this.mai3.add.textButton({
-            x: 10,
-            y: 70,
+            x: 200,
+            y: 200,
             width: 150,
             height: 50,
-            text: "显示对话框",
+            text: "Show Dialog",
             backgroundColor: 0x2196F3,
             borderColor: 0x1E88E5,
             borderWidth: 2,
@@ -99,12 +100,12 @@ export class DialogDemo extends BaseScene {
     private createDialogItems() {
         const items: any[] = [];
 
-        // 添加标题
+        // Add title
         items.push({
             type: 'Text',
             x: 280,
             y: 18,
-            text: '更新信息',
+            text: 'Update Information',
             autoWidth: true,
             autoHeight: true,
             isWordWrap: true,
@@ -115,7 +116,7 @@ export class DialogDemo extends BaseScene {
             }
         });
 
-        // 添加文本框
+        // Add text box
         items.push({
             type: 'Label',
             x: 70,
@@ -136,7 +137,7 @@ export class DialogDemo extends BaseScene {
             padding: { all: 20 }
         });
 
-        // 添加按钮
+        // Add buttons
         items.push(this.createFooterButtonConfig());
         items.push(this.createFooterCloseButtonConfig());
 

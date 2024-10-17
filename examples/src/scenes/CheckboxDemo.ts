@@ -10,7 +10,7 @@ export class CheckboxDemo extends BaseScene {
     }
 
     async create() {
-        //有图
+        //With image
         this.createCheckboxWithImages();
         this.createCheckboxGroup();
         this.createMultiSelectCheckboxGroup();
@@ -20,10 +20,10 @@ export class CheckboxDemo extends BaseScene {
     private createReturnButton() {
         this.mai3.add.textButton({
             x: 10,
-            y: 40,
+            y: 30,
             width: 150,
             height: 50,
-            text: "返回DemoScene",
+            text: "Return",
             backgroundColor: 0x4CAF50,
             borderColor: 0x45A049,
             borderWidth: 2,
@@ -41,7 +41,7 @@ export class CheckboxDemo extends BaseScene {
         });
     }
 
-    //有图
+    //With image
     private createCheckboxWithImages() {
         const ckbConfig = {
             x: 10,
@@ -77,9 +77,9 @@ export class CheckboxDemo extends BaseScene {
             orientation: 'horizontal',
             labelSpace: 10,
             items: [
-                { text: '选项1---单选', value: 'option1' },
-                { text: '选项2', value: 'option2' },
-                { text: '选项3', value: 'option3' }
+                { text: 'Option 1---Single Select', value: 'option1' },
+                { text: 'Option 2', value: 'option2' },
+                { text: 'Option 3', value: 'option3' }
             ],
             textStyle: {
                 fontFamily: 'Arial',
@@ -94,7 +94,7 @@ export class CheckboxDemo extends BaseScene {
         });
 
         checkboxGroup.on('change', (selectedItems: string[]) => {
-            console.log('选中的项目:', selectedItems);
+            console.log('Selected items:', selectedItems);
         });
     }
 
@@ -107,9 +107,9 @@ export class CheckboxDemo extends BaseScene {
             labelSpace: 10,
             isCircle: false,
             items: [
-                { text: '选项1---多选', value: 'option1' },
-                { text: '选项2', value: 'option2' },
-                { text: '选项3', value: 'option3' }
+                { text: 'Option 1---Multi Select', value: 'option1' },
+                { text: 'Option 2', value: 'option2' },
+                { text: 'Option 3', value: 'option3' }
             ],
             textStyle: {
                 fontFamily: 'Arial',
@@ -124,7 +124,7 @@ export class CheckboxDemo extends BaseScene {
         });
 
         checkboxGroup.on('change', (selectedItems: string[]) => {
-            console.log('选中的项目:', selectedItems);
+            console.log('Selected items:', selectedItems);
         });
     }
 

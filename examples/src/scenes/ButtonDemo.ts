@@ -1,4 +1,3 @@
-// import { loadConfig } from "@/config";
 import { loadTonConfig } from "@/config";
 import { BaseScene } from "../../../dist";
 import { Wallet } from "../../../dist/game";
@@ -21,23 +20,11 @@ export class ButtonDemo extends BaseScene {
   }
 
   private createButtons() {
-
     this.createReturnButton();
-
     this.createImgBtn();
     this.createRoundedBtn();
     this.createTextBtn();
     this.createConnectWalletBtn();
-
-    // this.createCloseDialogButton();
-    // this.createDraggableButton();
-    // this.createRoundedButton();
-    // this.createStartGameButton();
-    // this.createPlayButton();
-    // this.createStartButton();
-    // this.createPauseIcon();
-    // this.createTextButton();
-    // this.ton_sdk();
   }
 
   private createImgBtn() {
@@ -50,26 +37,26 @@ export class ButtonDemo extends BaseScene {
       draggable: true,
       handleHover: {
         audio: "sfx-hover",
-        texture: "playBtn",// 无效?
+        texture: "playBtn",
         handleFn: () => {
           console.log("handleHover");
         },
       },
       handleOut: {
-        texture: "playBtn",// 无效?
+        texture: "playBtn",
         handleFn: () => {
           console.log("handleOut");
         },
       },
       handleDown: {
         audio: "sfx-press",
-        texture: "playBtn",// 无效?
+        texture: "playBtn",
         handleFn: () => {
           console.log("handleDown");
           this.mai3.add.toast({
             width: 300,
             height: 60,
-            text: '矩形自定义图片按钮',
+            text: 'Rectangular custom image button',
             duration: 3000,
             type: 'info',
             animationType: 'slide',
@@ -78,7 +65,7 @@ export class ButtonDemo extends BaseScene {
         },
       },
       handleUp: {
-        texture: "playBtn",// 无效?
+        texture: "playBtn",
         handleFn: () => {
           console.log("handleUp");
         },
@@ -94,20 +81,20 @@ export class ButtonDemo extends BaseScene {
       draggable: true,
       handleHover: {
         audio: "sfx-hover",
-        texture: "playBtn",// 无效?
+        texture: "playBtn",
         handleFn: () => {
           console.log("handleHover");
         },
       },
       handleDown: {
         audio: "sfx-press",
-        texture: "playBtn",// 无效?
+        texture: "playBtn",
         handleFn: () => {
           console.log("handleDown");
           this.mai3.add.toast({
             width: 300,
             height: 60,
-            text: '矩形自定义图片按钮',
+            text: 'Rectangular custom image button',
             duration: 3000,
             type: 'info',
             animationType: 'slide',
@@ -126,20 +113,20 @@ export class ButtonDemo extends BaseScene {
       draggable: true,
       handleHover: {
         audio: "sfx-hover",
-        texture: "playBtn",// 无效?
+        texture: "playBtn",
         handleFn: () => {
           console.log("handleHover");
         },
       },
       handleDown: {
         audio: "sfx-press",
-        texture: "playBtn",// 无效?
+        texture: "playBtn",
         handleFn: () => {
           console.log("handleDown");
           this.mai3.add.toast({
             width: 300,
             height: 60,
-            text: '矩形自定义图片按钮',
+            text: 'Rectangular custom image button',
             duration: 3000,
             type: 'info',
             animationType: 'slide',
@@ -148,16 +135,14 @@ export class ButtonDemo extends BaseScene {
         },
       }
     });
-
   }
 
   private createRoundedBtn() {
-    //无图
     const btn = this.mai3.add.roundedButton({
       x: 20,
       y: 260,
       radius: 50,
-      text: '圆形按钮',
+      text: 'Round',
       fontColor: "#fff",
       fontSize: 20,
       frame: 0,
@@ -174,7 +159,7 @@ export class ButtonDemo extends BaseScene {
           this.mai3.add.toast({
             width: 300,
             height: 60,
-            text: '圆形无图按钮 - 文字可自定义',
+            text: 'Round button without image - Text can be customized',
             duration: 3000,
             type: 'info',
             animationType: 'slide',
@@ -183,20 +168,18 @@ export class ButtonDemo extends BaseScene {
 
           console.log(btn.config)
           btn.config.text = 'hhh'
-          // btn.text = 'hhh'
         },
       },
-      draggable: true,// 是否拖动
+      draggable: true,
     });
 
-    //有图
     this.mai3.add.roundedButton({
       x: 160,
       y: 260,
       radius: 53,
       texture: "playButton",
       frame: 0,
-      draggable: false,// 是否拖动
+      draggable: false,
       backgroundAlpha: 1,
       geomType: "Circle",
       backgroundColor: 0x32cd32,
@@ -209,7 +192,7 @@ export class ButtonDemo extends BaseScene {
           this.mai3.add.toast({
             width: 300,
             height: 60,
-            text: '圆形自定义图片按钮',
+            text: 'Round custom image button',
             duration: 3000,
             type: 'info',
             animationType: 'slide',
@@ -221,7 +204,6 @@ export class ButtonDemo extends BaseScene {
   }
 
   private createTextBtn() {
-
     const btn = this.mai3.add.textButton({
       x: 480,
       y: 420,
@@ -230,7 +212,7 @@ export class ButtonDemo extends BaseScene {
       borderColor: 0x900c3f,
       borderWidth: 3,
       backgroundColor: 0xc70039,
-      text: "Mai3（可拖动改变的）",
+      text: "Mai3 (Draggable and changeable)",
       radius: 20,
       textStyle: {
         fontFamily: "Arial",
@@ -243,17 +225,16 @@ export class ButtonDemo extends BaseScene {
       handleDown: {
         audio: "sfx-press",
         handleFn: () => {
-          btn.text = "哈哈你好呀，我被拖动了";
+          btn.text = "Hello, I've been dragged";
         },
       },
       handleUp: {
         handleFn: () => {
-          btn.text = "Mai3（可拖动改变的）"
+          btn.text = "Mai3 (Draggable and changeable)"
         },
       },
       draggable: true,
     });
-
 
     for (let i = 1; i <= 3; i++) {
       let radius;
@@ -280,16 +261,14 @@ export class ButtonDemo extends BaseScene {
         borderColor: 0x900c3f,
         borderWidth: 3,
         backgroundColor: 0xc70039,
-        text: "自定义文字的圆角按钮",
+        text: "Custom text rounded button",
         radius,
         textStyle: {
           fontFamily: "Arial",
           fontSize: "24px",
           color: "#FFFFFF",
         },
-
         draggable: true,
-
         handleHover: {
           audio: "sfx-hover",
         },
@@ -299,7 +278,7 @@ export class ButtonDemo extends BaseScene {
             this.mai3.add.toast({
               width: 300,
               height: 60,
-              text: '自定义文字的圆角按钮',
+              text: 'Custom text rounded button',
               duration: 3000,
               type: 'info',
               animationType: 'slide',
@@ -308,9 +287,7 @@ export class ButtonDemo extends BaseScene {
           },
         },
       });
-
     }
-
   }
 
   private async createConnectWalletBtn() {
@@ -344,248 +321,23 @@ export class ButtonDemo extends BaseScene {
   private createReturnButton() {
     this.mai3.add.textButton({
       x: 10,
-      y: 10,
+      y: 30,
       width: 150,
       height: 50,
-      text: "返回DemoScene",
-      backgroundColor: 0x4caf50,
-      borderColor: 0x45a049,
+      text: "Return",
+      backgroundColor: 0x4CAF50,
+      borderColor: 0x45A049,
       borderWidth: 2,
       radius: 10,
       textStyle: {
-        fontFamily: "Arial",
-        fontSize: "18px",
-        color: "#FFFFFF",
+        fontFamily: 'Arial',
+        fontSize: '18px',
+        color: '#FFFFFF',
       },
       handleUp: {
         handleFn: () => {
-          this.scene.start("DemoScene");
-        },
-      },
-    });
-  }
-
-  private createCloseDialogButton() {
-    this.mai3.add.textButton({
-      x: 10,
-      y: 70,
-      width: 200,
-      height: 80,
-      borderColor: 0x900c3f,
-      borderWidth: 3,
-      backgroundColor: 0xc70039,
-      text: "关闭窗口",
-      radius: 20,
-      textStyle: {
-        fontFamily: "Arial",
-        fontSize: "24px",
-        color: "#FFFFFF",
-      },
-      handleHover: {
-        audio: "sfx-hover",
-      },
-      handleDown: {
-        audio: "sfx-press",
-      },
-      handleUp: {
-        handleFn: () => { },
-      },
-    });
-  }
-
-  private createDraggableButton() {
-    const btn = this.mai3.add.textButton({
-      x: 220,
-      y: 70,
-      borderColor: 0xff5733,
-      borderWidth: 3,
-      backgroundColor: 0xffc300,
-      text: "Mai3（可拖动）",
-      radius: 20,
-      textStyle: {
-        fontFamily: "Arial",
-        fontSize: "24px",
-        color: "#000",
-      },
-      handleHover: {
-        audio: "sfx-hover",
-      },
-      handleDown: {
-        audio: "sfx-press",
-        handleFn: () => {
-          btn.text = "哈哈你好";
-        },
-      },
-      draggable: true,
-    });
-  }
-
-  private createRoundedButton() {
-    //无图
-    this.mai3.add.roundedButton({
-      x: 430,
-      y: 70,
-      radius: 100,
-      texture: "",
-      frame: 0,
-      draggable: false,
-      backgroundAlpha: 1,
-      geomType: "Circle",
-      borderWidth: 6,
-      borderColor: 0xffd700,
-      backgroundColor: 0x32cd32,
-      handleHover: {
-        audio: "sfx-hover",
-      },
-      handleDown: {
-        audio: "sfx-press",
-        handleFn: () => { },
-      },
-    });
-
-    //有图
-    this.mai3.add.roundedButton({
-      x: 430,
-      y: 300,
-      radius: 100,
-      texture: "cangshu",
-      frame: 0,
-      draggable: false,
-      backgroundAlpha: 1,
-      geomType: "Circle",
-      borderWidth: 6,
-      borderColor: 0xffd700,
-      backgroundColor: 0x32cd32,
-      handleHover: {
-        audio: "sfx-hover",
-      },
-      handleDown: {
-        audio: "sfx-press",
-        handleFn: () => { },
-      },
-    });
-  }
-
-  private createStartGameButton() {
-    const btn = this.mai3.add.imageButton({
-      x: 10,
-      y: 160,
-      width: 160,
-      height: 60,
-      texture: "StartGameButton",
-      borderWidth: 3,
-      handleHover: {
-        audio: "sfx-hover",
-        texture: "StartGameButtonHover",
-      },
-      handleOut: {
-        texture: "StartGameButton",
-      },
-      handleDown: {
-        audio: "sfx-press",
-        texture: "StartGameButtonDown",
-        handleFn: () => {
-          console.log("handleDown");
-        },
-      },
-      handleUp: {
-        texture: "StartGameButton",
-        handleFn: () => {
-          console.log("handleUp");
-        },
-      },
-    });
-
-    btn.debugHitArea();
-  }
-
-  private createPlayButton() {
-    this.mai3.add.imageButton({
-      x: 50,
-      y: 600,
-      width: 152.95,
-      height: 71.58,
-      texture: "playButton",
-      handleDown: {
-        audio: "sfx-press",
-        handleFn: () => {
-          console.log("handleDown");
-        },
-      },
-      handleUp: {
-        handleFn: () => {
-          console.log("handleUp");
-        },
-      },
-    })
-  }
-
-  private createStartButton() {
-    this.mai3.add.imageButton({
-      x: 50,
-      y: 700,
-      width: 152.95,
-      height: 66.27,
-      texture: "startButton",
-      handleDown: {
-        audio: "sfx-press",
-        handleFn: () => {
-          console.log("handleDown");
-        },
-      },
-      handleUp: {
-        handleFn: () => {
-          console.log("handleUp");
-        },
-      },
-    })
-  }
-
-  private createPauseIcon() {
-    this.mai3.add.imageButton({
-      x: 50,
-      y: 830,
-      width: 40,
-      height: 60,
-      texture: "pauseIcon",
-      handleDown: {
-        audio: "sfx-press",
-        handleFn: () => {
-          console.log("handleDown");
-        },
-      },
-      handleUp: {
-        handleFn: () => {
-          console.log("handleUp");
-        },
-      },
-    })
-  }
-
-  private createTextButton() {
-    this.mai3.add.textButton({
-      x: 220,
-      y: 600,
-      width: 203.55,
-      height: 65.86,
-      borderColor: 0x3F2806,
-      borderWidth: 6,
-      backgroundColor: 0xF2CB26,
-      text: "TextButton",
-      radius: 10,
-      textStyle: {
-        fontFamily: "Arial",
-        fontSize: "30px",
-        color: "#FFFFFF",
-      },
-      handleHover: {
-        audio: "sfx-hover",
-      },
-      handleDown: {
-        audio: "sfx-press",
-      },
-      handleUp: {
-        handleFn: () => { },
+          this.scene.start('DemoScene');
+        }
       },
     });
   }

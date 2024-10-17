@@ -37,20 +37,20 @@ export class DemoScene extends BaseScene {
         this.add.existing(this.grid);
 
         const demoScenes = [
-            { name: 'Toast演示', scene: 'ToastDemo', color: 0x4CAF50 },
-            { name: '网格演示', scene: 'GridDemo', color: 0x2196F3 },
-            { name: '标签页演示', scene: 'TabsDemo', color: 0xFFC107 },
-            { name: '复选框演示', scene: 'CheckboxDemo', color: 0xFF5722 },
-            { name: '滑块演示', scene: 'SliderDemo', color: 0x9C27B0 },
-            { name: '进度条演示', scene: 'ProgressBarDemo', color: 0x795548 },
-            { name: '对话框演示', scene: 'DialogDemo', color: 0x607D8B },
-            { name: '标签演示', scene: 'LabelDemo', color: 0x3F51B5 },
-            { name: '图像演示', scene: 'ImageDemo', color: 0x009688 },
-            { name: '按钮演示', scene: 'ButtonDemo', color: 0xCDDC39 },
-            { name: '调整大小演示', scene: 'ResizeDemo', color: 0xFF9800 },
-            { name: '文本框演示', scene: 'TextBoxDemo', color: 0x8BC34A },
-            { name: '精灵演示', scene: 'SpriteDemo', color: 0x4CA600 },
-            { name: 'TON演示', scene: 'TonDemo', color: 0x009688 },
+            { name: 'Toast Demo', scene: 'ToastDemo', color: 0x4CAF50 },
+            { name: 'Grid Demo', scene: 'GridDemo', color: 0x2196F3 },
+            { name: 'Tabs Demo', scene: 'TabsDemo', color: 0xFFC107 },
+            { name: 'Checkbox Demo', scene: 'CheckboxDemo', color: 0xFF5722 },
+            { name: 'Slider Demo', scene: 'SliderDemo', color: 0x9C27B0 },
+            { name: 'Progress Bar Demo', scene: 'ProgressBarDemo', color: 0x795548 },
+            { name: 'Dialog Demo', scene: 'DialogDemo', color: 0x607D8B },
+            { name: 'Label Demo', scene: 'LabelDemo', color: 0x3F51B5 },
+            { name: 'Image Demo', scene: 'ImageDemo', color: 0x009688 },
+            { name: 'Button Demo', scene: 'ButtonDemo', color: 0xCDDC39 },
+            { name: 'Resize Demo', scene: 'ResizeDemo', color: 0xFF9800 },
+            { name: 'Text Box Demo', scene: 'TextBoxDemo', color: 0x8BC34A },
+            { name: 'Sprite Demo', scene: 'SpriteDemo', color: 0x4CA600 },
+            { name: 'TON Demo', scene: 'TonDemo', color: 0x009688 },
         ];
 
         const rowButtons = [];

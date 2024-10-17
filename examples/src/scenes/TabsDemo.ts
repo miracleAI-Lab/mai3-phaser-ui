@@ -18,10 +18,10 @@ export class TabsDemo extends BaseScene {
   private createReturnButton() {
     this.mai3.add.textButton({
       x: 10,
-      y: 10,
+      y: 30,
       width: 150,
       height: 50,
-      text: "返回DemoScene",
+      text: "Return",
       backgroundColor: 0x4CAF50,
       borderColor: 0x45A049,
       borderWidth: 2,
