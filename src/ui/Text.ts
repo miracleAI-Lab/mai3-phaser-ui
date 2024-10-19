@@ -82,10 +82,11 @@ export class Text extends Container {
     const autoWidth = config.width ? false : true;
     this._width = autoWidth ? (this.scene.scale.width - 20) : (config.width ?? 150);
 
-    const style = Object.assign(textStyle, {
+    const style = {
+      ...textStyle,
       wordWrap: {},
       padding: config.padding,
-    });
+    }
 
     let wordWrapWidth = this._width;
     wordWrapWidth = config.padding?.left ? (wordWrapWidth - config.padding.left) : wordWrapWidth;

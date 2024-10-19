@@ -44,6 +44,7 @@ export default class ResizableComponentManager {
     const borderGraphics = this.scene.add.graphics();
     borderGraphics.lineStyle(2, 0xffffff, 1);
     borderGraphics.strokeRect(0, 0, component.RealWidth + padding * 2, component.RealHeight + padding * 2);
+    resizeContainer.setDepth(component.depth);
     resizeContainer.add(borderGraphics);
 
     positions.forEach((pos, index) => {

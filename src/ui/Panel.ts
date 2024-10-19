@@ -45,7 +45,7 @@ export class Panel extends Container {
   }
 
   private createOrUpdateRenderTexture(): void {
-    if (this.bg && !(this.bg instanceof Phaser.GameObjects.RenderTexture)) {
+    if (this.bg) {
       this.bg.destroy();
       this.bg = undefined;
     }
@@ -54,7 +54,7 @@ export class Panel extends Container {
     
     this.bg = Utils.reDrawRoundedRectRenderTexture(
       this.scene,
-      this.bg as Phaser.GameObjects.RenderTexture,
+      this.bg! as Phaser.GameObjects.RenderTexture,
       0, 0, width, height,
       borderWidth, radius, borderColor,
       backgroundColor, backgroundAlpha

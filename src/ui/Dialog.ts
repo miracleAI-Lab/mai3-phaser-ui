@@ -42,8 +42,8 @@ export class Dialog extends Container {
         this._root.setName("root");
         this._root.drawBackground();
         this.addAt(this._root, 1);
-        if (this._dialogConfig?.closeButton) {
-            let closeBtnConfig = this._dialogConfig.closeButton;
+        if (this._dialogConfig?.isShowCloseButton && this._dialogConfig?.closeButtonConfig) {
+            let closeBtnConfig = this._dialogConfig.closeButtonConfig;
             closeBtnConfig.x = closeBtnConfig.x ?? ((this._dialogConfig.width ?? 0) - (closeBtnConfig.width ?? 0) - 30);
             closeBtnConfig.y = closeBtnConfig.y ?? 30
             const child = this.createChildFromConfig(closeBtnConfig);

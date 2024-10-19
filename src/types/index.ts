@@ -441,16 +441,16 @@ export type DialogFooter = {
 };
 
 export interface DialogConfig extends PanelConfig {
-  borderWidth?: number;
-  borderColor?: number;
-  radius?: number;
-  background?: string | number;
-  // header?: DialogHeader;
-  // body?: DialogBody;
-  // footer?: DialogFooter;
-  itemSpace?: number;
-  padding?: Padding;
-  closeButton?: ImageButtonConfig;
+  width?: number;
+  height?: number;
+  frame?: number;
+  leftWidth?: number;
+  rightWidth?: number;
+  topHeight?: number;
+  bottomHeight?: number;
+  texture?: string;
+  isShowCloseButton?: boolean;
+  closeButtonConfig?: ImageButtonConfig;
 }
 
 export interface LinearLayoutConfig extends BaseConfig {
