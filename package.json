@@ -21,6 +21,7 @@
   "author": "William",
   "license": "MIT",
   "description": "A UI component library based on the Phaser game engine",
+  "repository": "https://github.com/miracleAI-Lab/mai3-phaser-ui.git",
   "devDependencies": {
     "@types/node": "^22.7.4",
     "rimraf": "^6.0.1",
