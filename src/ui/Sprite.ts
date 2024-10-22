@@ -1,5 +1,5 @@
 import { BaseScene } from "../game";
-import { SpriteConfig } from '../types';
+import { SpriteConfig, SpriteAnimConfig } from '../types';
 import Utils from "../utils";
 import { BaseButton } from "./BaseButton";
 
@@ -13,6 +13,9 @@ export class Sprite extends BaseButton {
 
     this.reDraw(config);
     this.setEventInteractive();
+    this._config.animConfigs?.forEach((animconfig) => {
+      this.createAnimsSprite(animconfig.key, animconfig)
+    })
   }
 
   reDraw(config: SpriteConfig) {
@@ -37,9 +40,7 @@ export class Sprite extends BaseButton {
       //
       this.scene.anims.create({
         key: animKey,
-        frames: this.scene.anims.generateFrameNumbers(config.key, {
-          frames: config.frames,
-        }),
+        frames: this.scene.anims.generateFrameNumbers(config.frameKey ?? "", { frames: config.frames }),
         frameRate: config.frameRate,
         repeat: config.repeat,
       });
@@ -75,10 +76,10 @@ export class Sprite extends BaseButton {
   }
 }
 
-interface SpriteAnimConfig {
-  key: string;
-  frames?: number[];
-  keys?: string[];
-  frameRate: number;
-  repeat: number;
-}
+// interface SpriteAnimConfig {
+//   key: string;
+//   frames?: number[];
+//   keys?: string[];
+//   frameRate: number;
+//   repeat: number;
+// }
