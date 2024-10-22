@@ -21,15 +21,14 @@ export class Dialog extends Container {
 
         this._createRoot();
         this._positionDialog();
+        this.updateConfig(this._dialogConfig);
     }
 
     private _createRoot(): void {
         const {
-            x = 0, 
-            y = 0, 
-            width = 0, 
-            height = 0, 
-            texture = '', 
+            width = 0,
+            height = 0,
+            texture = '',
             frame,
             leftWidth = 0,
             rightWidth = 0,
@@ -39,12 +38,12 @@ export class Dialog extends Container {
             borderWidth = 0,
             borderColor = 0
         } = this._dialogConfig!;
-        this._root = new Panel(this.scene, {x, y, width, height, texture, frame, leftWidth, rightWidth, topHeight, bottomHeight, radius, borderWidth, borderColor});
+        this._root = new Panel(this.scene, { x: 0, y: 0, width, height, texture, frame, leftWidth, rightWidth, topHeight, bottomHeight, radius, borderWidth, borderColor });
         this._root.setName("root");
         this._root.drawBackground();
         this.addAt(this._root, 1);
-        if (this._dialogConfig?.closeButton) {
-            let closeBtnConfig = this._dialogConfig.closeButton;
+        if (this._dialogConfig?.isShowCloseButton && this._dialogConfig?.closeButtonConfig) {
+            let closeBtnConfig = this._dialogConfig.closeButtonConfig;
             closeBtnConfig.x = closeBtnConfig.x ?? ((this._dialogConfig.width ?? 0) - (closeBtnConfig.width ?? 0) - 30);
             closeBtnConfig.y = closeBtnConfig.y ?? 30
             const child = this.createChildFromConfig(closeBtnConfig);
@@ -57,7 +56,7 @@ export class Dialog extends Container {
         const { width = 0, height = 0 } = this._dialogConfig!;
         const rootX = (this.scene.scale.width - width) / 2;
         const rootY = (this.scene.scale.height - height) / 2;
-        this._root!.setPosition(rootX, rootY);
+        this.setPosition(rootX, rootY);
         this.setDepth(99999);
         this.RefreshBounds();
     }
@@ -72,26 +71,29 @@ export class Dialog extends Container {
 
     private createChildFromConfig(config: any): Container {
         const componentMap: { [key: string]: any } = {
-          Image,
-          TextButton,
-          TextBox,
-          ImageButton,
-          RoundedButton,
-          Checkbox,
-          CheckboxGroup,
-          Label,
-          ProgressBar,
-          Slider,
-          VolumeSlider,
-          Text,
-          Sprite,
+            Image,
+            TextButton,
+            TextBox,
+            ImageButton,
+            RoundedButton,
+            Checkbox,
+            CheckboxGroup,
+            Label,
+            ProgressBar,
+            Slider,
+            VolumeSlider,
+            Text,
+            Sprite,
         };
         const ComponentClass = componentMap[config.type] || TextButton;
         return new ComponentClass(this.scene, config);
     }
 
     public reDraw(config: DialogConfig): void {
-        this.destroy();
+        if (this._root) {
+            this._root.destroy(true);
+            this._root = undefined;
+        }
         this._initDialog(config);
     }
 

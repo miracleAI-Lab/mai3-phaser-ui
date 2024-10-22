@@ -261,7 +261,7 @@ export class Grid extends Panel {
             this.swapChildren(this.getItemByIndex(draggingCellIndex)!, targetChild);
         }
     
-        this._config?.handleDragEnd?.(this._draggingChild, targetChild, pointer);
+        this._config?.handleDragEnd?.(this.getItemByIndex(draggingCellIndex), targetChild, pointer);
         this.cleanupDragState();
     }
 

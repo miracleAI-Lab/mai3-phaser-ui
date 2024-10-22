@@ -4,20 +4,6 @@ import Utils from "../utils";
 import { BaseScene } from "../game";
 import DragUtils from "../utils/DragUtils";
 
-const ENABLED_EVENT_TYPES = [
-  "ImageButton",
-  "Image",
-  "TextButton",
-  "RoundedButton",
-  "Checkbox",
-  "CheckboxGroup",
-  "Slider",
-  "ProgressBar",
-  "VolumeSlider",
-  "Sprite",
-  "ConnectWalletButton",
-];
-
 export class Container extends Phaser.GameObjects.Container {
   protected _id: string;
   protected _type?: string;
@@ -99,6 +85,14 @@ export class Container extends Phaser.GameObjects.Container {
   }
 
   public onDragUpdate(
+    pointer: Phaser.Input.Pointer,
+    dragX: number,
+    dragY: number
+  ): void {
+    console.log(pointer, dragX, dragY);
+  }
+
+  public onDragEndUpdate(
     pointer: Phaser.Input.Pointer,
     dragX: number,
     dragY: number

@@ -66,6 +66,7 @@ export class ProgressBar extends Container {
     this.removeAll();
     this.initializeProgressBar();
     this.updateProgress(this._value);
+    this.updateConfig(this._config);
   }
 
   public override destroy(fromScene?: boolean): void {

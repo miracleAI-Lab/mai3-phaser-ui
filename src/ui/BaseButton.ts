@@ -8,6 +8,7 @@ export class BaseButton extends Container {
   protected _baseConfig?: BaseButtonConfig;
   constructor(scene: BaseScene, baseConfig?: BaseButtonConfig, type?: string) {
     super(scene, baseConfig, type);
+    this._baseConfig = baseConfig;
   }
 
   protected initializeEvents(): void {

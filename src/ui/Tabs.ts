@@ -111,6 +111,7 @@ export class Tabs extends Container {
 
         });
 
+
         this._items = new LinearLayout(this.scene, {
             width: tabsWidth,
             height: this._config.height,
