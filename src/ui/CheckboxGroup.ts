@@ -7,6 +7,8 @@ export class CheckboxGroup extends BaseButton {
     private _checkboxes: Checkbox[] = [];
     private _selectedValues: string[] = [];
     private _selectedIndexes: number[] = [];
+    private _checkboxGroupWidth: number = 0;
+    private _checkboxGroupHeight: number = 0;
     private _checkboxConfigs: CheckboxConfig[] = [];
     private _config: CheckboxGroupConfig;
 
@@ -20,6 +22,7 @@ export class CheckboxGroup extends BaseButton {
     private _initCheckboxGroup(): void {
         this._setDefaultConfig();
         this._createCheckboxes();
+        this.updateConfig(this._config);
         this.RefreshBounds();
     }
 
@@ -75,8 +78,10 @@ export class CheckboxGroup extends BaseButton {
     }
 
     private _updateGroupSize(checkbox: Checkbox): void {
-        this._config.width = this._config.orientation === 'horizontal' ? checkbox.Right : checkbox.RealWidth;
-        this._config.height = this._config.orientation === 'horizontal' ? checkbox.y : checkbox.Bottom;
+        this._config.width = this._config.orientation === 'horizontal' ? Math.max(checkbox.Right, this._checkboxGroupWidth) : Math.max(checkbox.RealWidth, this._checkboxGroupWidth);
+        this._config.height = this._config.orientation === 'horizontal' ? Math.max(checkbox.RealHeight, this._checkboxGroupHeight) : Math.max(checkbox.Bottom, this._checkboxGroupHeight);
+        this._checkboxGroupWidth = this._config.width;
+        this._checkboxGroupHeight = this._config.height;
     }
 
     private _handleCheckClick(ckb: Checkbox): void {
@@ -125,6 +130,8 @@ export class CheckboxGroup extends BaseButton {
         this._checkboxes = [];
         this._selectedValues = [];
         this._selectedIndexes = [];
+        this._checkboxGroupWidth = 0;
+        this._checkboxGroupHeight = 0;
         this._initCheckboxGroup();
     }
 
@@ -137,6 +144,8 @@ export class CheckboxGroup extends BaseButton {
         this._checkboxes = [];
         this._selectedValues = [];
         this._selectedIndexes = [];
+        this._checkboxGroupWidth = 0;
+        this._checkboxGroupHeight = 0;
         super.destroy(fromScene);
     }
 }

@@ -29,7 +29,7 @@ export class SpriteDemo extends BaseScene {
       width: 64,
       height: 100,
       key: "fight96",
-      frame: 0,      
+      frame: 0,
     });
 
     this.anims.create({
@@ -67,7 +67,6 @@ export class SpriteDemo extends BaseScene {
       ],
       enableSmoothScaleAnim: true,
     });
-      
     //play walk
     sprite.play("walk");
 
@@ -78,7 +77,6 @@ export class SpriteDemo extends BaseScene {
       height: 100,
       key: "cat0",
     });
-
     cat.play("walk");
   }
 

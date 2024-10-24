@@ -34,6 +34,7 @@ export class Label extends Panel {
     this.drawText();
     this.reDrawBackground(this._config);
     this.RefreshBounds();
+    this.updateConfig(this._config);
   }
 
   private validateConfig(): void {

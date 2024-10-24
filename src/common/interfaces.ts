@@ -1,15 +1,16 @@
 import {TonConnectUiOptionsWithManifest} from '@tonconnect/ui';
 import {Dictionary} from '@ton/core';
 
-export {
+export type {
   SendTransactionRequest,
   SendTransactionResponse,
   WalletConnectionSource,
   Wallet,
   Account,
   ITonConnect,
-  type TonConnectUI as WalletConnector
 } from '@tonconnect/ui';
+
+export { type TonConnectUI as WalletConnector } from '@tonconnect/ui';
 
 export type WalletConnectorParams = Pick<
   TonConnectUiOptionsWithManifest,

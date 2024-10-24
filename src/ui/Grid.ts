@@ -259,10 +259,7 @@ export class Grid extends Panel {
         const targetItem = this.getChildAtPosition(draggingCellIndex, pointer);
     
         // resetPostion
-        this._draggingChild.setPosition(
-            this._originalPosition!.x,
-            this._originalPosition!.y
-        );
+        this._draggingChild.setPosition(this._originalPosition!.x, this._originalPosition!.y);
     
         if (targetItem) {
             this.swapChildren(draggingItem!, targetItem);

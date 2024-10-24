@@ -31,7 +31,11 @@ export class TextButton extends BaseButton implements GridItem {
         const backgroundColor = config.backgroundColor ?? 0;
         const borderWidth = config.borderWidth ?? 0;
         const borderColor = config.borderColor || 0xcf4b00;
-        this.bg = Utils.reDrawRoundedRectRenderTexture(this.scene, this.bg ?? this.scene.make.renderTexture({ x: 0, y: 0, width: config.width, height: config.height }), 0, 0, config.width, config.height, borderWidth, radius, borderColor, backgroundColor)!;
+        if (this.bg) {
+            this.bg.destroy(true);
+            this.bg = undefined;
+        }
+        this.bg = Utils.reDrawRoundedRectRenderTexture(this.scene, this.scene.make.renderTexture({ x: 0, y: 0, width: config.width, height: config.height }), 0, 0, config.width, config.height, borderWidth, radius, borderColor, backgroundColor)!;
         this.addChildAt(this.bg, 0);
 
         if (!this.label)
@@ -42,17 +46,35 @@ export class TextButton extends BaseButton implements GridItem {
         this.label.setFontStyle(config.textStyle?.fontStyle!);
         this.label.setPadding(config.textStyle?.padding ?? {});
         this.label.setOrigin(0);
-        this.addChildAt(this.label, 1);
 
         const x = (config.width - this.label?.displayWidth!) / 2
         const y = (config.height - this.label?.displayHeight!) / 2;
-        this.label?.setPosition(x, y);
 
+        this.label?.setPosition(x, y);
+        this.addChildAt(this.label, 1);
+        
+        this.updateConfig(config);
         this.RefreshBounds();
     }
 
     set text(text: string) {
         if (this.label)
             this.label.text = text;
+    }
+
+    get config(): ButtonConfig {
+        return this._config!;
+    }
+
+    destroy(fromScene?: boolean) {
+        if (this.bg) {
+            this.bg.destroy();
+            this.bg = undefined;
+        }
+        if (this.label) {
+            this.label.destroy();
+            this.label = undefined;
+        }
+        super.destroy(fromScene);
     }
 }

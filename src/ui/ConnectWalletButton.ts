@@ -10,54 +10,74 @@ import { TonConnector } from '../game/TonConnetor';
 
 export class ConnectWalletButton extends BaseButton {
   wallet: Wallet | null = null;
-  connectionSourceName: WalletApp;
+  connectionSourceName?: WalletApp;
   unsubscribeFromConnector?: () => void;
-  locale: Locale;
-  button: ImageButton;
-  private onError: HandleError;
+  locale?: Locale;
+  private button?: ImageButton;
+  private onError?: HandleError;
   private _config: ConnectWalletButtonConfig;
 
   constructor(scene: BaseScene, config: ConnectWalletButtonConfig) {
     super(scene, config, 'ConnectWalletButton');
     this._config = config;
 
-    if (!config.manifestUrl) {
+    this.reDraw(config);
+
+  }
+
+  public reDraw(config: ConnectWalletButtonConfig): void {
+    this._config = config;
+
+    this.initWallet();
+    this.reDrawButton();
+
+    this.RefreshBounds();
+    this.initializeEvents();
+    this.updateConfig(this._config);
+  }
+
+  private initWallet() {
+    if (!this._config.manifestUrl) {
       throw new Error('manifestUrl is required');
     }
 
-    if (!config.appUrl) {
+    if (!this._config.appUrl) {
       throw new Error('appUrl is required');
     }
 
     const connectorParams: WalletConnectorParams = {
-      manifestUrl: config.manifestUrl,
+      manifestUrl: this._config.manifestUrl,
       actionsConfiguration: {
-        twaReturnUrl: config.appUrl
+        twaReturnUrl: this._config.appUrl
       }
     };
 
-    this.connectionSourceName = config.walletApp || 'telegram-wallet';
+    this.connectionSourceName = this._config.walletApp || 'telegram-wallet';
     TonConnector.init(connectorParams).then(() => {
       this._unsubscribeFromConnector();
     });
-    
-    this.onError = config.onError
-      ? config.onError
+
+    this.onError = this._config.onError
+      ? this._config.onError
       : (error) => {
         throw error;
       };
+
+    const locale = locales[this._config.language ?? 'en'];
+    this.locale = locale;
+
+  }
+
+  private reDrawButton(): void {
+    if (this.button) {
+      this.button.destroy(true);
+      this.button = undefined;
+    }
 
     const { width = 0, height = 0, texture = '' } = this._config;
     this.button = new ImageButton(this.scene, { x: 0, y: 0, width, height, texture });
     this.button.disableInteractive();
     this.add(this.button);
-
-    const locale = locales[config.language ?? 'en'];
-    this.locale = locale;
-
-    this.RefreshBounds();
-    this.initializeEvents();
-    this.updateConfig(this._config);
   }
 
   private _unsubscribeFromConnector() {
@@ -70,7 +90,7 @@ export class ConnectWalletButton extends BaseButton {
         this.setData("shortAddress", shortAddress);
         this.setData("fullAddress", fullAddress);
       }
-      
+
       if (this._config.onWalletChange) {
         this._config.onWalletChange(wallet);
       }
@@ -112,7 +132,7 @@ export class ConnectWalletButton extends BaseButton {
       await TonConnector.connector?.openModal();
     } catch (error: any) {
       console.log("connectWallet error", error);
-      this.onError(error);
+      this.onError?.(error);
     } finally {
 
     }
@@ -123,7 +143,7 @@ export class ConnectWalletButton extends BaseButton {
       await TonConnector.connector?.disconnect();
     } catch (error: any) {
       console.log("disconnect error", error);
-      this.onError(error);
+      this.onError?.(error);
     } finally {
 
     }
@@ -137,9 +157,14 @@ export class ConnectWalletButton extends BaseButton {
     return this.getData("fullAddress") as string;
   }
 
+  get config(): ConnectWalletButtonConfig {
+    return this._config;
+  }
+
   public destroy(fromScene?: boolean): void {
     if (this.button) {
       this.button.destroy(true);
+      this.button = undefined;
     }
     super.destroy(fromScene);
   }

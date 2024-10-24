@@ -114,6 +114,7 @@ export interface BaseConfig {
   originalId?: string;
   type?: string;
   columnSpan?: number;
+  [key: string]: any;
 }
 
 export interface BaseButtonConfig extends BaseConfig {
@@ -440,16 +441,16 @@ export type DialogFooter = {
 };
 
 export interface DialogConfig extends PanelConfig {
-  borderWidth?: number;
-  borderColor?: number;
-  radius?: number;
-  background?: string | number;
-  // header?: DialogHeader;
-  // body?: DialogBody;
-  // footer?: DialogFooter;
-  itemSpace?: number;
-  padding?: Padding;
-  closeButton?: ImageButtonConfig;
+  width?: number;
+  height?: number;
+  frame?: number;
+  leftWidth?: number;
+  rightWidth?: number;
+  topHeight?: number;
+  bottomHeight?: number;
+  texture?: string;
+  isShowCloseButton?: boolean;
+  closeButtonConfig?: ImageButtonConfig;
 }
 
 export interface LinearLayoutConfig extends BaseConfig {
@@ -502,6 +503,8 @@ export interface GridConfig extends PanelConfig {
   draggable?: boolean;
   background?: string | number;
   borderWidth?: number;
+  auxiliaryLineWidth?: number;
+  auxiliaryLineColor?: number;
   radius?: number;
   borderColor?: number;
   showGrid?: boolean;
@@ -571,7 +574,7 @@ export interface ImageConfig extends BaseButtonConfig {
   textY?: number;
 }
 
-export { Wallet };
+export type { Wallet };
 
 export interface SpriteAnimConfig {
   key: string;
