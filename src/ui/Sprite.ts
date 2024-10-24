@@ -62,6 +62,24 @@ export class Sprite extends BaseButton {
   ) {
     this.instance?.play(key, ignoreIfPlaying);
   }
+
+  public stop() {
+    this.instance?.stop();
+  }
+
+  public setFlipX(flip: boolean) {
+    this.instance?.setFlipX(flip);
+  }
+
+  public getData(key: string | string[]): any {
+    return this.instance?.getData(key)
+  }
+  public setData<T extends any>(key: (string | T), data?: any): this {
+    this.instance?.setData(key, data)
+    return this
+  }
+
+
   get config(): SpriteConfig {
     return this._config!;
   }
