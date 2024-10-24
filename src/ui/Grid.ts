@@ -14,7 +14,7 @@ export class Grid extends Panel {
     private _originalIndex?: number;
     private _cellWidth: number = 0;
     private _cellHeight: number = 0;
-    protected _config?: GridConfig;
+    protected declare _config?: GridConfig;
 
     private indexToItemMap: Map<number, Container[]> = new Map<number, Container[]>();
     private positionToIndexMap: Map<string, number> = new Map<string, number>();
@@ -101,13 +101,18 @@ export class Grid extends Panel {
             this._gridLines.destroy();
             this._gridLines = undefined;
         }
-        this.positionSlotMap.clear();
+        this.positionSlotMap.forEach((value, key) => {
+            this.positionSlotMap.set(key, 0);
+        });
+        this.indexToItemMap.clear();
+        this.positionToIndexMap.clear();
     }
 
     public addItems(childConfigs: any[]): void {
         const emptyCells = this.getEmptyCells();
         emptyCells.forEach((emptyCell, index) => {
             if (index >= childConfigs.length) return;
+
             this.addItemToCell(childConfigs[index], emptyCell, index);
         });
     }
@@ -151,11 +156,12 @@ export class Grid extends Panel {
         const emptyCells = this.getEmptyCells();
         emptyCells.forEach((emptyCell, index) => {
             if (index >= childConfigs.length) return;
+
             this.addItemsToCell(childConfigs[index], emptyCell, index);
         });
     }
 
-    private addItemsToCell(itemConfigs: any[], emptyCell: { x: number; y: number }, cellIndex: number): void {
+    public addItemsToCell(itemConfigs: any[], emptyCell: { x: number; y: number }, cellIndex: number): void {
         itemConfigs.forEach((cfg, i) => {
             const { width, height } = this.calculateChildDimensions(cfg);
             const mergedConfig = { ...cfg, width, height };
@@ -179,11 +185,11 @@ export class Grid extends Panel {
     }
 
     getItemByIndex(index: any): Container | undefined {
-      return this._content?.getByName(index + "");
+        return this._content?.getByName(index + "");
     }
 
     public getCellItemsAtIndex(index: number): Container[] {
-        return this.indexToItemMap.get(index) ?? [];
+        return this.getItemByIndex(index)?.getAll() ?? [];
     }
 
     public getEmptyCells(): { x: number; y: number; }[] {
@@ -249,19 +255,17 @@ export class Grid extends Panel {
         if (!this._draggingChild) return;
 
         const draggingCellIndex = this._draggingChild.getData(CellIndex) + "";
-        const targetChild = this.getChildAtPosition(draggingCellIndex, pointer);
+        const draggingItem = this.getItemByIndex(draggingCellIndex);
+        const targetItem = this.getChildAtPosition(draggingCellIndex, pointer);
     
         // resetPostion
-        this._draggingChild.setPosition(
-            this._originalPosition!.x,
-            this._originalPosition!.y
-        );
+        this._draggingChild.setPosition(this._originalPosition!.x, this._originalPosition!.y);
     
-        if (targetChild) {
-            this.swapChildren(this.getItemByIndex(draggingCellIndex)!, targetChild);
+        if (targetItem) {
+            this.swapChildren(draggingItem!, targetItem);
         }
     
-        this._config?.handleDragEnd?.(this.getItemByIndex(draggingCellIndex), targetChild, pointer);
+        this._config?.handleDragEnd?.(draggingItem!, targetItem, pointer);
         this.cleanupDragState();
     }
 
