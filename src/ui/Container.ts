@@ -55,6 +55,7 @@ export class Container extends Phaser.GameObjects.Container {
     this.setEventInteractive();
     this.scene.input.setDraggable(this);
     this.on("drag", this.onDrag);
+    this.on("dragend", this.onDragEnd);
   }
 
   public onDrag(
@@ -66,6 +67,15 @@ export class Container extends Phaser.GameObjects.Container {
     this.setPosition(clampedX, clampedY);
     this.onDragUpdate(pointer, this.x, this.y);
   }
+
+  public onDragEnd(
+    pointer: Phaser.Input.Pointer,
+    dragX: number,
+    dragY: number
+  ): void {
+    this.onDragEndUpdate(pointer, this.x, this.y);
+  }
+
 
   private getClampedPosition(dragX: number, dragY: number): [number, number] {
     if (this.Type === "RoundedButton") {
