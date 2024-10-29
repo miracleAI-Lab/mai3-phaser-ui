@@ -19,6 +19,9 @@
     "Telegram",
     "MiracleAI"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "William",
   "license": "MIT",
   "description": "A UI component library based on the Phaser game engine",
