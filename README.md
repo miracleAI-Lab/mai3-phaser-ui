@@ -31,6 +31,7 @@
 - ✅ Toast
 - ✅ VolumeSlider
 - ✅ Sprite
+- ✅ ListView
 
 ## future implementation:
 
@@ -39,7 +40,6 @@
 - 🚧 Flex
 - 🚧 Space
 - 🚧 Splitter
-- 🚧 ListView
 - 🚧 Dropdown
 - 🚧 Menu
 - 🚧 Pagination
