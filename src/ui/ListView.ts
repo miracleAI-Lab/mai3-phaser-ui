@@ -82,6 +82,7 @@ export class ListView extends Container implements ReDrawProtocol {
       this._config!.height - this.padding.top - this.padding.bottom
     );
     this.addChildAt(this._content, 1);
+    this.scene.input.enableDebug(this._content);
     this.RefreshBounds();
   }
 
@@ -220,7 +221,7 @@ export class ListView extends Container implements ReDrawProtocol {
 
   private handleMove = (pointer: Phaser.Input.Pointer): void => {
     if (!this._scrollState.isScrolling || !pointer.isDown) return;
-    
+
     const delta = pointer[this._direction] - this._scrollState.start;
     const newPos = this.calculateNewPosition(this._scrollState.current + delta);
 
@@ -323,7 +324,6 @@ export class ListView extends Container implements ReDrawProtocol {
   public updatePosition(x: number, y: number): void {
     this.setPosition(x, y);
     this.setupMask();
-    this._content?.setPosition(x, y);
   }
 
   get config(): ListViewConfig {
