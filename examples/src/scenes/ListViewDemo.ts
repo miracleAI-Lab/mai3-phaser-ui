@@ -144,7 +144,7 @@ export class ListViewDemo extends BaseScene {
         },
       ];
     }
-    listView.setItemsAsync(cellItems);
+    listView.setChildrenAsync(cellItems);
   }
 
   private createReturnButton() {

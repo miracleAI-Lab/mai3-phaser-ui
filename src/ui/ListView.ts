@@ -6,6 +6,7 @@ import {
   ScrollState,
   ScrollDirection,
   BaseConfig,
+  ReDrawProtocol,
 } from "../types";
 import { ScrollBar } from "./ScrollBar";
 import ScrollUtils from "../utils/ScrollUtils";
@@ -15,15 +16,16 @@ interface ItemPosition {
   y: number;
 }
 
-export class ListView extends Container {
+export class ListView extends Container implements ReDrawProtocol {
   private _content?: Container;
   private _lastChild?: Container;
   private _mask?: Phaser.GameObjects.Graphics;
   private _maskBounds?: Phaser.Geom.Rectangle;
   private _direction: ScrollDirection;
   private _scrollBar?: ScrollBar;
-  private readonly _scrollState: ScrollState;
+  private _scrollState: ScrollState;
   protected _config?: ListViewConfig;
+  private _setContentChildrenAbortController?: AbortController;
 
   constructor(scene: BaseScene, config: ListViewConfig) {
     super(scene, config);
@@ -40,14 +42,33 @@ export class ListView extends Container {
     this.initialize();
   }
 
+  reDraw(config?: ListViewConfig): void {
+    this.clear();
+    this._direction = config?.direction ?? "y";
+    this._config = config;
+    this.initialize();
+  }
+  clear(): void {
+    this._lastChild = undefined;
+    this._content?.removeAll(true);
+    this.removeAll(true);
+    this._scrollState = {
+      isScrolling: false,
+      start: 0,
+      current: 0,
+      momentum: 0,
+    };
+  }
+
   private initialize(): void {
-    this.setupContent();
     this.drawBackground();
+    this.setupContent();
     this.setupScrollBar();
     this.setupMask();
     this.setupEvents();
     this.updateScrollBarPosition();
     this.updateVisibleItems();
+    this.setChildrenAsync(this._config?.childConfigs);
   }
 
   private setupContent(): void {
@@ -65,7 +86,8 @@ export class ListView extends Container {
   }
 
   private setupMask(): void {
-    this._mask = this.scene.add.graphics();
+    this._mask?.destroy();
+    this._mask = new Phaser.GameObjects.Graphics(this.scene);
     this._mask
       .clear()
       .fillStyle(0x000000)
@@ -114,7 +136,7 @@ export class ListView extends Container {
         };
   }
 
-  public addItem(child: Container): Container {
+  public addChild(child: Container): Container {
     const position = this.calculateNextItemPosition();
     child.setPosition(position.x, position.y);
     this._content?.addChild(child);
@@ -137,19 +159,33 @@ export class ListView extends Container {
     };
   }
 
-  public async setItemsAsync(childConfigs?: BaseConfig[]): Promise<any> {
+  public async setChildrenAsync(childConfigs?: BaseConfig[]): Promise<any> {
+    const previousAbortController = this._setContentChildrenAbortController;
+    if (previousAbortController) {
+      previousAbortController.abort();
+    }
+    this._setContentChildrenAbortController = new AbortController();
+    const currentSignal = this._setContentChildrenAbortController.signal;
     if (!childConfigs) {
       return;
     }
-    const UIComponentFactory = await import("../utils/UIComponentFactory");
-    for (const config of childConfigs) {
-      const child = UIComponentFactory.default.createChildFromConfig(
-        this.scene,
-        config
-      );
-      this.addItem(child);
+    try {
+      const UIComponentFactory = await import("../utils/UIComponentFactory");
+      if (currentSignal.aborted) {
+        return;
+      }
+      this._content?.removeAll(true);
+      for (const config of childConfigs) {
+        const child = UIComponentFactory.default.createChildFromConfig(
+          this.scene,
+          config
+        );
+        this.addChild(child);
+      }
+      this._config?.handleSetChildrenAsyncEnd?.(this._content?.getAll() ?? []);
+    } catch (error) {
+      //
     }
-    this._config?.handleSetChildrenAsyncEnd?.(this._content?.getAll() ?? []);
   }
 
   public getItemsAtIndex(index: number): Container[] {
@@ -274,8 +310,21 @@ export class ListView extends Container {
     );
   }
 
+  public updatePosition(x: number, y: number): void {
+    this.setPosition(x, y);
+    this.setupMask();
+    this._content?.setPosition(x, y);
+  }
+
+  get config(): ListViewConfig {
+    return this._config!;
+  }
+
   destroy(fromScene?: boolean): void {
     super.destroy(fromScene);
+    if (this._setContentChildrenAbortController) {
+      this._setContentChildrenAbortController.abort();
+    }
     this._content?.destroy(fromScene);
     this._scrollBar?.destroy(fromScene);
     this._mask?.destroy(fromScene);

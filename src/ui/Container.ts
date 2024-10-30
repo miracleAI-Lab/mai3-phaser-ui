@@ -12,6 +12,7 @@ export class Container extends Phaser.GameObjects.Container {
   protected _baseConfig?: BaseConfig;
   scene: BaseScene;
   protected _bg?: Phaser.GameObjects.Image | Phaser.GameObjects.RenderTexture;
+  private _setChildrenAbortController?: AbortController;
 
   constructor(scene: BaseScene, baseConfig?: BaseConfig, type?: string) {
     super(scene, baseConfig?.x, baseConfig?.y);
@@ -242,19 +243,32 @@ export class Container extends Phaser.GameObjects.Container {
    * @param childConfigs Optional array of child configuration objects
    */
   public async setChildrenAsync(childConfigs?: BaseConfig[]): Promise<any> {
+    const previousAbortController = this._setChildrenAbortController;
+    if (previousAbortController) {
+      previousAbortController.abort();
+    }
+    this._setChildrenAbortController = new AbortController();
+    const currentSignal = this._setChildrenAbortController.signal;
     if (!childConfigs) {
       return;
     }
-    const UIComponentFactory = await import("../utils/UIComponentFactory");
-    for (const config of childConfigs) {
-      const child = UIComponentFactory.default.createChildFromConfig(
-        this.scene,
-        config
-      );
-      child.setSize(config.width ?? 0, config.height ?? 0);
-      this.addChild(child);
+    try {
+      const UIComponentFactory = await import("../utils/UIComponentFactory");
+      if (currentSignal.aborted) {
+        return;
+      }
+      this.removeAll(true);
+      for (const config of childConfigs) {
+        const child = UIComponentFactory.default.createChildFromConfig(
+          this.scene,
+          config
+        );
+        this.addChild(child);
+      }
+      this._baseConfig?.handleSetChildrenAsyncEnd?.(this.getAll() ?? []);
+    } catch (error) {
+      //
     }
-    this._baseConfig?.handleSetChildrenAsyncEnd?.(this.getAll() ?? []);
   }
 
   public drawBackground(config?: BaseConfig): void {
@@ -330,6 +344,9 @@ export class Container extends Phaser.GameObjects.Container {
 
   destroy(fromScene?: boolean): void {
     super.destroy(fromScene);
+    if (this._setChildrenAbortController) {
+      this._setChildrenAbortController.abort();
+    }
     this._bg?.destroy(fromScene);
   }
 }

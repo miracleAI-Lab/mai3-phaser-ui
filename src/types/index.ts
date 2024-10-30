@@ -614,3 +614,8 @@ export interface SpriteConfig
     Omit<Phaser.Types.GameObjects.Sprite.SpriteConfig, keyof BaseConfig> {
   animConfigs?: SpriteAnimConfig[];
 }
+
+export interface ReDrawProtocol {
+  reDraw(config?: BaseConfig): void;
+  clear(): void;
+}
