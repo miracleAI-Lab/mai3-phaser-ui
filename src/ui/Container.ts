@@ -61,6 +61,12 @@ export class Container extends Phaser.GameObjects.Container {
     this.on("dragend", this.onDragEnd);
   }
 
+  public disableDrag(): void {
+    this.scene.input.setDraggable(this, false);
+    this.removeListener("drag", this.onDrag);
+    this.removeListener("dragend", this.onDragEnd);
+  }
+
   public onDrag(
     pointer: Phaser.Input.Pointer,
     dragX: number,

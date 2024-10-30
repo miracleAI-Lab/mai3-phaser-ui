@@ -198,6 +198,15 @@ export class ListView extends Container implements ReDrawProtocol {
     this.scene.input.on("pointerdown", this.handleDown, this);
     this.scene.input.on("pointermove", this.handleMove, this);
     this.scene.input.on("pointerup", this.handleUp, this);
+    try {
+      if (this._config?.draggable) {
+        this.enableDrag();
+      } else {
+        this.disableDrag();
+      }
+    } catch (err) {
+      //
+    }
   }
 
   private handleDown = (pointer: Phaser.Input.Pointer): void => {
@@ -211,7 +220,7 @@ export class ListView extends Container implements ReDrawProtocol {
 
   private handleMove = (pointer: Phaser.Input.Pointer): void => {
     if (!this._scrollState.isScrolling || !pointer.isDown) return;
-
+    
     const delta = pointer[this._direction] - this._scrollState.start;
     const newPos = this.calculateNewPosition(this._scrollState.current + delta);
 
