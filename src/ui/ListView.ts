@@ -175,6 +175,7 @@ export class ListView extends Container implements ReDrawProtocol {
         return;
       }
       this._content?.removeAll(true);
+      this._lastChild = undefined;
       for (const config of childConfigs) {
         const child = UIComponentFactory.default.createChildFromConfig(
           this.scene,
