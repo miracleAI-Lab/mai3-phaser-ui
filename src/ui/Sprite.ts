@@ -36,6 +36,7 @@ export class Sprite extends BaseButton {
   }
 
   public createAnimsSprite(animKey: string, config: SpriteAnimConfig) {
+    if (this.scene.anims.exists(animKey)) return;
     if (Array.isArray(config.frames)) {
       this.scene.anims.create({
         key: animKey,
