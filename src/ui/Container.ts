@@ -75,8 +75,8 @@ export class Container
 
   public disableDrag(): void {
     this.scene.input.setDraggable(this, false);
-    this.removeListener("drag", this.onDrag);
-    this.removeListener("dragend", this.onDragEnd);
+    this.off("drag", this.onDrag);
+    this.off("dragend", this.onDragEnd);
   }
 
   public onDrag(

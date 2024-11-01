@@ -160,7 +160,7 @@ export class ListView extends Container implements ReDrawProtocol {
   }
 
   public setChildren(childConfigs?: BaseConfig[]): void {
-    if (!childConfigs) return;
+    if (!childConfigs || !this._config) return;
     this._config!.childConfigs = childConfigs;
     this._content?.removeAll(true);
     this.scene.setChildren(this, childConfigs);
