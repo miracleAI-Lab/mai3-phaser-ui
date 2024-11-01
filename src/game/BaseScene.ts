@@ -15,6 +15,10 @@ class BaseScene extends Phaser.Scene {
     this.resizableManager = new ResizableComponentManager(this);
   }
 
+  create() {
+    
+  }
+
   preload() {
     if (this.isDebugPrint) {
       this.setupDebugEnvironment();
