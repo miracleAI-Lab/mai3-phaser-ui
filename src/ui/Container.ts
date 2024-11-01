@@ -1,10 +1,13 @@
 import Phaser from "phaser";
-import { BaseConfig } from "../types";
+import { BaseConfig, ReDrawProtocol } from "../types";
 import Utils from "../utils";
 import { BaseScene } from "../game";
 import DragUtils from "../utils/DragUtils";
 
-export class Container extends Phaser.GameObjects.Container {
+export class Container
+  extends Phaser.GameObjects.Container
+  implements ReDrawProtocol
+{
   protected _id: string;
   protected _type?: string;
   protected _bounds?: Phaser.Geom.Rectangle;
@@ -12,7 +15,6 @@ export class Container extends Phaser.GameObjects.Container {
   protected _baseConfig?: BaseConfig;
   scene: BaseScene;
   protected _bg?: Phaser.GameObjects.Image | Phaser.GameObjects.RenderTexture;
-  private _setChildrenAbortController?: AbortController;
 
   constructor(scene: BaseScene, baseConfig?: BaseConfig, type?: string) {
     super(scene, baseConfig?.x, baseConfig?.y);
@@ -25,6 +27,16 @@ export class Container extends Phaser.GameObjects.Container {
     this.initializeEvents();
   }
 
+   reDraw(config?: BaseConfig): void {
+    this.clear();
+    this.updateConfig(config);
+    this.initializeEvents();
+    this.drawBackground(config);
+  }
+  clear(): void {
+    this._bg?.destroy(true);
+  }
+
   protected initializeEvents(): void {
     if (this._baseConfig?.draggable) {
       this.enableDrag();
@@ -34,7 +46,7 @@ export class Container extends Phaser.GameObjects.Container {
 
   public updateConfig(config?: BaseConfig): void {
     this._baseConfig = config;
-    this.setChildrenAsync(config?.childConfigs);
+    this.setChildren(config?.childConfigs);
   }
 
   public setEventInteractive(): void {
@@ -228,6 +240,10 @@ export class Container extends Phaser.GameObjects.Container {
     }
   }
 
+  get config(): BaseConfig {
+    return this._baseConfig!;
+  }
+
   public addChild(child: Phaser.GameObjects.GameObject): void {
     if (!this.exists(child)) {
       this.add(child);
@@ -244,37 +260,11 @@ export class Container extends Phaser.GameObjects.Container {
     }
   }
 
-  /**
-   * Asynchronously sets multiple children to this container based on configuration objects
-   * @param childConfigs Optional array of child configuration objects
-   */
-  public async setChildrenAsync(childConfigs?: BaseConfig[]): Promise<any> {
-    const previousAbortController = this._setChildrenAbortController;
-    if (previousAbortController) {
-      previousAbortController.abort();
-    }
-    this._setChildrenAbortController = new AbortController();
-    const currentSignal = this._setChildrenAbortController.signal;
-    if (!childConfigs) {
-      return;
-    }
-    try {
-      const UIComponentFactory = await import("../utils/UIComponentFactory");
-      if (currentSignal.aborted) {
-        return;
-      }
-      this.removeAll(true);
-      for (const config of childConfigs) {
-        const child = UIComponentFactory.default.createChildFromConfig(
-          this.scene,
-          config
-        );
-        this.addChild(child);
-      }
-      this._baseConfig?.handleSetChildrenAsyncEnd?.(this.getAll() ?? []);
-    } catch (error) {
-      //
-    }
+  public setChildren(childConfigs?: BaseConfig[]): void {
+    if (!childConfigs) return;
+    this._baseConfig!.childConfigs = childConfigs;
+    this.removeAll(true);
+    this.scene.setChildren(this, childConfigs);
   }
 
   public drawBackground(config?: BaseConfig): void {
@@ -282,6 +272,7 @@ export class Container extends Phaser.GameObjects.Container {
       this._bg.destroy();
       this._bg = undefined;
     }
+    if (!this._baseConfig?.backgroundColor) return;
     const {
       width,
       height,
@@ -350,9 +341,6 @@ export class Container extends Phaser.GameObjects.Container {
 
   destroy(fromScene?: boolean): void {
     super.destroy(fromScene);
-    if (this._setChildrenAbortController) {
-      this._setChildrenAbortController.abort();
-    }
     this._bg?.destroy(fromScene);
   }
 }

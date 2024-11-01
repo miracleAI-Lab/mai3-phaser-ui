@@ -25,7 +25,6 @@ export class ListView extends Container implements ReDrawProtocol {
   private _scrollBar?: ScrollBar;
   private _scrollState: ScrollState;
   protected _config?: ListViewConfig;
-  private _setContentChildrenAbortController?: AbortController;
 
   constructor(scene: BaseScene, config: ListViewConfig) {
     super(scene, config);
@@ -68,7 +67,7 @@ export class ListView extends Container implements ReDrawProtocol {
     this.setupEvents();
     this.updateScrollBarPosition();
     this.updateVisibleItems();
-    this.setChildrenAsync(this._config?.childConfigs);
+    this.setChildren(this._config?.childConfigs);
   }
 
   private setupContent(): void {
@@ -160,34 +159,11 @@ export class ListView extends Container implements ReDrawProtocol {
     };
   }
 
-  public async setChildrenAsync(childConfigs?: BaseConfig[]): Promise<any> {
-    const previousAbortController = this._setContentChildrenAbortController;
-    if (previousAbortController) {
-      previousAbortController.abort();
-    }
-    this._setContentChildrenAbortController = new AbortController();
-    const currentSignal = this._setContentChildrenAbortController.signal;
-    if (!childConfigs) {
-      return;
-    }
-    try {
-      const UIComponentFactory = await import("../utils/UIComponentFactory");
-      if (currentSignal.aborted) {
-        return;
-      }
-      this._content?.removeAll(true);
-      this._lastChild = undefined;
-      for (const config of childConfigs) {
-        const child = UIComponentFactory.default.createChildFromConfig(
-          this.scene,
-          config
-        );
-        this.addChild(child);
-      }
-      this._config?.handleSetChildrenAsyncEnd?.(this._content?.getAll() ?? []);
-    } catch (error) {
-      //
-    }
+  public setChildren(childConfigs?: BaseConfig[]): void {
+    if (!childConfigs) return;
+    this._config!.childConfigs = childConfigs;
+    this._content?.removeAll(true);
+    this.scene.setChildren(this, childConfigs);
   }
 
   public getItemsAtIndex(index: number): Container[] {
@@ -212,7 +188,7 @@ export class ListView extends Container implements ReDrawProtocol {
 
   private handleDown = (pointer: Phaser.Input.Pointer): void => {
     if (!this._maskBounds?.contains(pointer.x, pointer.y)) return;
-
+    if (this.scrollSize <= this._config!.height) return;
     this._scrollState.isScrolling = true;
     this._scrollState.start = pointer[this._direction];
     this._scrollState.current = this._content![this._direction];
@@ -332,9 +308,6 @@ export class ListView extends Container implements ReDrawProtocol {
 
   destroy(fromScene?: boolean): void {
     super.destroy(fromScene);
-    if (this._setContentChildrenAbortController) {
-      this._setContentChildrenAbortController.abort();
-    }
     this._content?.destroy(fromScene);
     this._scrollBar?.destroy(fromScene);
     this._mask?.destroy(fromScene);

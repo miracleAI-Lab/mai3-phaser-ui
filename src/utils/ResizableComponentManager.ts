@@ -59,7 +59,7 @@ export default class ResizableComponentManager {
       handle.setInteractive({ draggable: true });
       handle.on('dragstart', () => this.startResize(handle, componentIndex));
       handle.on('drag', (pointer: Phaser.Input.Pointer) => this.resize(pointer, index, componentIndex));
-      handle.on('dragend', () => this.endResize());
+      handle.on('dragend', () => this.endResize(componentIndex));
       this.resizeHandles.push(handle);
       resizeContainer.add(handle);
     });
@@ -176,9 +176,11 @@ export default class ResizableComponentManager {
     this.updateResizeHandles(componentIndex);
   }
 
-  private endResize() {
+  private endResize(componentIndex: number) {
     this.isResizing = false;
     this.activeHandle = null;
+    const component = this.components[componentIndex];
+    this.scene.events.emit("resizeEnd", (component as any).config);
   }
 
   public updateResizeHandles(componentIndex: number) {
@@ -186,7 +188,8 @@ export default class ResizableComponentManager {
     const resizeContainer = this.resizeContainers[componentIndex];
     const padding = 5;
 
-    resizeContainer.setPosition(component.x - padding, component.y - padding);
+    component.RefreshBounds();
+    resizeContainer.setPosition(component.X - padding, component.Y - padding);
 
     const positions = this.getComponentBorderPositions(component, padding);
     const borderGraphics = resizeContainer.list[0] as Phaser.GameObjects.Graphics;

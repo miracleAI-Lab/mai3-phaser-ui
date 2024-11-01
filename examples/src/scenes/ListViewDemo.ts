@@ -130,7 +130,7 @@ export class ListViewDemo extends BaseScene {
           },
           borderWidth: 1,
           borderColor: 0x000000,
-          backgroundColor: 0xA0C75B,
+          backgroundColor: 0xa0c75b,
           x: 440,
           y: 22,
         },
@@ -144,7 +144,7 @@ export class ListViewDemo extends BaseScene {
         },
       ];
     }
-    listView.setChildrenAsync(cellItems);
+    listView.setChildren(cellItems);
   }
 
   private createReturnButton() {

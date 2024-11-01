@@ -1,9 +1,9 @@
 import { Container, Text } from ".";
 import { BaseScene } from "../game";
-import { ImageConfig } from "../types";
+import { ImageConfig, ReDrawProtocol } from "../types";
 import Utils from "../utils";
 
-export class Image extends Container {
+export class Image extends Container implements ReDrawProtocol {
   private _config: ImageConfig;
   public image?: Phaser.GameObjects.Image;
   protected maskShape?: Phaser.GameObjects.Graphics;
@@ -109,7 +109,7 @@ export class Image extends Container {
     }
   }
 
-  private clear(): void {
+  clear(): void {
     if (this.image) {
       this.image.destroy();
       this.image = undefined;

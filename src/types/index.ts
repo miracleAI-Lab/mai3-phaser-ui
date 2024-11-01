@@ -116,8 +116,6 @@ export interface BaseConfig {
   columnSpan?: number;
   // Array of child component configurations
   childConfigs?: BaseConfig[];
-  // Callback function that is called after all children have been set asynchronously
-  handleSetChildrenAsyncEnd?: (children: Container[]) => void;
   [key: string]: any;
 }
 
