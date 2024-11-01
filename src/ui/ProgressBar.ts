@@ -2,11 +2,11 @@ import { BaseScene } from "../game";
 import { ProgressBarConfig } from "../types";
 import { Container } from "./Container";
 
-export class ProgressBar extends Container {
+export class ProgressBar extends Container<ProgressBarConfig> {
   private bar?: Phaser.GameObjects.NineSlice;
   private fill?: Phaser.GameObjects.NineSlice;
   private _value: number = 0;
-  private _config: ProgressBarConfig;
+  protected _config: ProgressBarConfig;
 
   constructor(scene: BaseScene, config: ProgressBarConfig) {
     super(scene, config);
@@ -53,10 +53,6 @@ export class ProgressBar extends Container {
   set value(value: number) {
     this._value = value;
     this.updateProgress(value);
-  }
-  
-  get config(): ProgressBarConfig {
-    return this._config!;
   }
 
   public reDraw(newConfig: ProgressBarConfig): void {

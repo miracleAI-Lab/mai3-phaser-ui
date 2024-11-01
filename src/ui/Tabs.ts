@@ -6,9 +6,9 @@ import { Label } from './Label';
 import { Text } from './Text';
 import { Panel } from './Panel';
 
-export class Tabs extends Container {
+export class Tabs extends Container<TabsConfig> {
     private _items?: LinearLayout;
-    private _config: TabsConfig;
+    protected _config: TabsConfig;
     private _root?: Panel;
     public image?: Phaser.GameObjects.Image;
 
@@ -131,8 +131,4 @@ export class Tabs extends Container {
         this.createTabItems(index)
     }
 
-
-    get config(): TabsConfig {
-        return this._config!;
-    }
 }

@@ -10,7 +10,7 @@ const defaultStyle: TextStyle = {
   color: '#fff',
 };
 
-export class Label extends Panel {
+export class Label extends Panel<LabelConfig> {
   private _width?: number;
   private _height?: number;
   private label?: Phaser.GameObjects.Text;
@@ -133,10 +133,6 @@ export class Label extends Panel {
 
   get Label(): Phaser.GameObjects.Text {
     return this.label!;
-  }
-
-  get config(): LabelConfig {
-    return this._config;
   }
 
   destroy(fromScene?: boolean): void {

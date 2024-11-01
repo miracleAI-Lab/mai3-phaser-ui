@@ -6,7 +6,6 @@ import {
   ScrollState,
   ScrollDirection,
   BaseConfig,
-  ReDrawProtocol,
 } from "../types";
 import { ScrollBar } from "./ScrollBar";
 import ScrollUtils from "../utils/ScrollUtils";
@@ -16,8 +15,8 @@ interface ItemPosition {
   y: number;
 }
 
-export class ListView extends Container implements ReDrawProtocol {
-  private _content?: Container;
+export class ListView extends Container<ListViewConfig> {
+  protected _content?: Container;
   private _lastChild?: Container;
   private _mask?: Phaser.GameObjects.Graphics;
   private _maskBounds?: Phaser.Geom.Rectangle;
@@ -297,13 +296,11 @@ export class ListView extends Container implements ReDrawProtocol {
     );
   }
 
-  public updatePosition(x: number, y: number): void {
-    this.setPosition(x, y);
-    this.setupMask();
-  }
-
-  get config(): ListViewConfig {
-    return this._config!;
+  setPosition(x?: number, y?: number, z?: number, w?: number): this {
+    if (this._config) {
+      this.setupMask();
+    }
+    return super.setPosition(x, y, z, w);
   }
 
   destroy(fromScene?: boolean): void {

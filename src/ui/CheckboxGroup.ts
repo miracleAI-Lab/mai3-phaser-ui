@@ -3,14 +3,14 @@ import { Checkbox } from './Checkbox';
 import { CheckboxGroupConfig, CheckboxConfig } from '../types';
 import { BaseButton } from "./BaseButton";
 
-export class CheckboxGroup extends BaseButton {
+export class CheckboxGroup extends BaseButton<CheckboxGroupConfig> {
     private _checkboxes: Checkbox[] = [];
     private _selectedValues: string[] = [];
     private _selectedIndexes: number[] = [];
     private _checkboxGroupWidth: number = 0;
     private _checkboxGroupHeight: number = 0;
     private _checkboxConfigs: CheckboxConfig[] = [];
-    private _config: CheckboxGroupConfig;
+    protected _config: CheckboxGroupConfig;
 
     constructor(scene: BaseScene, config: CheckboxGroupConfig) {
         super(scene, config);
@@ -133,10 +133,6 @@ export class CheckboxGroup extends BaseButton {
         this._checkboxGroupWidth = 0;
         this._checkboxGroupHeight = 0;
         this._initCheckboxGroup();
-    }
-
-    get config(): CheckboxGroupConfig {
-        return this._config!;
     }
 
     public destroy(fromScene?: boolean): void {

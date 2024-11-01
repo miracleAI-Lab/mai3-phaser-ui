@@ -9,10 +9,10 @@ const defaultStyle = {
   color: '#fff', // 颜色
 };
 
-export class Text extends Container {
+export class Text extends Container<TextConfig> {
   private _width?: number;
   private _height?: number;
-  private _config: TextConfig;
+  protected _config: TextConfig;
 
   text: Phaser.GameObjects.Text;
 
@@ -108,10 +108,6 @@ export class Text extends Container {
   set Text(text: string) {
     this._config = Utils.MergeRight(this._config, { text }) as TextConfig;
     this.reDraw(this._config);
-  }
-  
-  get config(): TextConfig {
-    return this._config!;
   }
 
   setWidth(width: number) {

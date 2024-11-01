@@ -60,14 +60,6 @@ export class ListViewDemo extends BaseScene {
         childConfigs: [],
         width: 600,
         height: 150,
-        handleSetChildrenAsyncEnd: (children: Container[]) => {
-          children.forEach((child: Container) => {
-            if (child.Type === "Sprite") {
-              const sprite = child as Sprite;
-              sprite.instance?.play("walk");
-            }
-          });
-        },
       };
       cellItems[row].childConfigs = [
         {

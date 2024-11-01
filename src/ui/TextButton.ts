@@ -3,8 +3,8 @@ import Utils from '../utils';
 import { BaseScene } from "../game";
 import { BaseButton } from './BaseButton';
 
-export class TextButton extends BaseButton implements GridItem {
-    private _config: ButtonConfig;
+export class TextButton extends BaseButton<ButtonConfig> implements GridItem {
+    protected _config: ButtonConfig;
 
     bg?: Phaser.GameObjects.RenderTexture;
     label?: Phaser.GameObjects.Text;
@@ -60,10 +60,6 @@ export class TextButton extends BaseButton implements GridItem {
     set text(text: string) {
         if (this.label)
             this.label.text = text;
-    }
-
-    get config(): ButtonConfig {
-        return this._config!;
     }
 
     destroy(fromScene?: boolean) {

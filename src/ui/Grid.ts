@@ -6,8 +6,8 @@ import { Panel } from './Panel';
 
 const CellIndex = "cellIndex";
 
-export class Grid extends Panel {
-    private _content?: Container;
+export class Grid extends Panel<GridConfig> {
+    protected _content?: Container;
     private _gridLines?: Phaser.GameObjects.Graphics;
     private _draggingChild?: Container;
     private _originalPosition?: { x: number; y: number };
@@ -339,10 +339,6 @@ export class Grid extends Panel {
         this.positionSlotMap.set(key, 0);
         container.removeAll(true);
         this.addItemPlaceholder(container);
-    }
-    
-    get config(): GridConfig {
-        return this._config!;
     }
     
     destroy(fromScene?: boolean): void {

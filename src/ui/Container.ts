@@ -1,22 +1,21 @@
 import Phaser from "phaser";
-import { BaseConfig, ReDrawProtocol } from "../types";
+import { BaseConfig } from "../types";
 import Utils from "../utils";
 import { BaseScene } from "../game";
 import DragUtils from "../utils/DragUtils";
-
-export class Container
-  extends Phaser.GameObjects.Container
-  implements ReDrawProtocol
-{
+import { BaseContainer } from "../types";
+export class Container<
+  T extends BaseConfig = BaseConfig
+> extends BaseContainer<T> {
   protected _id: string;
   protected _type?: string;
   protected _bounds?: Phaser.Geom.Rectangle;
   protected _hitArea?: Phaser.Geom.Rectangle | Phaser.Geom.Circle;
-  protected _baseConfig?: BaseConfig;
+  protected _baseConfig?: T;
   scene: BaseScene;
   protected _bg?: Phaser.GameObjects.Image | Phaser.GameObjects.RenderTexture;
 
-  constructor(scene: BaseScene, baseConfig?: BaseConfig, type?: string) {
+  constructor(scene: BaseScene, baseConfig?: T, type?: string) {
     super(scene, baseConfig?.x, baseConfig?.y);
 
     this._id = baseConfig?.id ?? "";
@@ -27,7 +26,7 @@ export class Container
     this.initializeEvents();
   }
 
-   reDraw(config?: BaseConfig): void {
+  reDraw(config?: T): void {
     this.clear();
     this.updateConfig(config);
     this.initializeEvents();
@@ -44,7 +43,7 @@ export class Container
     }
   }
 
-  public updateConfig(config?: BaseConfig): void {
+  public updateConfig(config?: T): void {
     this._baseConfig = config;
     this.setChildren(config?.childConfigs);
   }
@@ -67,16 +66,25 @@ export class Container
   }
 
   public enableDrag(): void {
-    this.setEventInteractive();
-    this.scene.input.setDraggable(this);
-    this.on("drag", this.onDrag);
-    this.on("dragend", this.onDragEnd);
+    try {
+      this.disableDrag();
+      this.setEventInteractive();
+      this.scene?.input?.setDraggable(this);
+      this.on("drag", this.onDrag);
+      this.on("dragend", this.onDragEnd);
+    } catch (error) {
+      //
+    }
   }
 
   public disableDrag(): void {
-    this.scene.input.setDraggable(this, false);
-    this.off("drag", this.onDrag);
-    this.off("dragend", this.onDragEnd);
+    try {
+      this.scene.input.setDraggable(this, false);
+      this.off("drag", this.onDrag);
+      this.off("dragend", this.onDragEnd);
+    } catch (error) {
+      //
+    }
   }
 
   public onDrag(
@@ -238,10 +246,6 @@ export class Container
         bottom: this._baseConfig?.padding?.bottom ?? 0,
       };
     }
-  }
-
-  get config(): BaseConfig {
-    return this._baseConfig!;
   }
 
   public addChild(child: Phaser.GameObjects.GameObject): void {
