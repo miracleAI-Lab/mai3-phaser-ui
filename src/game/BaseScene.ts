@@ -15,9 +15,7 @@ class BaseScene extends Phaser.Scene {
     this.resizableManager = new ResizableComponentManager(this);
   }
 
-  create() {
-    
-  }
+  create() {}
 
   preload() {
     if (this.isDebugPrint) {
@@ -82,6 +80,11 @@ class BaseScene extends Phaser.Scene {
       const child = UIComponentFactory.createChildFromConfig(this, config);
       parent.addChild(child);
     }
+  }
+
+  public getChild(childConfig: BaseConfig): Container {
+    const child = UIComponentFactory.createChildFromConfig(this, childConfig);
+    return child;
   }
 }
 

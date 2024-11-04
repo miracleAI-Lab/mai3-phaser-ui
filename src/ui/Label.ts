@@ -55,7 +55,7 @@ export class Label extends Panel<LabelConfig> {
     this.computedLabelSize();
     this.setLabelPosition(textAlign, padding);
 
-    console.log('config: ', this._config);
+    // console.log('config: ', this._config);
   }
 
   private createOrUpdateLabel(text: string, style: TextStyle): void {
@@ -77,7 +77,7 @@ export class Label extends Panel<LabelConfig> {
     this._config.width = this._width;
     this._config.height = this._height;
     
-    console.log(`this.label?.displayWidth: ${this.label?.displayWidth}, width: ${this._width}`);
+    // console.log(`this.label?.displayWidth: ${this.label?.displayWidth}, width: ${this._width}`);
   }
 
   private setLabelPosition(textAlign: string, padding: { top: number; left: number; right: number; }): void {

@@ -62,9 +62,20 @@ export class Container<
     gameObject?: Phaser.GameObjects.GameObject
   ): Phaser.GameObjects.GameObject | undefined {
     const container = (gameObject ?? this) as Container;
-    return container.getAll().find((item) => (item as Container).id === id);
+    let all = container.getAll();
+    let find = all.find((item) => (item as Container).id === id);
+    if (find) return find;
+    for (let i = 0; i < all.length; i++) {
+      try {
+        find = (all[i] as Container)?.findChild(id, all[i]);
+      } catch (err) {
+        //
+      }
+      if (find) return find;
+    }
+    return undefined;
   }
-
+  
   public enableDrag(): void {
     try {
       this.disableDrag();

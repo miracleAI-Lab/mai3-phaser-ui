@@ -13,7 +13,7 @@ import {
   VolumeSlider,
   Image,
   Sprite,
-  ListView,
+  ScrollView,
   Grid,
 } from "../ui/index";
 import { BaseScene } from "../game";
@@ -35,7 +35,7 @@ class UIComponentFactory {
     VolumeSlider,
     Text,
     Sprite,
-    ListView,
+    ScrollView,
     Grid,
   };
 

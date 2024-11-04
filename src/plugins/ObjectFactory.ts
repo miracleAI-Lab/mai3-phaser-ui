@@ -11,14 +11,14 @@ import { Container } from "../ui/Container";
 import { RoundedButton } from "../ui/RoundedButton";
 import { TextButton } from "../ui/TextButton";
 import { ImageButton } from "../ui/ImageButton";
-import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ListViewConfig, VolumeSliderConfig, PanelConfig, GridConfig, SpriteConfig, ConnectWalletButtonConfig, ProgressBarConfig } from '../types';
+import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ScrollViewConfig, VolumeSliderConfig, PanelConfig, GridConfig, SpriteConfig, ConnectWalletButtonConfig, ProgressBarConfig } from '../types';
 import { BaseScene } from "../game";
 import { TextBox } from "../ui/TextBox";
 import { Tabs } from "../ui/Tabs";
 import { TextArea } from "../ui/TextArea";
 import { Toast } from "../ui/Toast";
 import { LinearLayout } from "../ui/LinearLayout";
-import { ListView } from "../ui/ListView";
+import { ScrollView } from "../ui/ScrollView";
 import { Panel } from "../ui/Panel";
 import { ProgressBar } from "../ui/ProgressBar";
 import { Grid } from "../ui/Grid";
@@ -141,8 +141,8 @@ class ObjectFactory {
     return this.createGameObject(LinearLayout, this.scene, config);
   }
 
-  listView(config: ListViewConfig): ListView {
-    return this.createGameObject(ListView, this.scene, config);
+  listView(config: ScrollViewConfig): ScrollView {
+    return this.createGameObject(ScrollView, this.scene, config);
   }
 
   sprite(config: SpriteConfig): Sprite {

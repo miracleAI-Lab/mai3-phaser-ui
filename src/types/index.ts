@@ -216,6 +216,14 @@ export interface ButtonConfig extends BaseConfig {
   handleUp?: ButtonHandle;
 }
 
+export interface TextButtonConfig extends ButtonConfig {
+  icon?: string;
+  iconWidth?: number;
+  iconHeight?: number;
+  iconPosition?: "left" | "right";
+  iconPadding?: number;
+}
+
 export interface ContainerConfig extends BaseConfig {
   radius?: number;
   borderWidth?: number;
@@ -262,7 +270,7 @@ export interface ScrollState {
 
 export type ScrollDirection = "x" | "y";
 
-export interface ListViewConfig extends BaseConfig {
+export interface ScrollViewConfig extends BaseConfig {
   width: number;
   height: number;
   padding?: Padding;
@@ -271,7 +279,11 @@ export interface ListViewConfig extends BaseConfig {
   showScrollbar?: boolean;
 }
 
-export interface ListViewItemConfig extends BaseConfig {
+export interface ListViewConfig extends ScrollViewConfig {
+  
+}
+
+export interface ScrollViewItemConfig extends BaseConfig {
   text: string;
   icon?: string;
   rightContent?: {

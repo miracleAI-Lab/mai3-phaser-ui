@@ -60,9 +60,9 @@ export class Dialog extends Container<DialogConfig> {
         this.RefreshBounds();
     }
 
-    public addItems(childConfigs: any[]): void {
+    public addItems(childConfigs: any[]) {
         childConfigs.forEach(childConfig => {
-            const child = this.createChildFromConfig(childConfig);
+            const child = this.scene.getChild(childConfig);
             this._root!.addChild(child);
             this._childComponents.push(child);
         });
