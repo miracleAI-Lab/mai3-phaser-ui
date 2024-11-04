@@ -21,14 +21,14 @@ export class Container<
     this._id = baseConfig?.id ?? "";
     this.scene = scene;
     this.Type = type ?? "Container";
-    this.updateConfig(baseConfig);
+    this.updateBaseConfig(baseConfig);
 
     this.initializeEvents();
   }
 
   reDraw(config?: T): void {
     this.clear();
-    this.updateConfig(config);
+    this.updateBaseConfig(config);
     this.initializeEvents();
     this.drawBackground(config);
   }
@@ -43,7 +43,7 @@ export class Container<
     }
   }
 
-  public updateConfig(config?: T): void {
+  public updateBaseConfig(config?: T): void {
     this._baseConfig = config;
     this.setChildren(config?.childConfigs);
   }
@@ -144,6 +144,10 @@ export class Container<
 
   set id(id: string) {
     this._id = id;
+  }
+
+  get baseConfig(): T {
+    return this._baseConfig ?? ({} as T);
   }
 
   public RefreshBounds(): void {

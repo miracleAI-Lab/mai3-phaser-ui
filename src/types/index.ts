@@ -690,10 +690,16 @@ export abstract class BaseContainer<T extends BaseConfig = BaseConfig>
       }
       const children = container.getAll() as Container[];
       return children.reduce<BaseConfig[]>((acc, child) => {
-        if (!child.config) {
+        let config;
+        if (child.constructor === Container) {
+          config = child.baseConfig;
+        } else {
+          config = child.config;
+        }
+        if (!config) {
           return acc;
         }
-        const childConfig = { ...child.config };
+        const childConfig = { ...config };
         const subConfigs = buildConfigTree(child);
         if (subConfigs.length > 0) {
           childConfig.childConfigs = subConfigs;
