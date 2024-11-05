@@ -23,6 +23,7 @@ import Utils from "./utils";
 import { ScrollView } from "./ui/ScrollView";
 import { Sprite } from "./ui/Sprite";
 import { ConnectWalletButton } from "./ui/ConnectWalletButton";
+import { ListView } from "./ui/ListView";
 
 export {
   BaseScene,
@@ -51,6 +52,7 @@ export {
   Mai3Game,
   Types,
   Utils,
+  ListView,
 };
 
 const Mai3 = {
@@ -80,6 +82,7 @@ const Mai3 = {
   Mai3Game: Mai3Game,
   Types: Types,
   Utils: Utils,
+  ListView: ListView,
 };
 
 export default Mai3;

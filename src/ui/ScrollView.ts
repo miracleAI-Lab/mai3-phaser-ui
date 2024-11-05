@@ -10,7 +10,7 @@ import {
 import { ScrollBar } from "./ScrollBar";
 import ScrollUtils from "../utils/ScrollUtils";
 
-interface ItemPosition {
+export interface ItemPosition {
   x: number;
   y: number;
 }
@@ -19,7 +19,7 @@ export class ScrollView<T extends ScrollViewConfig = ScrollViewConfig> extends C
   protected _content?: Container;
   private _mask?: Phaser.GameObjects.Graphics;
   private _maskBounds?: Phaser.Geom.Rectangle;
-  private _direction: ScrollDirection;
+  protected _direction: ScrollDirection;
   private _scrollBar?: ScrollBar;
   private _scrollState: ScrollState;
   protected _config?: T;
@@ -289,7 +289,7 @@ export class ScrollView<T extends ScrollViewConfig = ScrollViewConfig> extends C
     }
     return super.setPosition(x, y, z, w);
   }
-  private get _lastChild(): Container | undefined {
+  protected get _lastChild(): Container | undefined {
     const list = this._content
       ?.getAll()
       .sort((a, b) => (a as Container).Y - (b as Container).Y);

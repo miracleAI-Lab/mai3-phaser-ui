@@ -11,7 +11,7 @@ import { Container } from "../ui/Container";
 import { RoundedButton } from "../ui/RoundedButton";
 import { TextButton } from "../ui/TextButton";
 import { ImageButton } from "../ui/ImageButton";
-import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ScrollViewConfig, VolumeSliderConfig, PanelConfig, GridConfig, SpriteConfig, ConnectWalletButtonConfig, ProgressBarConfig } from '../types';
+import { BaseConfig, ButtonConfig, CheckboxConfig, CheckboxGroupConfig, DialogConfig, ImageButtonConfig, ImageConfig, LabelConfig, LinearLayoutConfig, RoundedButtonConfig, SliderConfig, TabsConfig, TextBoxConfig, TextConfig, ToastConfig, ScrollViewConfig, VolumeSliderConfig, PanelConfig, GridConfig, SpriteConfig, ConnectWalletButtonConfig, ProgressBarConfig, ListViewConfig } from '../types';
 import { BaseScene } from "../game";
 import { TextBox } from "../ui/TextBox";
 import { Tabs } from "../ui/Tabs";
@@ -26,6 +26,7 @@ import { Sprite } from "../ui/Sprite";
 import { DropdownMenu } from "../ui/DropdownMenu";
 import { ConnectWalletButton } from "../ui/ConnectWalletButton";
 import { DropdownMenuConfig } from "../ui/DropdownMenu";
+import { ListView } from "../ui";
 
 type Constructor<T extends Phaser.GameObjects.GameObject> = new (...args: any[]) => T;
 
@@ -141,7 +142,11 @@ class ObjectFactory {
     return this.createGameObject(LinearLayout, this.scene, config);
   }
 
-  listView(config: ScrollViewConfig): ScrollView {
+  listView(config: ListViewConfig): ListView {
+    return this.createGameObject(ListView, this.scene, config);
+  }
+
+  scrollView(config: ScrollViewConfig): ScrollView {
     return this.createGameObject(ScrollView, this.scene, config);
   }
 

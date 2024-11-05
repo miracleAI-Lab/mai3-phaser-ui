@@ -361,5 +361,6 @@ export class Container<
   destroy(fromScene?: boolean): void {
     super.destroy(fromScene);
     this._bg?.destroy(fromScene);
+    this._bg = undefined;
   }
 }

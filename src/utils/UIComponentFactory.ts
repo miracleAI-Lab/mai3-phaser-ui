@@ -15,6 +15,7 @@ import {
   Sprite,
   ScrollView,
   Grid,
+  ListView,
 } from "../ui/index";
 import { BaseScene } from "../game";
 import { BaseConfig } from "../types";
@@ -37,6 +38,7 @@ class UIComponentFactory {
     Sprite,
     ScrollView,
     Grid,
+    ListView,
   };
 
   public static createChildFromConfig(
