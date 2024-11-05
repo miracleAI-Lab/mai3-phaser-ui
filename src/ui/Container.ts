@@ -75,7 +75,7 @@ export class Container<
     }
     return undefined;
   }
-  
+
   public enableDrag(): void {
     try {
       this.disableDrag();
@@ -291,7 +291,6 @@ export class Container<
       this._bg.destroy();
       this._bg = undefined;
     }
-    if (!this._baseConfig?.backgroundColor) return;
     const {
       width,
       height,
@@ -301,6 +300,7 @@ export class Container<
       backgroundColor,
       backgroundAlpha,
     } = config ?? this._baseConfig!;
+    if (!backgroundColor) return;
     this._bg = Utils.reDrawRoundedRectRenderTexture(
       this.scene,
       this._bg! as Phaser.GameObjects.RenderTexture,

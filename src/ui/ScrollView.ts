@@ -173,6 +173,7 @@ export class ScrollView<T extends ScrollViewConfig = ScrollViewConfig> extends C
   }
 
   private handleDown = (pointer: Phaser.Input.Pointer): void => {
+    if (this._config?.disableScroll) return;
     if (!this._maskBounds?.contains(pointer.x, pointer.y)) return;
     if (this.scrollSize <= this._config!.height) return;
     this._scrollState.isScrolling = true;
