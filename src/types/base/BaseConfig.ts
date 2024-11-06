@@ -26,5 +26,5 @@ export interface BaseConfigProperties {
 }
 
 export interface BaseConfig extends BaseConfigProperties {
-  // [key: string]: any;
+  [key: string]: any; // Allow adding other properties 
 }
