@@ -11,7 +11,7 @@ export class Container<
   protected _type?: string;
   protected _bounds?: Phaser.Geom.Rectangle;
   protected _hitArea?: Phaser.Geom.Rectangle | Phaser.Geom.Circle;
-  protected _baseConfig?: T;
+  protected _config?: T;
   scene: BaseScene;
   protected _bg?: Phaser.GameObjects.Image | Phaser.GameObjects.RenderTexture;
 
@@ -21,14 +21,14 @@ export class Container<
     this._id = baseConfig?.id ?? "";
     this.scene = scene;
     this.Type = type ?? "Container";
-    this.updateBaseConfig(baseConfig);
+    this.updateConfig(baseConfig);
 
     this.initializeEvents();
   }
 
   reDraw(config?: T): void {
     this.clear();
-    this.updateBaseConfig(config);
+    this.updateConfig(config);
     this.initializeEvents();
     this.drawBackground(config);
   }
@@ -37,21 +37,21 @@ export class Container<
   }
 
   protected initializeEvents(): void {
-    if (this._baseConfig?.draggable) {
+    if (this._config?.draggable) {
       this.enableDrag();
       return;
     }
   }
 
-  public updateBaseConfig(config?: T): void {
-    this._baseConfig = config;
+  public updateConfig(config?: T): void {
+    this._config = config;
     this.setChildren(config?.childConfigs);
   }
 
   public setEventInteractive(): void {
     const hitArea = DragUtils.setEventInteractive(
       this,
-      this._baseConfig,
+      this._config,
       this._hitArea
     );
     if (!this._hitArea) this._hitArea = hitArea;
@@ -118,8 +118,8 @@ export class Container<
 
   private getClampedPosition(dragX: number, dragY: number): [number, number] {
     if (this.Type === "RoundedButton") {
-      const radius = this._baseConfig?.radius ?? 0;
-      const borderWidth = this._baseConfig?.borderWidth ?? 0;
+      const radius = this._config?.radius ?? 0;
+      const borderWidth = this._config?.borderWidth ?? 0;
       const radiusBorderWidth = (radius + borderWidth) * 2;
       return [
         Utils.clampX(dragX, this.scene.scale.width, radiusBorderWidth),
@@ -157,10 +157,6 @@ export class Container<
     this._id = id;
   }
 
-  get baseConfig(): T {
-    return this._baseConfig ?? ({} as T);
-  }
-
   public RefreshBounds(): void {
     this._bounds = this.getBounds();
   }
@@ -171,15 +167,15 @@ export class Container<
 
   get Width(): number {
     return (
-      (this._baseConfig?.width ?? 0) +
-      (this._baseConfig?.borderWidth ? this._baseConfig?.borderWidth * 2 : 0)
+      (this._config?.width ?? 0) +
+      (this._config?.borderWidth ? this._config?.borderWidth * 2 : 0)
     );
   }
 
   get Height(): number {
     return (
-      (this._baseConfig?.height ?? 0) +
-      (this._baseConfig?.borderWidth ? this._baseConfig?.borderWidth * 2 : 0)
+      (this._config?.height ?? 0) +
+      (this._config?.borderWidth ? this._config?.borderWidth * 2 : 0)
     );
   }
 
@@ -246,19 +242,19 @@ export class Container<
   }
 
   get padding() {
-    if (this._baseConfig?.padding?.all) {
+    if (this._config?.padding?.all) {
       return {
-        left: this._baseConfig!.padding.all,
-        right: this._baseConfig!.padding.all,
-        top: this._baseConfig!.padding.all,
-        bottom: this._baseConfig!.padding.all,
+        left: this._config!.padding.all,
+        right: this._config!.padding.all,
+        top: this._config!.padding.all,
+        bottom: this._config!.padding.all,
       };
     } else {
       return {
-        left: this._baseConfig?.padding?.left ?? 0,
-        right: this._baseConfig?.padding?.right ?? 0,
-        top: this._baseConfig?.padding?.top ?? 0,
-        bottom: this._baseConfig?.padding?.bottom ?? 0,
+        left: this._config?.padding?.left ?? 0,
+        right: this._config?.padding?.right ?? 0,
+        top: this._config?.padding?.top ?? 0,
+        bottom: this._config?.padding?.bottom ?? 0,
       };
     }
   }
@@ -281,7 +277,7 @@ export class Container<
 
   public setChildren(childConfigs?: BaseConfig[]): void {
     if (!childConfigs) return;
-    this._baseConfig!.childConfigs = childConfigs;
+    this._config!.childConfigs = childConfigs;
     this.removeAll(true);
     this.scene.setChildren(this, childConfigs);
   }
@@ -299,7 +295,7 @@ export class Container<
       borderColor = 0xff8221,
       backgroundColor,
       backgroundAlpha,
-    } = config ?? this._baseConfig!;
+    } = config ?? this._config!;
     if (!backgroundColor) return;
     this._bg = Utils.reDrawRoundedRectRenderTexture(
       this.scene,
@@ -320,7 +316,7 @@ export class Container<
   drawBorderLine?: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Arc;
 
   public debugDrawBorderLine(color?: number): void {
-    const borderWidth = this._baseConfig?.borderWidth ?? 0;
+    const borderWidth = this._config?.borderWidth ?? 0;
     const width = this.getBounds().width + borderWidth * 2;
     const height = this.getBounds().height + borderWidth * 2;
 
@@ -337,7 +333,7 @@ export class Container<
     height: number,
     color?: number
   ): Phaser.GameObjects.Rectangle | Phaser.GameObjects.Arc {
-    if (this._baseConfig?.geomType === "Circle") {
+    if (this._config?.geomType === "Circle") {
       return this.scene.add
         .circle(0, 0, width / 2, 0x000000, 0.1)
         .setStrokeStyle(4, color ?? 0xa52a2a, 1)

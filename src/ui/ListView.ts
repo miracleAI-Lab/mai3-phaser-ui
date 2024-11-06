@@ -73,9 +73,9 @@ export class ListView extends ScrollView<ListViewConfig> {
       for (let i = 0; i < all.length; i++) {
         const item = all[i];
         if (item && this._config.itemDatas[i]) {
-          (all[i] as Container).baseConfig.childConfigs =
+          (all[i] as Container).config.childConfigs =
             this._config.itemDatas[i];
-          (all[i] as Container).reDraw((all[i] as Container).baseConfig);
+          (all[i] as Container).reDraw((all[i] as Container).config);
         }
       }
     }
