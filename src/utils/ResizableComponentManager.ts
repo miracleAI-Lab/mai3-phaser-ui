@@ -9,8 +9,6 @@ export default class ResizableComponentManager {
   private resizeContainers: Phaser.GameObjects.Container[] = [];
   private isResizing: boolean = false;
   private activeHandle: Phaser.GameObjects.Rectangle | null = null;
-  private originalWidth: number = 0;
-  private originalHeight: number = 0;
 
   public components: Container[] = [];
 
@@ -106,8 +104,6 @@ export default class ResizableComponentManager {
   ) {
     this.isResizing = true;
     this.activeHandle = handle;
-    this.originalWidth = this.components[componentIndex].Width;
-    this.originalHeight = this.components[componentIndex].Height;
   }
 
   private resize(
@@ -123,49 +119,50 @@ export default class ResizableComponentManager {
     const dx = pointer.x - rePos.tx - this.activeHandle.x;
     const dy = pointer.y - rePos.ty - this.activeHandle.y;
 
-    let newWidth = this.originalWidth;
-    let newHeight = this.originalHeight;
-    const pos = component.getWorldTransformMatrix();
-    let newX = pos.tx;
-    let newY = pos.ty;
+    const originalWidth = component.Width;
+    const originalHeight = component.Height;
+    let newWidth = originalWidth;
+    let newHeight = originalHeight;
+    let newX = component.x;
+    let newY = component.y;
 
     const minWidth = 50;
     const minHeight = 30;
 
     switch (handleIndex) {
       case 0: // 左上
-        newWidth = Math.max(this.originalWidth - dx, minWidth);
-        newHeight = Math.max(this.originalHeight - dy, minHeight);
-        newX += this.originalWidth - newWidth;
-        newY += this.originalHeight - newHeight;
+        newWidth = Math.max(originalWidth - dx, minWidth);
+        newHeight = Math.max(originalHeight - dy, minHeight);
+        newX += originalWidth - newWidth;
+        newY += originalHeight - newHeight;
         break;
       case 1: // 上中
-        newHeight = Math.max(this.originalHeight - dy, minHeight);
-        newY += this.originalHeight - newHeight;
+        newHeight = Math.max(originalHeight - dy, minHeight);
+        newY += originalHeight - newHeight;
         break;
       case 2: // 右上
-        newWidth = Math.max(this.originalWidth + dx, minWidth);
-        newHeight = Math.max(this.originalHeight - dy, minHeight);
-        newY += this.originalHeight - newHeight;
+        newWidth = Math.max(originalWidth + dx, minWidth);
+        newHeight = Math.max(originalHeight - dy, minHeight);
+        newY += originalHeight - newHeight;
         break;
       case 3: // 左中
-        newWidth = Math.max(this.originalWidth - dx, minWidth);
-        newX += this.originalWidth - newWidth;
+        newWidth = Math.max(originalWidth - dx, minWidth);
+        newX += originalWidth - newWidth;
         break;
       case 4: // 右中
-        newWidth = Math.max(this.originalWidth + dx, minWidth);
+        newWidth = Math.max(originalWidth + dx, minWidth);
         break;
       case 5: // 左下
-        newWidth = Math.max(this.originalWidth - dx, minWidth);
-        newHeight = Math.max(this.originalHeight + dy, minHeight);
-        newX += this.originalWidth - newWidth;
+        newWidth = Math.max(originalWidth - dx, minWidth);
+        newHeight = Math.max(originalHeight + dy, minHeight);
+        newX += originalWidth - newWidth;
         break;
       case 6: // 下中
-        newHeight = Math.max(this.originalHeight + dy, minHeight);
+        newHeight = Math.max(originalHeight + dy, minHeight);
         break;
       case 7: // 右下
-        newWidth = Math.max(this.originalWidth + dx, minWidth);
-        newHeight = Math.max(this.originalHeight + dy, minHeight);
+        newWidth = Math.max(originalWidth + dx, minWidth);
+        newHeight = Math.max(originalHeight + dy, minHeight);
         break;
     }
 
@@ -178,16 +175,17 @@ export default class ResizableComponentManager {
     };
 
     if (component.Type === "RoundedButton") {
-      if (newWidth !== this.originalWidth) {
+      if (newWidth !== originalWidth) {
         newConfig.radius = newWidth / 2;
       }
-      if (newHeight !== this.originalHeight) {
+      if (newHeight !== originalHeight) {
         newConfig.radius = newHeight / 2;
       }
     }
 
     this.scene.events.emit("resize", newConfig);
 
+    component.setPosition(newX, newY);
     (component as Container).reDraw(newConfig);
     component.setEventInteractive();
 
