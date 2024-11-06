@@ -1,6 +1,7 @@
 import { Container } from "../ui/Container";
 import { ProgressBar } from "../ui/ProgressBar";
 import { BaseScene } from "../game";
+import { BaseBarConfig, BaseConfig, ProgressBarConfig } from "../types";
 
 export default class ResizableComponentManager {
   private scene: BaseScene;
@@ -147,8 +148,8 @@ export default class ResizableComponentManager {
         break;
     }
 
-    const newConfig = {
-      ...(component as any).config,
+    const newConfig: BaseConfig = {
+      ...(component as Container).config,
       x: newX,
       y: newY,
       width: newWidth,
@@ -166,11 +167,11 @@ export default class ResizableComponentManager {
 
     this.scene.events.emit("resize", newConfig);
 
-    (component as any).reDraw(newConfig);
+    (component as Container).reDraw(newConfig);
     component.setEventInteractive();
 
     if (component.Type === 'ProgressBar') {
-      (component as ProgressBar).updateProgress(newConfig.process);
+      (component as ProgressBar).updateProgress((newConfig as BaseBarConfig).process ?? 0);
     }
 
     this.updateResizeHandles(componentIndex);
@@ -180,7 +181,7 @@ export default class ResizableComponentManager {
     this.isResizing = false;
     this.activeHandle = null;
     const component = this.components[componentIndex];
-    this.scene.events.emit("resizeEnd", (component as any).config);
+    this.scene.events.emit("resizeEnd", (component as Container).config);
   }
 
   public updateResizeHandles(componentIndex: number) {

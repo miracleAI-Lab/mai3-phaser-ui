@@ -90,7 +90,7 @@ export class TextButton
     }
   }
 
-  public drawBackground(config: BaseConfig): void {
+  public drawBackground(config: TextButtonConfig): void {
     if (config.texture) {
       if (this.image) {
         this.image.destroy();
@@ -144,8 +144,8 @@ export class TextButton
         config.height,
         borderWidth,
         radius,
-        borderColor,
-        backgroundColor
+        borderColor as number,
+        backgroundColor as number
       )!;
       this.addChildAt(this.bg, 0);
     }

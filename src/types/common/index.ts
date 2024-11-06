@@ -138,3 +138,9 @@ export interface DragHandlers {
 }
 
 export type { Wallet };
+
+
+export interface WordWrap {
+  width?: number;
+  useAdvancedWrap?: boolean;
+}

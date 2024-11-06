@@ -1,7 +1,6 @@
 import { Container } from './Container';
 import { BaseScene } from "../game";
-import { TextButton, Text, TextBox, ImageButton, RoundedButton, Checkbox, CheckboxGroup, Label, ProgressBar, Slider, VolumeSlider, Image, Sprite } from './index';
-import { GridConfig } from '../types';
+import { BaseConfig, GridConfig } from '../types';
 import { Panel } from './Panel';
 
 const CellIndex = "cellIndex";
@@ -108,7 +107,7 @@ export class Grid extends Panel<GridConfig> {
         this.positionToIndexMap.clear();
     }
 
-    public addItems(childConfigs: any[]): void {
+    public addItems(childConfigs: BaseConfig[]): void {
         const emptyCells = this.getEmptyCells();
         emptyCells.forEach((emptyCell, index) => {
             if (index >= childConfigs.length) return;
@@ -117,22 +116,22 @@ export class Grid extends Panel<GridConfig> {
         });
     }
 
-    private addItemToCell(childConfig: any, emptyCell: { x: number; y: number }, index: number): void {
+    private addItemToCell(childConfig: BaseConfig, emptyCell: { x: number; y: number }, index: number): void {
         const { width, height } = this.calculateChildDimensions(childConfig);
         
         const mergedConfig = { ...childConfig, width, height };
-        const child = this.createChildFromConfig(mergedConfig);
+        const child = this.scene.getChild(mergedConfig);
         
         this.setupChild(child, emptyCell, index);
     }
 
-    private calculateChildDimensions(childConfig: any): { width: number; height: number } {
+    private calculateChildDimensions(childConfig: BaseConfig): { width: number; height: number } {
         const width = this._config?.autoFill ? this._cellWidth : childConfig.width;
         const height = this._config?.autoFill ? this._cellHeight : childConfig.height;
-        return { width, height };
+        return { width: width ?? 0, height: height ?? 0 };
     }
 
-    private calculateChildPosition(childConfig: any,emptyCell: { x: number; y: number }, width: number, height: number): { x: number; y: number } {
+    private calculateChildPosition(childConfig: BaseConfig,emptyCell: { x: number; y: number }, width: number, height: number): { x: number; y: number } {
         const x = emptyCell.x + (childConfig?.x ?? (this._cellWidth - width) / 2);
         const y = emptyCell.y + (childConfig?.y ?? (this._cellHeight - height) / 2);
 
@@ -152,7 +151,7 @@ export class Grid extends Panel<GridConfig> {
         this.indexToItemMap.get(index)?.push(child);
     }
 
-    public addCellItems(childConfigs: any[][]): void {
+    public addCellItems(childConfigs: BaseConfig[][]): void {
         const emptyCells = this.getEmptyCells();
         emptyCells.forEach((emptyCell, index) => {
             if (index >= childConfigs.length) return;
@@ -161,11 +160,11 @@ export class Grid extends Panel<GridConfig> {
         });
     }
 
-    public addItemsToCell(itemConfigs: any[], emptyCell: { x: number; y: number }, cellIndex: number): void {
+    public addItemsToCell(itemConfigs: BaseConfig[], emptyCell: { x: number; y: number }, cellIndex: number): void {
         itemConfigs.forEach((cfg, i) => {
             const { width, height } = this.calculateChildDimensions(cfg);
             const mergedConfig = { ...cfg, width, height };
-            const child = this.createChildFromConfig(mergedConfig);
+            const child = this.scene.getChild(mergedConfig);
             
             this.setupCellChild(child, emptyCell, cellIndex, i, cfg.draggable);
         });
@@ -184,7 +183,7 @@ export class Grid extends Panel<GridConfig> {
         this.indexToItemMap.get(cellIndex)?.push(child);
     }
 
-    getItemByIndex(index: any): Container | undefined {
+    getItemByIndex(index: number): Container | undefined {
         return this._content?.getByName(index + "");
     }
 
@@ -201,26 +200,6 @@ export class Grid extends Panel<GridConfig> {
             }
         });
         return positions;
-    }
-
-    private createChildFromConfig(config: any): Container {
-        const componentMap: { [key: string]: any } = {
-          Image: Image,
-          TextButton: TextButton,
-          TextBox: TextBox,
-          ImageButton: ImageButton,
-          RoundedButton: RoundedButton,
-          Checkbox: Checkbox,
-          CheckboxGroup: CheckboxGroup,
-          Label: Label,
-          ProgressBar: ProgressBar,
-          Slider: Slider,
-          VolumeSlider: VolumeSlider,
-          Text: Text,
-          Sprite: Sprite,
-        };
-        const ComponentClass = componentMap[config.type] || TextButton;
-        return new ComponentClass(this.scene, config);
     }
 
     private setupDraggable(child: Container): void {

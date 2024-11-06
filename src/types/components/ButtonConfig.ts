@@ -3,9 +3,6 @@ import { TextStyle } from "../common";
 import { ButtonHandle } from "../base/BaseButtonConfig";
 
 export interface ButtonConfig extends BaseConfig {
-  borderWidth?: number;
-  backgroundColor?: number;
-  borderColor?: number;
   borderColorAlpha?: number;
   text?: string;
   textStyle?: TextStyle;

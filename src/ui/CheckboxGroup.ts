@@ -1,6 +1,6 @@
 import { BaseScene } from "../game";
 import { Checkbox } from './Checkbox';
-import { CheckboxGroupConfig, CheckboxConfig } from '../types';
+import { CheckboxGroupConfig, CheckboxConfig, CheckboxGroupItem } from '../types';
 import { BaseButton } from "./BaseButton";
 
 export class CheckboxGroup extends BaseButton<CheckboxGroupConfig> {
@@ -52,7 +52,7 @@ export class CheckboxGroup extends BaseButton<CheckboxGroupConfig> {
         });
     }
 
-    private _createCheckbox(item: any, index: number, x: number, y: number): Checkbox {
+    private _createCheckbox(item: CheckboxGroupItem, index: number, x: number, y: number): Checkbox {
         let ckbConfig = {
             x, y,
             text: item.text,

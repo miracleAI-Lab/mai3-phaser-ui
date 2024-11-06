@@ -1,9 +1,7 @@
 import { Container } from './Container';
-import { DialogConfig } from '../types';
+import { BaseConfig, DialogConfig } from '../types';
 import { BaseScene } from "../game";
 import { Panel } from './Panel';
-import { TextButton, TextBox, ImageButton, RoundedButton, Checkbox, CheckboxGroup, Label, ProgressBar, Slider, VolumeSlider, Sprite, Image, Text } from './index';
-
 export class Dialog extends Container<DialogConfig> {
     private _root?: Panel;
     private _childComponents: Container[] = [];
@@ -45,7 +43,7 @@ export class Dialog extends Container<DialogConfig> {
             let closeBtnConfig = this._config.closeButtonConfig;
             closeBtnConfig.x = closeBtnConfig.x ?? ((this._config.width ?? 0) - (closeBtnConfig.width ?? 0) - 30);
             closeBtnConfig.y = closeBtnConfig.y ?? 30
-            const child = this.createChildFromConfig(closeBtnConfig);
+            const child = this.scene.getChild(closeBtnConfig);
             this._root!.addChild(child);
             this._childComponents.push(child);
         }
@@ -60,32 +58,12 @@ export class Dialog extends Container<DialogConfig> {
         this.RefreshBounds();
     }
 
-    public addItems(childConfigs: any[]) {
+    public addItems(childConfigs: BaseConfig[]) {
         childConfigs.forEach(childConfig => {
             const child = this.scene.getChild(childConfig);
             this._root!.addChild(child);
             this._childComponents.push(child);
         });
-    }
-
-    private createChildFromConfig(config: any): Container {
-        const componentMap: { [key: string]: any } = {
-            Image,
-            TextButton,
-            TextBox,
-            ImageButton,
-            RoundedButton,
-            Checkbox,
-            CheckboxGroup,
-            Label,
-            ProgressBar,
-            Slider,
-            VolumeSlider,
-            Text,
-            Sprite,
-        };
-        const ComponentClass = componentMap[config.type] || TextButton;
-        return new ComponentClass(this.scene, config);
     }
 
     public reDraw(config: DialogConfig): void {

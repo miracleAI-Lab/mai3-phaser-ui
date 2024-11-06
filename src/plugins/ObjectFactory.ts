@@ -50,7 +50,7 @@ class ObjectFactory {
     this.updateList = undefined;
   }
 
-  createGameObject<T extends Phaser.GameObjects.GameObject>(ctor: Constructor<T>, scene: Scene, config: any): T {
+  createGameObject<T extends Phaser.GameObjects.GameObject, C extends BaseConfig>(ctor: Constructor<T>, scene: Scene, config: C): T {
     const gameObject = new ctor(scene, config);
     if (this.addToScene)
       this.scene.add.existing(gameObject);

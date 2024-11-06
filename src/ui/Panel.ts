@@ -56,8 +56,8 @@ export class Panel<T extends PanelConfig = PanelConfig> extends Container<T> {
       this.scene,
       this.bg! as Phaser.GameObjects.RenderTexture,
       0, 0, width, height,
-      borderWidth, radius, borderColor,
-      backgroundColor, backgroundAlpha
+      borderWidth, radius, borderColor as number,
+      backgroundColor as number, backgroundAlpha
     ) || this.bg;
   }
 

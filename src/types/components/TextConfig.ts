@@ -1,5 +1,5 @@
 import { BaseConfig } from "../base/BaseConfig";
-import { TextStyle } from "../common";
+import { TextStyle, Padding } from "../common";
 
 export interface TextConfig extends BaseConfig {
   text?: string;

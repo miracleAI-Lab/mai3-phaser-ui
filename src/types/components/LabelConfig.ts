@@ -1,5 +1,5 @@
 import { PanelConfig } from "./PanelConfig";
-import { TextStyle, Padding } from "../common";
+import { TextStyle, Padding, WordWrap } from "../common";
 
 export interface LabelConfig extends PanelConfig {
   text?: string;
@@ -9,9 +9,7 @@ export interface LabelConfig extends PanelConfig {
   autoHeight?: boolean;
   borderWidth?: number;
   radius?: number;
-  borderColor?: number;
-  backgroundColor?: number;
-  backgroundAlpha?: number;
   textStyle?: TextStyle;
   padding?: Padding;
+  wordWrap?: WordWrap;
 }

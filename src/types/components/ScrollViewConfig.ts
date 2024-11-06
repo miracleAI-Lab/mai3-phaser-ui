@@ -13,7 +13,6 @@ export interface ScrollViewConfig extends BaseConfig {
   width: number;
   height: number;
   padding?: Padding;
-  background?: string | number;
   direction?: ScrollDirection;
   showScrollbar?: boolean;
   disableScroll?: boolean;

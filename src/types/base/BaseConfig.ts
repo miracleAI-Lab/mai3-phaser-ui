@@ -1,4 +1,4 @@
-import { OrientationTypes } from "../common";
+import { OrientationTypes, Padding } from "../common";
 
 export interface BaseConfigProperties {
   id?: string;
@@ -17,8 +17,14 @@ export interface BaseConfigProperties {
   type?: string;
   columnSpan?: number;
   childConfigs?: BaseConfig[];
+
+  borderColor?: string | number;
+  backgroundColor?: string | number;
+  backgroundAlpha?: number;
+  padding?: Padding;
+
 }
 
 export interface BaseConfig extends BaseConfigProperties {
-  [key: string]: any;
+  // [key: string]: any;
 }

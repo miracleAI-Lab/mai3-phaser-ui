@@ -310,8 +310,8 @@ export class Container<
       (height ?? 0) + borderWidth * 2,
       borderWidth,
       radius,
-      borderColor,
-      backgroundColor,
+      borderColor as number,
+      backgroundColor as number,
       backgroundAlpha
     );
     this.addChildAt(this._bg!, 0);

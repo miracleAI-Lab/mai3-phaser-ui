@@ -1,6 +1,6 @@
 import { ButtonConfig } from "./ButtonConfig";
-
-export interface TextButtonConfig extends ButtonConfig {
+import { NinePatchConfig } from "./NinePatchConfig";
+export interface TextButtonConfig extends ButtonConfig, NinePatchConfig {
   icon?: string;
   iconWidth?: number;
   iconHeight?: number;

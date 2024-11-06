@@ -11,7 +11,6 @@ export interface GridConfig extends PanelConfig {
   columnGap?: number;
   autoFill?: boolean;
   draggable?: boolean;
-  background?: string | number;
   borderWidth?: number;
   auxiliaryLineWidth?: number;
   auxiliaryLineColor?: number;
