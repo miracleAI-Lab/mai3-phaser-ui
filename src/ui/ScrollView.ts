@@ -15,8 +15,9 @@ export interface ItemPosition {
   y: number;
 }
 
-export class ScrollView<T extends ScrollViewConfig = ScrollViewConfig> extends Container<T> {
-  protected _content?: Container;
+export class ScrollView<
+  T extends ScrollViewConfig = ScrollViewConfig
+> extends Container<T> {
   private _mask?: Phaser.GameObjects.Graphics;
   private _maskBounds?: Phaser.Geom.Rectangle;
   protected _direction: ScrollDirection;
@@ -70,8 +71,8 @@ export class ScrollView<T extends ScrollViewConfig = ScrollViewConfig> extends C
   private setupContent(): void {
     this._content = new Container(this.scene);
     this._content.setPosition(
-      this.padding.left + (this._config?.borderWidth ?? 0),
-      this.padding.top + (this._config?.borderWidth ?? 0)
+      this.padding.left, // + (this._config?.borderWidth ?? 0),
+      this.padding.top // + (this._config?.borderWidth ?? 0)
     );
     this._content.setSize(
       this._config!.width - this.padding.left - this.padding.right,
@@ -89,12 +90,7 @@ export class ScrollView<T extends ScrollViewConfig = ScrollViewConfig> extends C
     this._mask
       .clear()
       .fillStyle(0x000000)
-      .fillRect(
-        this.X + (this._config!.borderWidth ?? 0),
-        this.Y + (this._config!.borderWidth ?? 0),
-        this.Width - (this._config!.borderWidth ?? 0) * 2,
-        this.Height - (this._config!.borderWidth ?? 0) * 2
-      );
+      .fillRect(this.X, this.Y, this.Width, this.Height);
 
     this._content?.setMask(
       new Phaser.Display.Masks.GeometryMask(this.scene, this._mask)

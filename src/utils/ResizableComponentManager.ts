@@ -1,7 +1,7 @@
 import { Container } from "../ui/Container";
 import { ProgressBar } from "../ui/ProgressBar";
 import { BaseScene } from "../game";
-import { BaseBarConfig, BaseConfig, ProgressBarConfig } from "../types";
+import { BaseBarConfig, BaseConfig } from "../types";
 
 export default class ResizableComponentManager {
   private scene: BaseScene;
@@ -24,7 +24,7 @@ export default class ResizableComponentManager {
   }
 
   clear() {
-    this.resizeContainers.forEach(item => {
+    this.resizeContainers.forEach((item) => {
       item.destroy(true);
     });
 
@@ -38,29 +38,41 @@ export default class ResizableComponentManager {
     const padding = 5;
     const positions = this.getComponentBorderPositions(component, padding);
 
-    const resizeContainer = this.scene.add.container(component.x - padding, component.y - padding);
+    const pos = component.getWorldTransformMatrix();
+    const resizeContainer = this.scene.add.container(
+      pos.tx - padding,
+      pos.ty - padding
+    );
     this.scene.add.existing(resizeContainer);
     this.resizeContainers.push(resizeContainer);
 
     const borderGraphics = this.scene.add.graphics();
     borderGraphics.lineStyle(2, 0xffffff, 1);
-    borderGraphics.strokeRect(0, 0, component.RealWidth + padding * 2, component.RealHeight + padding * 2);
-    resizeContainer.setDepth(component.depth);
+    borderGraphics.strokeRect(
+      0,
+      0,
+      component.Width + padding * 2,
+      component.Height + padding * 2
+    );
+    resizeContainer.setDepth(Infinity);
     resizeContainer.add(borderGraphics);
 
     positions.forEach((pos, index) => {
+      const _pos = component.getWorldTransformMatrix();
       const handle = this.scene.add.rectangle(
-        pos.x - component.x + padding,
-        pos.y - component.y + padding,
+        pos.x - _pos.tx + padding,
+        pos.y - _pos.ty + padding,
         handleSize,
         handleSize,
         0xffffff
       );
       handle.setOrigin(0.5);
       handle.setInteractive({ draggable: true });
-      handle.on('dragstart', () => this.startResize(handle, componentIndex));
-      handle.on('drag', (pointer: Phaser.Input.Pointer) => this.resize(pointer, index, componentIndex));
-      handle.on('dragend', () => this.endResize(componentIndex));
+      handle.on("dragstart", () => this.startResize(handle, componentIndex));
+      handle.on("drag", (pointer: Phaser.Input.Pointer) =>
+        this.resize(pointer, index, componentIndex)
+      );
+      handle.on("dragend", () => this.endResize(componentIndex));
       this.resizeHandles.push(handle);
       resizeContainer.add(handle);
     });
@@ -71,10 +83,10 @@ export default class ResizableComponentManager {
   private getComponentBorderPositions(component: Container, padding: number) {
     const left = 0;
     const top = 0;
-    const right = component.RealWidth + padding * 2;
-    const bottom = component.RealHeight + padding * 2;
-    const centerX = component.RealWidth / 2;
-    const centerY = component.RealHeight / 2;
+    const right = component.Width + padding * 2;
+    const bottom = component.Height + padding * 2;
+    const centerX = component.Width / 2;
+    const centerY = component.Height / 2;
 
     return [
       { x: left, y: top },
@@ -84,29 +96,38 @@ export default class ResizableComponentManager {
       { x: right, y: centerY },
       { x: left, y: bottom },
       { x: centerX, y: bottom },
-      { x: right, y: bottom }
+      { x: right, y: bottom },
     ];
   }
 
-  private startResize(handle: Phaser.GameObjects.Rectangle, componentIndex: number) {
+  private startResize(
+    handle: Phaser.GameObjects.Rectangle,
+    componentIndex: number
+  ) {
     this.isResizing = true;
     this.activeHandle = handle;
-    this.originalWidth = this.components[componentIndex].RealWidth;
-    this.originalHeight = this.components[componentIndex].RealHeight;
+    this.originalWidth = this.components[componentIndex].Width;
+    this.originalHeight = this.components[componentIndex].Height;
   }
 
-  private resize(pointer: Phaser.Input.Pointer, handleIndex: number, componentIndex: number) {
+  private resize(
+    pointer: Phaser.Input.Pointer,
+    handleIndex: number,
+    componentIndex: number
+  ) {
     if (!this.isResizing || !this.activeHandle) return;
 
     const component = this.components[componentIndex];
     const resizeContainer = this.resizeContainers[componentIndex];
-    const dx = pointer.x - resizeContainer.x - this.activeHandle.x;
-    const dy = pointer.y - resizeContainer.y - this.activeHandle.y;
+    const rePos = resizeContainer.getWorldTransformMatrix();
+    const dx = pointer.x - rePos.tx - this.activeHandle.x;
+    const dy = pointer.y - rePos.ty - this.activeHandle.y;
 
     let newWidth = this.originalWidth;
     let newHeight = this.originalHeight;
-    let newX = component.x;
-    let newY = component.y;
+    const pos = component.getWorldTransformMatrix();
+    let newX = pos.tx;
+    let newY = pos.ty;
 
     const minWidth = 50;
     const minHeight = 30;
@@ -153,10 +174,10 @@ export default class ResizableComponentManager {
       x: newX,
       y: newY,
       width: newWidth,
-      height: newHeight
+      height: newHeight,
     };
 
-    if (component.Type === 'RoundedButton') {
+    if (component.Type === "RoundedButton") {
       if (newWidth !== this.originalWidth) {
         newConfig.radius = newWidth / 2;
       }
@@ -170,8 +191,10 @@ export default class ResizableComponentManager {
     (component as Container).reDraw(newConfig);
     component.setEventInteractive();
 
-    if (component.Type === 'ProgressBar') {
-      (component as ProgressBar).updateProgress((newConfig as BaseBarConfig).process ?? 0);
+    if (component.Type === "ProgressBar") {
+      (component as ProgressBar).updateProgress(
+        (newConfig as BaseBarConfig).process ?? 0
+      );
     }
 
     this.updateResizeHandles(componentIndex);
@@ -189,14 +212,21 @@ export default class ResizableComponentManager {
     const resizeContainer = this.resizeContainers[componentIndex];
     const padding = 5;
 
+    const pos = component.getWorldTransformMatrix();
     component.RefreshBounds();
-    resizeContainer.setPosition(component.X - padding, component.Y - padding);
+    resizeContainer.setPosition(pos.tx - padding, pos.ty - padding);
 
     const positions = this.getComponentBorderPositions(component, padding);
-    const borderGraphics = resizeContainer.list[0] as Phaser.GameObjects.Graphics;
+    const borderGraphics = resizeContainer
+      .list[0] as Phaser.GameObjects.Graphics;
     borderGraphics.clear();
     borderGraphics.lineStyle(2, 0xffffff, 1);
-    borderGraphics.strokeRect(0, 0, component.RealWidth + padding * 2, component.RealHeight + padding * 2);
+    borderGraphics.strokeRect(
+      0,
+      0,
+      component.Width + padding * 2,
+      component.Height + padding * 2
+    );
 
     resizeContainer.list.slice(1).forEach((child, index) => {
       if (child instanceof Phaser.GameObjects.Rectangle) {

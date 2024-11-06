@@ -40,6 +40,8 @@ export class RoundedButton extends BaseButton<RoundedButtonConfig> {
         const color = 0xffffff;
         this.reDrawMaskShap(radius, color);
         this.RefreshBounds();
+        this._config.width = this.RealWidth;
+        this._config.height = this.RealHeight;
     }
 
     reDrawBg(x: number, y: number, radius: number, borderWidth: number, borderColor: number, fillColor: number, backgroundAlpha: number) {

@@ -166,17 +166,11 @@ export class Container<
   }
 
   get Width(): number {
-    return (
-      (this._config?.width ?? 0) +
-      (this._config?.borderWidth ? this._config?.borderWidth * 2 : 0)
-    );
+    return this.config?.width ?? 0;
   }
 
   get Height(): number {
-    return (
-      (this._config?.height ?? 0) +
-      (this._config?.borderWidth ? this._config?.borderWidth * 2 : 0)
-    );
+    return this.config?.height ?? 0;
   }
 
   get RealWidth(): number {
@@ -302,8 +296,8 @@ export class Container<
       this._bg! as Phaser.GameObjects.RenderTexture,
       0,
       0,
-      (width ?? 0) + borderWidth * 2,
-      (height ?? 0) + borderWidth * 2,
+      width,
+      height,
       borderWidth,
       radius,
       borderColor as number,

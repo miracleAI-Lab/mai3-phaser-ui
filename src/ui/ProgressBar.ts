@@ -44,6 +44,8 @@ export class ProgressBar extends Container<ProgressBarConfig> {
     const fillWidth = this._config.fillTexture?.x ?? 0;
     const realWidth = barWidth - fillWidth * 2;
     this.fill?.setSize(progress * realWidth, this.fill.height); 
+    this._config.width = realWidth;
+    this._config.height = this.fill?.height;
   }
 
   get value(): number {
