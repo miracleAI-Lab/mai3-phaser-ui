@@ -104,6 +104,8 @@ export default class ResizableComponentManager {
   ) {
     this.isResizing = true;
     this.activeHandle = handle;
+    const component = this.components[componentIndex];
+    this.scene.events.emit("resizeStart", (component as Container).config);
   }
 
   private resize(
