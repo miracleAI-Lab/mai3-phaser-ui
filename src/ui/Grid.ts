@@ -6,7 +6,7 @@ import { Panel } from './Panel';
 const CellIndex = "cellIndex";
 
 export class Grid extends Panel<GridConfig> {
-    protected _content?: Container;
+    protected declare _content?: Container;
     private _gridLines?: Phaser.GameObjects.Graphics;
     private _draggingChild?: Container;
     private _originalPosition?: { x: number; y: number };
@@ -245,7 +245,7 @@ export class Grid extends Panel<GridConfig> {
     }
 
     private findNearestEmptyCell(x: number, y: number): { x: number, y: number } | null {
-        let nearestCell = null;
+        let nearestCell: { x: number, y: number } | null = null;
         this.positionSlotMap.forEach((value, key) => {
             if (value === 0) {
                 const [cellX, cellY] = key.split('-').map(Number);

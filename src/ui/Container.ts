@@ -11,7 +11,7 @@ export class Container<
   protected _type?: string;
   protected _bounds?: Phaser.Geom.Rectangle;
   protected _hitArea?: Phaser.Geom.Rectangle | Phaser.Geom.Circle;
-  protected _config?: T;
+  protected declare _config?: T;
   scene: BaseScene;
   protected _bg?: Phaser.GameObjects.Image | Phaser.GameObjects.RenderTexture;
 
