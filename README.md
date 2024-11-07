@@ -32,13 +32,13 @@
 - ✅ VolumeSlider
 - ✅ Sprite
 - ✅ ScrollView
+- ✅ ListView
 
 ## future implementation:
 
 - 🚧 FloatButton
 - 🚧 Divider
 - 🚧 Flex
-- 🚧 ListView
 - 🚧 Space
 - 🚧 Splitter
 - 🚧 Dropdown
