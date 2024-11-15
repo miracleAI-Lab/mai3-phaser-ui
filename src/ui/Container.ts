@@ -116,6 +116,10 @@ export class Container<
     this.onDragEndUpdate(pointer, this.x, this.y);
   }
 
+  public onDestroy(): void {
+    
+  }
+
   private getClampedPosition(dragX: number, dragY: number): [number, number] {
     if (this.Type === "RoundedButton") {
       const radius = this._config?.radius ?? 0;
@@ -349,6 +353,7 @@ export class Container<
   }
 
   destroy(fromScene?: boolean): void {
+    this.onDestroy();
     super.destroy(fromScene);
     this._bg?.destroy(fromScene);
     this._bg = undefined;
