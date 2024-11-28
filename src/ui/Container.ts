@@ -142,7 +142,7 @@ export class Container<
     dragX: number,
     dragY: number
   ): void {
-    console.log(pointer, dragX, dragY);
+    // console.log(pointer, dragX, dragY);
   }
 
   public onDragEndUpdate(
