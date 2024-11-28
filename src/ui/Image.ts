@@ -54,6 +54,8 @@ export class Image extends Container<ImageConfig> {
     if (config?.text) {
       this.reDrawText();
     }
+
+    this.setDepth(config?.depth ?? 1);
   }
 
   private reDrawImage(

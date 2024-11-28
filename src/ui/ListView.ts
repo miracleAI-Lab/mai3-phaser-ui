@@ -84,5 +84,7 @@ export class ListView extends ScrollView<ListViewConfig> {
         }
       }
     }
+
+    this.setDepth(this._config?.depth ?? 1);
   }
 }

@@ -33,6 +33,7 @@ export class Sprite extends BaseButton<SpriteConfig> {
     this.addChild(this.instance!);
 
     this.RefreshBounds();
+    this.setDepth(this._config?.depth ?? 1);
   }
 
   public createAnimsSprite(animKey: string, config: SpriteAnimConfig) {

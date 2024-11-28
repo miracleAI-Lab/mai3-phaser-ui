@@ -35,6 +35,7 @@ export class ConnectWalletButton extends BaseButton<ConnectWalletButtonConfig> {
     this.RefreshBounds();
     this.initializeEvents();
     this.updateConfig(this._config);
+    this.setDepth(this._config.depth ?? 1);
   }
 
   private initWallet() {
