@@ -48,7 +48,7 @@ export class Label extends Panel<LabelConfig> {
   }
 
   public drawText(): void {
-    const { text = "Welcome to MiracleAI", textAlign = 'left' } = this._config;
+    const { text = "", textAlign = 'left' } = this._config;
     const style = this.getLabelStyle();
     const padding = Utils.getPadding(this._config.padding);
 

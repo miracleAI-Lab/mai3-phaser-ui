@@ -21,7 +21,7 @@ export class Text extends Container<TextConfig> {
     this._config = config;
     this.Type = 'Text';
 
-    const text = config.text ?? "Welcome to MiracleAI";
+    const text = config.text ?? "";
     const style = this.getLabelStyle(config);
 
     this.text = this.scene.make.text({ text, style: style as TextStyle });
@@ -34,7 +34,7 @@ export class Text extends Container<TextConfig> {
     this._config = config;
     this.computedLabelSize();
 
-    const text = config.text ?? "Welcome to MiracleAI";
+    const text = config.text ?? "";
     const style = this.getLabelStyle(config);
 
     this.text.setText(text);
