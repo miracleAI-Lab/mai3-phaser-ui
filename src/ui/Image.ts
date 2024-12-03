@@ -51,7 +51,7 @@ export class Image extends Container<ImageConfig> {
     this.RefreshBounds();
     this.updateMaskShapePos();
 
-    if (config?.text) {
+    if (config.text !== undefined && config.text !== "" && config.text !== null) {
       this.reDrawText();
     }
 
