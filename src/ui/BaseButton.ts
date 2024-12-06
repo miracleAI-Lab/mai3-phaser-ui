@@ -37,7 +37,7 @@ export class BaseButton<T extends BaseButtonConfig = BaseButtonConfig> extends C
 
   protected handleOut(): void {
     this.handleEvent(this._baseConfig?.handleOut);
-    this.lastAlpha && (this.alpha = this.lastAlpha);
+    this.lastAlpha && (this.alpha = this.lastAlpha) && (this.lastAlpha = undefined);
 
     if (this._baseConfig?.enableSmoothScaleAnim) {
       Utils.smoothScale(this.scene.tweens, this, 1, 125);
@@ -56,7 +56,7 @@ export class BaseButton<T extends BaseButtonConfig = BaseButtonConfig> extends C
 
   protected handleUp(): void {
     this.handleEvent(this._baseConfig?.handleUp);
-    this.lastAlpha && (this.alpha = this.lastAlpha);
+    this.lastAlpha && (this.alpha = this.lastAlpha) && (this.lastAlpha = undefined);
 
     if (this._baseConfig?.enableSmoothScaleAnim) {
       Utils.smoothScale(this.scene.tweens, this, 1, 125);
